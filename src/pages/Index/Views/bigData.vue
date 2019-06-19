@@ -1,9 +1,8 @@
 <template>
   <div class="ex-bigdata-content">
     <div class="ex-bigdata-side">
-      <div class="item" style="width:100%;">
+      <div class="item">
         <h3>渣土消纳量统计</h3>
-
         <muckCharts/>
         <!-- 边框 -->
         <div class="corner lt"></div>
@@ -11,7 +10,7 @@
         <div class="corner lb"></div>
         <div class="corner rb"></div>
       </div>
-      <div class="item" style="flex:1;">
+      <div class="item">
         <h3>环卫车辆统计</h3>
 
         <sanitationStastic/>
@@ -21,9 +20,18 @@
         <div class="corner lb"></div>
         <div class="corner rb"></div>
       </div>
-      <div class="item" style="flex:1;">
+      <div class="item">
         <h3>垃圾清运量统计</h3>
         <dustCharts/>
+        <!-- 边框 -->
+        <div class="corner lt"></div>
+        <div class="corner rt"></div>
+        <div class="corner lb"></div>
+        <div class="corner rb"></div>
+      </div>
+      <div class="item">
+        <h3>车辆在线率统计</h3>
+        <vechileCharts/>
         <!-- 边框 -->
         <div class="corner lt"></div>
         <div class="corner rt"></div>
@@ -34,8 +42,6 @@
     <div class="ex-bigdata-main">
       <div class="item">
         <mapCharts class="echarts-map"/>
-        <h3>车辆在线率统计</h3>
-        <vechileCharts/>
       </div>
     </div>
 

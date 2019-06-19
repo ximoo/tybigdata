@@ -48,7 +48,6 @@ function getEntry() {
     eArr.push('babel-polyfill'); //引入这个，是为了用async await，一些IE不支持的属性能够受支持，兼容IE浏览器用的
     entry[n] = eArr;
   })
-  console.log(entry)
   return entry;
 }
 
