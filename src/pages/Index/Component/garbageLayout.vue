@@ -9,7 +9,7 @@ import barCharts from "./Echarts";
 import getBar from "./garbagelayout.service";
 
 export default {
-  name: "caseStastics",
+  name: "garbagelayout",
   components: { chart: barCharts },
   data() {
     return {

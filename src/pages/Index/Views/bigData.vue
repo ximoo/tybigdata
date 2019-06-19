@@ -51,7 +51,7 @@
       </div>
       <div class="item">
         <h3>环卫征费统计</h3>
-        <sanitationStastic/>
+        <levyCharts/>
         <!-- 边框 -->
         <div class="corner lt"></div>
         <div class="corner rt"></div>
@@ -89,7 +89,6 @@ require("echarts/lib/chart/map");
 require("echarts/lib/chart/pie");
 require("echarts/lib/chart/radar");
 
-
 import muckCharts from "../Component/muckStastics.vue";
 import dustCharts from "../Component/dustcartStastic.vue";
 import sanitationStastic from "../Component/sanitationStastic";
@@ -98,6 +97,7 @@ import mapCharts from "../Component/MapCharts.vue";
 import caseCharts from "../Component/caseStastics.vue";
 import caseLayCharts from "../Component/caseLayout.vue";
 import garbageCharts from "../Component/garbageLayout.vue";
+import levyCharts from "../Component/levystastic.vue";
 
 export default {
   name: "bigData",
@@ -109,7 +109,8 @@ export default {
     mapCharts,
     caseCharts,
     caseLayCharts,
-    garbageCharts
+    garbageCharts,
+    levyCharts
   },
   mounted() {
     let self = this;
@@ -117,4 +118,3 @@ export default {
   }
 };
 </script>
-

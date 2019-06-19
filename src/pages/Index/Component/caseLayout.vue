@@ -9,7 +9,7 @@ import barCharts from "./Echarts";
 import getBar from "./caselayout.service";
 
 export default {
-  name: "caseStastics",
+  name: "caseLayout",
   components: { chart: barCharts },
   data() {
     return {

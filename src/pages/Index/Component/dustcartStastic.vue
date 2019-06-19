@@ -16,7 +16,7 @@ import getline from './dustcartstastic.service.js'
 
 
 export default {
-  name: "MuckStatics",
+  name: "dustcartStastic",
   components: { chart: ECharts },
   data() {
     return {

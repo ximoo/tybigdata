@@ -7,7 +7,7 @@
 
 <script>
 import ECharts from "./Echarts";
-import getPie from './pie'
+import getPie from './sanitationstastic.service'
 
 export default {
   name: "sanitationStastic",
