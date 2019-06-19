@@ -1,29 +1,52 @@
-export default function getData () {
+import echarts from 'echarts'
+
+export default function getData() {
+
+
+
   return {
-    tooltip: {},
-    dataset: {
-      // Provide data.
-      source: [
-        ['Product', '2015', '2016', '2017'],
-        ['Matcha Latte', ...randomize()],
-        ['Milk Tea', ...randomize()],
-        ['Cheese Cocoa', ...randomize()],
-        ['Walnut Brownie', ...randomize()]
-      ]
-    },
-    // Declare X axis, which is a category axis, mapping
-    // to the first column by default.
-    xAxis: { type: 'category' },
-    // Declare Y axis, which is a value axis.
-    yAxis: {},
-    // Declare several series, each of them mapped to a
-    // column of the dataset by default.
-    series: [{ type: 'pie' }, { type: 'pie' }, { type: 'pie' }]
+    color: ['#004b90', '#f19638', '#298bff', '#137fa8', '#2c53c9'],
+    radius: '35%',
+    center: ['50%', '50%'],
+    series: [{
+      type: 'pie',
+      data: [{
+          value: 335,
+          name: '直接访问'
+        },
+        {
+          value: 310,
+          name: '邮件营销'
+        },
+        {
+          value: 274,
+          name: '联盟广告'
+        },
+        {
+          value: 235,
+          name: '视频广告'
+        },
+        {
+          value: 400,
+          name: '搜索引擎'
+        }
+      ],
+      roseType: 'radius',
+      itemStyle: {
+        normal: {
+          shadowBlur: 200,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+      },
+      animationType: 'scale',
+      animationEasing: 'elasticOut',
+      animationDelay: function (idx) {
+        return Math.random() * 200;
+      }
+    }]
   }
 }
 
-function randomize () {
-  return [0, 0, 0].map(v => {
-    return Math.round(300 + Math.random() * 700) / 10
-  })
+function randomize() {
+  return Math.round(300 + Math.random() * 700) / 10
 }

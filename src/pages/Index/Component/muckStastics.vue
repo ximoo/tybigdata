@@ -4,23 +4,20 @@
       <el-button type="primary" size="mini">周</el-button>
       <el-button type="primary" size="mini">月</el-button>
     </el-button-group>
-    <chart :options="bar" autoresize/>
+    <chart :options="option" autoresize />
   </div>
 </template>
 
-
 <script>
-import ECharts from "./Echarts";
-import getBar from './muckStastics'
-
-
+import barCharts from "./Echarts";
+import getBar from "./muckstastics.service";
 
 export default {
-  name: "MuckStatics",
-  components: { chart: ECharts },
+  name: "muckStastics",
+  components: { chart: barCharts },
   data() {
     return {
-      bar: getBar()
+      option: getBar()
     };
   },
   mounted() {

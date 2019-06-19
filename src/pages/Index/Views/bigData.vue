@@ -4,33 +4,45 @@
       <div class="item" style="width:100%;">
         <h3>渣土消纳量统计</h3>
 
-        <muckStastics/>
-
+        <muckCharts/>
+        <!-- 边框 -->
+        <div class="corner lt"></div>
+        <div class="corner rt"></div>
+        <div class="corner lb"></div>
+        <div class="corner rb"></div>
       </div>
       <div class="item" style="flex:1;">
         <h3>环卫车辆统计</h3>
 
         <sanitationStastic/>
-
+        <!-- 边框 -->
+        <div class="corner lt"></div>
+        <div class="corner rt"></div>
+        <div class="corner lb"></div>
+        <div class="corner rb"></div>
       </div>
       <div class="item" style="flex:1;">
         <h3>垃圾清运量统计</h3>
-         <dustcartStastic/>
-
+        <dustCharts/>
+        <!-- 边框 -->
+        <div class="corner lt"></div>
+        <div class="corner rt"></div>
+        <div class="corner lb"></div>
+        <div class="corner rb"></div>
       </div>
     </div>
     <div class="ex-bigdata-main">
       <div class="item">
-        <MapCharts class="echarts-map"/>
+        <mapCharts class="echarts-map"/>
         <h3>车辆在线率统计</h3>
-        <dustcartStastic/>
+        <vechileCharts/>
       </div>
     </div>
 
     <div class="ex-bigdata-side">
       <div class="item">
-        <h3>生活垃圾产生分类</h3>
-        <muckStastics/>
+        <h3>生活垃圾产生分布</h3>
+        <garbageCharts/>
         <!-- 边框 -->
         <div class="corner lt"></div>
         <div class="corner rt"></div>
@@ -40,42 +52,64 @@
       <div class="item">
         <h3>环卫征费统计</h3>
         <sanitationStastic/>
-        <!-- <div class="corner lt"></div>
+        <!-- 边框 -->
+        <div class="corner lt"></div>
         <div class="corner rt"></div>
         <div class="corner lb"></div>
-        <div class="corner rb"></div> -->
+        <div class="corner rb"></div>
       </div>
 
       <div class="item">
         <h3>环卫案件处理统计</h3>
-        <muckStastics/>
+        <caseCharts/>
+        <!-- 边框 -->
+        <div class="corner lt"></div>
+        <div class="corner rt"></div>
+        <div class="corner lb"></div>
+        <div class="corner rb"></div>
       </div>
       <div class="item">
         <h3>环卫案件分布统计</h3>
-        <muckStastics/>
+        <caseLayCharts/>
+        <!-- 边框 -->
+        <div class="corner lt"></div>
+        <div class="corner rt"></div>
+        <div class="corner lb"></div>
+        <div class="corner rb"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import muckStastics from "../Component/muckStastics";
-import dustcartStastic from "../Component/dustcartStastic";
+require("echarts-gl");
+require("echarts/lib/chart/bar");
+require("echarts/lib/chart/line");
+require("echarts/lib/chart/map");
+require("echarts/lib/chart/pie");
+require("echarts/lib/chart/radar");
+
+
+import muckCharts from "../Component/muckStastics.vue";
+import dustCharts from "../Component/dustcartStastic.vue";
 import sanitationStastic from "../Component/sanitationStastic";
-import vechileOline from "../Component/vechileOline";
-import MapCharts from "../Component/MapCharts";
+import vechileCharts from "../Component/vechileOline.vue";
+import mapCharts from "../Component/MapCharts.vue";
+import caseCharts from "../Component/caseStastics.vue";
+import caseLayCharts from "../Component/caseLayout.vue";
+import garbageCharts from "../Component/garbageLayout.vue";
 
 export default {
   name: "bigData",
   components: {
-    muckStastics,
-    dustcartStastic,
+    muckCharts,
+    dustCharts,
     sanitationStastic,
-    vechileOline,
-    MapCharts
-  },
-  data() {
-    return {};
+    vechileCharts,
+    mapCharts,
+    caseCharts,
+    caseLayCharts,
+    garbageCharts
   },
   mounted() {
     let self = this;

@@ -8,9 +8,11 @@ import App from '~/App.vue';
 
 import ECharts from 'vue-echarts'
 
-import 'echarts-gl';
-import "echarts/lib/chart/bar";
-import "echarts/lib/chart/line";
+// Map of China
+import tyMap from '../../../common/stastic/ty.json'
+
+// registering map data
+ECharts.registerMap('ty', tyMap)
 
 
 

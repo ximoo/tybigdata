@@ -7,7 +7,6 @@
 
 <script>
 import ECharts from "./Echarts";
-import "echarts/lib/chart/pie";
 import getPie from './pie'
 
 export default {

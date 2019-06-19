@@ -5,14 +5,10 @@
 
 <script>
 import ECharts from "./Echarts";
-import 'echarts/lib/chart/map'
+
 import map from './map'
 
-// Map of China
-import tyMap from '../../../common/stastic/ty.json'
 
-// registering map data
-ECharts.registerMap('ty', tyMap)
 
 export default {
   name: "MuckStatics",

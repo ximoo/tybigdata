@@ -7,11 +7,10 @@
 
 <script>
 import ECharts from "./Echarts";
-import "echarts/lib/chart/line";
-import getline from "./line";
+import getline from "./vechileoline.service.js";
 
 export default {
-  name: "MuckStatics",
+  name: "vechileOline",
   components: { chart: ECharts },
   data() {
     return {

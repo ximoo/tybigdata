@@ -11,8 +11,8 @@
 
 <script>
 import ECharts from "./Echarts";
-import getline from './dustcartStastic'
-import "echarts/lib/chart/line";
+import getline from './dustcartstastic.service.js'
+
 
 
 export default {
