@@ -13,7 +13,7 @@ export default function getData() {
     series: [{
       type: 'pie',
       radius: ['40%', '80%'],
-      center: ['50%', '65%'],
+      center: ['50%', '55%'],
       avoidLabelOverlap: false,
       label: {
         normal: {

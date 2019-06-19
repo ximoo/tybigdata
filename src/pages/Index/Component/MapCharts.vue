@@ -5,8 +5,7 @@
 
 <script>
 import ECharts from "./Echarts";
-
-import map from './map'
+import getMap from './mapcharts.service.js'
 
 
 
@@ -15,7 +14,7 @@ export default {
   components: { chart: ECharts },
   data() {
     return {
-      map
+      map:getMap()
     };
   },
   mounted() {
