@@ -1,35 +1,37 @@
 <template>
   <div class="ex-bigdata-content">
-    <div class="ex-bigdata-side">
-      <div class="item" style="width:100%">
-        <h3>渣土消纳量统计</h3>
-        <muckCharts/>
-        <!-- 边框 -->
-        <div class="corner lt"></div>
-        <div class="corner rt"></div>
-        <div class="corner lb"></div>
-        <div class="corner rb"></div>
+    <transition name="el-zoom-in-center">
+      <div class="ex-bigdata-side">
+        <div class="item" style="width:100%" v-show="show">
+          <h3>渣土消纳量统计</h3>
+          <muckCharts/>
+          <!-- 边框 -->
+          <div class="corner lt"></div>
+          <div class="corner rt"></div>
+          <div class="corner lb"></div>
+          <div class="corner rb"></div>
+        </div>
+
+        <div class="item" v-show="show">
+          <h3>环卫车辆统计</h3>
+          <sanitationStastic/>
+          <!-- 边框 -->
+          <div class="corner lt"></div>
+          <div class="corner rt"></div>
+          <div class="corner lb"></div>
+          <div class="corner rb"></div>
+        </div>
+        <div class="item" v-show="show">
+          <h3>车辆在线率统计</h3>
+          <vechileCharts/>
+          <!-- 边框 -->
+          <div class="corner lt"></div>
+          <div class="corner rt"></div>
+          <div class="corner lb"></div>
+          <div class="corner rb"></div>
+        </div>
       </div>
-      <div class="item">
-        <h3>环卫车辆统计</h3>
-        <sanitationStastic/>
-        <!-- 边框 -->
-        <div class="corner lt"></div>
-        <div class="corner rt"></div>
-        <div class="corner lb"></div>
-        <div class="corner rb"></div>
-      </div>
-      <div class="item">
-        <h3>车辆在线率统计</h3>
-        <vechileCharts/>
-        <!-- 边框 -->
-        <div class="corner lt"></div>
-        <div class="corner rt"></div>
-        <div class="corner lb"></div>
-        <div class="corner rb"></div>
-      </div>
-    </div>
-    
+    </transition>
     <div class="ex-bigdata-main">
       <div class="item">
         <mapCharts/>
@@ -37,46 +39,47 @@
         <dustCharts/>
       </div>
     </div>
+    <transition name="el-zoom-in-center">
+      <div class="ex-bigdata-side">
+        <div class="item" v-show="show">
+          <h3>生活垃圾产生分布</h3>
+          <garbageCharts/>
+          <!-- 边框 -->
+          <div class="corner lt"></div>
+          <div class="corner rt"></div>
+          <div class="corner lb"></div>
+          <div class="corner rb"></div>
+        </div>
+        <div class="item" v-show="show">
+          <h3>环卫征费统计</h3>
+          <levyCharts/>
+          <!-- 边框 -->
+          <div class="corner lt"></div>
+          <div class="corner rt"></div>
+          <div class="corner lb"></div>
+          <div class="corner rb"></div>
+        </div>
 
-    <div class="ex-bigdata-side">
-      <div class="item">
-        <h3>生活垃圾产生分布</h3>
-        <garbageCharts/>
-        <!-- 边框 -->
-        <div class="corner lt"></div>
-        <div class="corner rt"></div>
-        <div class="corner lb"></div>
-        <div class="corner rb"></div>
+        <div class="item" v-show="show">
+          <h3>环卫案件处理统计</h3>
+          <caseCharts/>
+          <!-- 边框 -->
+          <div class="corner lt"></div>
+          <div class="corner rt"></div>
+          <div class="corner lb"></div>
+          <div class="corner rb"></div>
+        </div>
+        <div class="item" v-show="show">
+          <h3>环卫案件分布统计</h3>
+          <caseLayCharts/>
+          <!-- 边框 -->
+          <div class="corner lt"></div>
+          <div class="corner rt"></div>
+          <div class="corner lb"></div>
+          <div class="corner rb"></div>
+        </div>
       </div>
-      <div class="item">
-        <h3>环卫征费统计</h3>
-        <levyCharts/>
-        <!-- 边框 -->
-        <div class="corner lt"></div>
-        <div class="corner rt"></div>
-        <div class="corner lb"></div>
-        <div class="corner rb"></div>
-      </div>
-
-      <div class="item">
-        <h3>环卫案件处理统计</h3>
-        <caseCharts/>
-        <!-- 边框 -->
-        <div class="corner lt"></div>
-        <div class="corner rt"></div>
-        <div class="corner lb"></div>
-        <div class="corner rb"></div>
-      </div>
-      <div class="item">
-        <h3>环卫案件分布统计</h3>
-        <caseLayCharts/>
-        <!-- 边框 -->
-        <div class="corner lt"></div>
-        <div class="corner rt"></div>
-        <div class="corner lb"></div>
-        <div class="corner rb"></div>
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -111,9 +114,18 @@ export default {
     garbageCharts,
     levyCharts
   },
+  data() {
+    return {
+      show: false
+    };
+  },
   mounted() {
     let self = this;
-    this.$nextTick(function() {});
+    this.$nextTick(function() {
+      setTimeout(function() {
+        self.show = true;
+      }, 1000);
+    });
   }
 };
 </script>

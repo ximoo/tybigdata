@@ -63,7 +63,7 @@
           autoplay
           height="350px"
           indicator-position="none"
-          interval="5000"
+          :interval="5000"
         >
           <el-carousel-item>
             <ul>
@@ -107,19 +107,6 @@
           </el-carousel-item>
         </el-carousel>
 
-        <!-- <div class="arrow" @mouseover="slideUp"></div>
-        <div>
-          <ul :style="{top:slideTop,bottom:slideBottom}">
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-        </div>
-        <div class="arrow" @mouseover="slideDown"></div>-->
         <!-- 边框 -->
         <div class="corner lt"></div>
         <div class="corner rt"></div>
@@ -434,18 +421,7 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-    },
-    slideUp() {
-      console.log("up");
-      this.slideTop = "auto";
-      this.slideBottom = 0;
-    },
-    slideDown() {
-      console.log("down");
-      this.slideTop = 0;
-      this.slideBottom = "auto";
-    },
-    divSlide() {}
+    }
   }
 };
 </script>
