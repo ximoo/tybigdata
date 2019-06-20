@@ -69,40 +69,14 @@ export default function getData() {
       type: 'bar',
       name: '同比上月',
       data: data,
-      barWidth: 10,
+      barWidth: 15,
       itemStyle: {
         barBorderRadius: [5, 5, 0, 0],
         normal: {
-          color: new echarts.graphic.LinearGradient(
-            0, 0, 0, 1,
-            [{
-                offset: 0,
-                color: 'rgba(32,182,205,1)'
-              },
-              {
-                offset: 0.7,
-                color: 'rgba(32,182,205,.2)'
-              },
-              {
-                offset: 1,
-                color: 'rgba(32,182,205,0)'
-              }
-            ]
-          )
+          color: 'rgba(32,182,205,.75)'
         },
         emphasis: {
-          color: new echarts.graphic.LinearGradient(
-            0, 0, 0, 1,
-            [{
-                offset: 0,
-                color: '#20b6cd'
-              },
-              {
-                offset: 1,
-                color: '#20b6cd'
-              }
-            ]
-          )
+          color:'rgba(32,182,205,1)'
         }
       },
     }, {
@@ -113,36 +87,10 @@ export default function getData() {
       itemStyle: {
         barBorderRadius: [5, 5, 0, 0],
         normal: {
-          color: new echarts.graphic.LinearGradient(
-            0, 0, 0, 1,
-            [{
-                offset: 0,
-                color: 'rgba(41,139,255,1)'
-              },
-              {
-                offset: 0.7,
-                color: 'rgba(41,139,255,.2)'
-              },
-              {
-                offset: 1,
-                color: 'rgba(41,139,255,0)'
-              }
-            ]
-          )
+          color: 'rgba(41,139,255,.75)'
         },
         emphasis: {
-          color: new echarts.graphic.LinearGradient(
-            0, 0, 0, 1,
-            [{
-                offset: 0,
-                color: '#298bff'
-              },
-              {
-                offset: 1,
-                color: '#298bff'
-              }
-            ]
-          )
+          color: 'rgba(41,139,255,1)'
         }
       }
     }]

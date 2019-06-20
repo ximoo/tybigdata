@@ -3,6 +3,7 @@
     <chart :options="map" autoresize class="map-content"/>
 
     <div class="map-side-lf">
+      <!-- 真实天气 -->
       <div class="map-weather-box">
         <div class="top">
           <div class="icon">
@@ -16,22 +17,119 @@
         <div class="bottom">
           <div class="box">
             <div class="icon">
-              <i class="weather-icon" :class="weatherList[1].icon"></i> 
+              <i class="weather-icon" :class="weatherList[1].icon"></i>
             </div>
-            <div class="days">
-              明天
-            </div>
+            <div class="days">明天</div>
           </div>
           <div class="box">
             <div class="icon">
-              <i class="weather-icon" :class="weatherList[2].icon"></i> 
+              <i class="weather-icon" :class="weatherList[2].icon"></i>
             </div>
-            <div class="days">
-              后天
-            </div>
+            <div class="days">后天</div>
           </div>
         </div>
       </div>
+
+      <!-- 车辆类别 -->
+      <div class="map-vechile-type">
+        <h3>环卫设施统计</h3>
+
+        <el-carousel
+          class="slide-box"
+          direction="vertical"
+          autoplay
+          height="350px"
+          indicator-position="none"
+          interval="5000"
+        >
+          <el-carousel-item>
+            <ul>
+              <li>
+                <div class="icon">
+                  <img src="../../../common/stastic/img/bigData/car-sashui.png" />
+                </div>
+                <div class="info">
+                  <p class="num">820</p>
+                  <p class="label">洒水车</p>
+                </div>
+              </li>
+              <li>
+                <div class="icon">
+                  <img src="../../../common/stastic/img/bigData/car-caishi.png"/>
+                </div>
+                <div class="info">
+                  <p class="num">820</p>
+                  <p class="label">采石车</p>
+                </div>
+              </li>
+              <li>
+                <div class="icon">
+                  <img src="../../../common/stastic/img/bigData/car-qingsao.png"/>
+                </div>
+                <div class="info">
+                  <p class="num">820</p>
+                  <p class="label">清扫车</p>
+                </div>
+              </li>
+              <li>
+                <div class="icon">
+                  <img src="../../../common/stastic/img/bigData/car-zhatu.png"/>
+                </div>
+                <div class="info">
+                  <p class="num">820</p>
+                  <p class="label">渣土车</p>
+                </div>
+              </li>
+            </ul>
+          </el-carousel-item>
+        </el-carousel>
+
+        <!-- <div class="arrow" @mouseover="slideUp"></div>
+        <div>
+          <ul :style="{top:slideTop,bottom:slideBottom}">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+        <div class="arrow" @mouseover="slideDown"></div>-->
+        <!-- 边框 -->
+        <div class="corner lt"></div>
+        <div class="corner rt"></div>
+        <div class="corner lb"></div>
+        <div class="corner rb"></div>
+      </div>
+    </div>
+
+    <div class="map-content-top">
+      <!-- 基础数据 -->
+      <ul>
+        <li>
+          <h2>渣土消纳量</h2>
+          <p>
+            8324.12
+            <span>立方</span>
+          </p>
+        </li>
+        <li>
+          <h2>清扫作业趟次</h2>
+          <p>
+            8324
+            <span>次</span>
+          </p>
+        </li>
+        <li>
+          <h2>垃圾清运量</h2>
+          <p>
+            8324
+            <span>万吨</span>
+          </p>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -47,7 +145,9 @@ export default {
   data() {
     return {
       map: getMap(),
-      weatherList: null
+      weatherList: null,
+      slideTop: 0,
+      slideBottom: "auto"
     };
   },
   mounted() {
@@ -311,7 +411,18 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-    }
+    },
+    slideUp() {
+      console.log("up");
+      this.slideTop = "auto";
+      this.slideBottom = 0;
+    },
+    slideDown() {
+      console.log("down");
+      this.slideTop = 0;
+      this.slideBottom = "auto";
+    },
+    divSlide() {}
   }
 };
 </script>

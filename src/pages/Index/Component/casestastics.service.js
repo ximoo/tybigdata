@@ -97,36 +97,10 @@ export default function getData() {
       itemStyle: {
         barBorderRadius: [5, 5, 0, 0],
         normal: {
-          color: new echarts.graphic.LinearGradient(
-            0, 0, 0, 1,
-            [{
-                offset: 0,
-                color: 'rgba(41,139,255,1)'
-              },
-              {
-                offset: 0.7,
-                color: 'rgba(41,139,255,.2)'
-              },
-              {
-                offset: 1,
-                color: 'rgba(41,139,255,0)'
-              }
-            ]
-          )
+          color: 'rgba(41,139,255,.75)'
         },
         emphasis: {
-          color: new echarts.graphic.LinearGradient(
-            0, 0, 0, 1,
-            [{
-                offset: 0,
-                color: '#298bff'
-              },
-              {
-                offset: 1,
-                color: '#298bff'
-              }
-            ]
-          )
+          color: 'rgba(41,139,255,1)'
         }
       }
     }]

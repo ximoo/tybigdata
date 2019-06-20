@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div  style="height:calc(100% - 80px);">
     <transition name="el-fade-in">
       <router-view/>
     </transition>
