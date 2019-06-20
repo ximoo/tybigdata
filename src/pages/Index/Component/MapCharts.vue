@@ -2,6 +2,29 @@
   <div class="echarts-map">
     <chart :options="map" autoresize class="map-content"/>
 
+    <div class="map-icon-box">
+      <ul>
+        <li>
+          <div class="map-icon">
+            <img src="../../../common/stastic/img/bigData/icon-garbage-site.png">
+          </div>
+          <div class="label">垃圾中转站</div>
+        </li>
+        <li>
+          <div class="map-icon">
+            <img src="../../../common/stastic/img/bigData/icon-garbage.png">
+          </div>
+          <div class="label">垃圾桶站</div>
+        </li>
+        <li>
+          <div class="map-icon">
+            <img src="../../../common/stastic/img/bigData/icon-garbage-download.png">
+          </div>
+          <div class="label">填埋场</div>
+        </li>
+      </ul>
+    </div>
+
     <div class="map-side-lf">
       <!-- 真实天气 -->
       <div class="map-weather-box">
@@ -46,7 +69,7 @@
             <ul>
               <li>
                 <div class="icon">
-                  <img src="../../../common/stastic/img/bigData/car-sashui.png" />
+                  <img src="../../../common/stastic/img/bigData/car-sashui.png">
                 </div>
                 <div class="info">
                   <p class="num">820</p>
@@ -55,7 +78,7 @@
               </li>
               <li>
                 <div class="icon">
-                  <img src="../../../common/stastic/img/bigData/car-caishi.png"/>
+                  <img src="../../../common/stastic/img/bigData/car-caishi.png">
                 </div>
                 <div class="info">
                   <p class="num">820</p>
@@ -64,7 +87,7 @@
               </li>
               <li>
                 <div class="icon">
-                  <img src="../../../common/stastic/img/bigData/car-qingsao.png"/>
+                  <img src="../../../common/stastic/img/bigData/car-qingsao.png">
                 </div>
                 <div class="info">
                   <p class="num">820</p>
@@ -73,7 +96,7 @@
               </li>
               <li>
                 <div class="icon">
-                  <img src="../../../common/stastic/img/bigData/car-zhatu.png"/>
+                  <img src="../../../common/stastic/img/bigData/car-zhatu.png">
                 </div>
                 <div class="info">
                   <p class="num">820</p>
