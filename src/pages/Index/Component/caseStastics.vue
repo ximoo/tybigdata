@@ -1,7 +1,5 @@
 <template>
-  <div class="ex-bigdata-charts">
-    <chart :options="option" autoresize />
-  </div>
+  <chart :options="option" autoresize class="ex-bigdata-charts"/>
 </template>
 
 <script>

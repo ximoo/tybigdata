@@ -135,14 +135,11 @@ export default function getData() {
     },
     geo: {
       map: 'ty',
-      instancing: true,
-      viewControl: {
-        alpha: 45,
-        beta: 15,
-        rotateSensitivity: 0,
-        zoomSensitivity: 0,
-        panSensitivity: 0
-      },
+      // left: 200,
+      // right: 10,
+      // layoutCenter: ['55%', '50%'],
+      // layoutSize:650,
+      zoom: 1.25,
       itemStyle: {
         color: '#193178',
         opacity: 1,
@@ -157,6 +154,19 @@ export default function getData() {
           backgroundColor: 'transparent'
         },
       },
+      regions: [{
+        name: '万柏林区',
+        selected: true,
+      }, {
+        name: '娄烦县',
+        selected: true,
+      }, {
+        name: '迎泽区',
+        selected: true,
+      }, {
+        name: '清徐县',
+        selected: true,
+      }],
       emphasis: { //当鼠标放上去  地区区域是否显示名称
         itemStyle: {
           color: '#274cba',
@@ -171,7 +181,6 @@ export default function getData() {
         },
       },
     },
-
 
     series: [{
       type: 'lines',

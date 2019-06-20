@@ -10,10 +10,14 @@ export default function getData() {
         fontWeight: 700
       }
     },
+    tooltip: {
+      trigger: 'item',
+      formatter: "{d}%"
+    },
     series: [{
       type: 'pie',
       radius: ['40%', '80%'],
-      center: ['50%', '55%'],
+      center: ['50%', '65%'],
       avoidLabelOverlap: false,
       label: {
         normal: {

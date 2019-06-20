@@ -12,7 +12,6 @@
       </div>
       <div class="item">
         <h3>环卫车辆统计</h3>
-
         <sanitationStastic/>
         <!-- 边框 -->
         <div class="corner lt"></div>
@@ -39,9 +38,10 @@
         <div class="corner rb"></div>
       </div>
     </div>
+    
     <div class="ex-bigdata-main">
       <div class="item">
-        <mapCharts class="echarts-map"/>
+        <mapCharts/>
       </div>
     </div>
 
@@ -99,7 +99,7 @@ import muckCharts from "../Component/muckStastics.vue";
 import dustCharts from "../Component/dustcartStastic.vue";
 import sanitationStastic from "../Component/sanitationStastic";
 import vechileCharts from "../Component/vechileOline.vue";
-import mapCharts from "../Component/MapCharts.vue";
+import mapCharts from "../Component/mapCharts.vue";
 import caseCharts from "../Component/caseStastics.vue";
 import caseLayCharts from "../Component/caseLayout.vue";
 import garbageCharts from "../Component/garbageLayout.vue";

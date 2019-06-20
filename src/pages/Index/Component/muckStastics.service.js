@@ -24,6 +24,7 @@ export default function getData() {
       }
     },
     grid: {
+      left:55,
       right: 10,
       bottom:25,
     },

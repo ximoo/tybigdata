@@ -1,29 +1,43 @@
 export default function getData() {
   return {
-    color: ['#004b90', '#f19638', '#298bff', '#137fa8', '#2c53c9'],
-    radius: '35%',
-    center: ['50%', '50%'],
+    color: ['#345eca', '#ff7a56', '#22cbff', '#7761f6', '#f19638'],
+    legend: {
+      x: 'left',
+      top: 15,
+      data: ['喷雾降尘车', '垃圾清运车', '吸尘车', '洒水车', '环卫清扫车'],
+      textStyle: {
+        color: "#23c6de",
+        fontWeight: 700
+      }
+    },
+    tooltip: {
+      trigger: 'item',
+      formatter: "{d}%"
+  },
     series: [{
       type: 'pie',
+      radius: ['40%', '80%'],
+      center: ['50%', '65%'],
+      avoidLabelOverlap: false,
       data: [{
           value: 335,
-          name: '直接访问'
+          name: '喷雾降尘车'
         },
         {
           value: 310,
-          name: '邮件营销'
+          name: '垃圾清运车'
         },
         {
           value: 274,
-          name: '联盟广告'
+          name: '吸尘车'
         },
         {
           value: 235,
-          name: '视频广告'
+          name: '洒水车'
         },
         {
           value: 400,
-          name: '搜索引擎'
+          name: '环卫清扫车'
         }
       ],
       roseType: 'radius',
@@ -31,6 +45,20 @@ export default function getData() {
         normal: {
           shadowBlur: 200,
           shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+      },
+      label: {
+        normal: {
+          show: false,
+          position: 'center'
+        },
+        emphasis: {
+          show: true,
+          textStyle: {
+            fontSize: '28',
+            fontWeight: 'bold',
+            color: "#fff",
+          }
         }
       },
       animationType: 'scale',

@@ -11,13 +11,15 @@ export default function getData() {
     color: ['#ffbe4d', '#61d5ff'],
     legend: {
       data: ['本月', '同比上月'],
+      top: 10,
+      right: 0,
       textStyle: {
         color: "#23c6de",
         fontWeight: 700
       }
     },
     grid: {
-      top: 25,
+      top: 75,
       left: 45,
       right: 10,
       bottom: 25

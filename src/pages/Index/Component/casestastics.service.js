@@ -7,7 +7,7 @@ export default function getData() {
   return {
     legend: {
       data: ['平均时长', '案件数量'],
-      top: 20,
+      top: 10,
       right: 0,
       textStyle: {
         color: "#23c6de",
@@ -22,6 +22,13 @@ export default function getData() {
     },
     tooltip: {
       trigger: 'axis',
+      axisPointer: {
+        type: 'cross',
+        animation: false,
+        label: {
+          backgroundColor: '#505765'
+        }
+      },
       formatter: '{a0}: {c0} 小时<br />{a1}: {c1}件'
     },
     xAxis: {
