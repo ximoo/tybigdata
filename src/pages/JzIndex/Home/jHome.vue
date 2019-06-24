@@ -9,7 +9,7 @@
 import Tile from "../Component/Tile.vue";
 
 export default {
-  name: "bHome",
+  name: "jHome",
   components: { Tile },
   methods: {}
 };

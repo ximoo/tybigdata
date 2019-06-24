@@ -27,7 +27,7 @@ Vue.config.productionTip = false
 
 // 自定义组件
 import '~/component/components';
-import '~/common/stastic/bigdata.less';
+import '~/common/stastic/bigdata_jz.less';
 import '~/common/plugin/element';
 
 new Vue({
