@@ -9,7 +9,7 @@ import App from '~/App.vue';
 import ECharts from 'vue-echarts'
 
 // Map of China
-import tyMap from '../../../common/stastic/ty.json'
+import tyMap from '../../../stastic/ty.json'
 
 // registering map data
 ECharts.registerMap('ty', tyMap)
@@ -27,7 +27,7 @@ Vue.config.productionTip = false
 
 // 自定义组件
 import '~/component/components';
-import '~/common/stastic/bigdata_ty.less';
+import '~/stastic/bigdata_ty.less';
 import '~/common/plugin/element';
 
 new Vue({

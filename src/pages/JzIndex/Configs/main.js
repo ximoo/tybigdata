@@ -9,16 +9,14 @@ import App from '~/App.vue';
 import ECharts from 'vue-echarts'
 
 // Map of China
-import tyMap from '../../../common/stastic/ty.json'
+import tyMap from '../../../stastic/ty.json'
 
 // registering map data
 ECharts.registerMap('ty', tyMap)
 
 
-
 // 注册组件后即可使用
 Vue.component('v-chart', ECharts)
-
 
 
 import axios from 'axios'
@@ -27,8 +25,9 @@ Vue.config.productionTip = false
 
 // 自定义组件
 import '~/component/components';
-import '~/common/stastic/bigdata_jz.less';
 import '~/common/plugin/element';
+import '~/stastic/bigdata_jz.less';
+
 
 new Vue({
   el: '#JzBigData',

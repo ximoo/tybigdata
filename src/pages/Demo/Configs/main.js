@@ -6,7 +6,7 @@ import App from '~/App.vue';
 import '~/common/plugin/axios';
 // 自定义组件
 import '~/component/components';
-import '~/common/stastic/style.less';
+import '~/stastic/style.less';
 import '~/common/plugin/element';
 
 new Vue({
