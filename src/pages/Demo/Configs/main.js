@@ -5,7 +5,7 @@ import router from './router';
 import App from '~/App.vue';
 import '~/common/plugin/axios';
 // 自定义组件
-import '~/component/components';
+import '~/publicComponent/components';
 import '~/stastic/style.less';
 import '~/common/plugin/element';
 

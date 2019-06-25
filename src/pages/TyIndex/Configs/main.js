@@ -14,19 +14,15 @@ import tyMap from '../../../stastic/ty.json'
 // registering map data
 ECharts.registerMap('ty', tyMap)
 
-
-
 // 注册组件后即可使用
 Vue.component('v-chart', ECharts)
-
-
 
 import axios from 'axios'
 Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 // 自定义组件
-import '~/component/components';
+import '~/publicComponent/components';
 import '~/stastic/bigdata_ty.less';
 import '~/common/plugin/element';
 

@@ -39,8 +39,8 @@ li {
 
 .ex-screen {
     position: absolute;
-    left: 15px;
-    top: 10px;
+    left: 7px;
+    top: 7px;
     color: #43f1ff;
     z-index: 2001;
 
@@ -57,12 +57,12 @@ li {
     left: 0;
     top: 0;
     font-size: 28px;
-    // font-weight: 700;
-    line-height: 80px;
+    font-weight: 700;
+    line-height: 60px;
     text-align: center;
     color: #6edbff;
     z-index: 2000;
-    background:url('./img/bigData_jz/tile_bg.png') center no-repeat;
+    background: url('./img/bigData_jz/tile_bg.png') center no-repeat;
 
     .ex-bigdata-tile-flip {
         transform: scaleY(-.5);
@@ -77,13 +77,13 @@ li {
     .ex-bigdata-timer {
         font-family: "lcrystal";
         position: absolute;
-        // width: 350px;
-        right: 25px;
-        top: 5px;
-        // margin-left: -175px;
-        font-size: 24px;
-        line-height: 40px;
-        color: #ffbb39;
+        width: 350px;
+        left: 50%;
+        top: 50px;
+        margin-left: -175px;
+        font-size: 18px;
+        line-height: 35px;
+        color: #1990ff;
         text-align: center;
     }
 
@@ -91,7 +91,7 @@ li {
 
 }
 
-.ex-pages-bigData {
+.ex-pages-bigdata {
     position: relative;
     width: 100%;
     height: 100%;
@@ -100,7 +100,7 @@ li {
     .ex-bigdata-content {
         position: absolute;
         width: 100%;
-        height: 100%;
+        // height: 100%;
         left: 0;
         top: 80px;
         display: flex;
@@ -112,27 +112,27 @@ li {
         .ex-bigdata-side {
             display: flex;
             flex-wrap: wrap;
-            flex: 1;
-            height: 100%;
+            flex: .75;
+            // height: 100%;
 
             .item {
-                width: calc(~"50% - 20px");
-                height: calc(~"50% - 20px");
-                margin: 10px;
-                // background: rgba(0, 0, 0, .25);
+                width: calc(~"100% - 20px");
+                // height: calc(~"100% - 20px");
+                margin:10px 7px;
+                background: rgba(0, 0, 0, .35);
                 position: relative;
-                // box-shadow: inset 0 0 55px rgba(0, 127, 234, 0.822);
+                // box-shadow: inset 0 0 55px rgba(0, 127, 234, 0.322);
                 // border: 1px solid #267fea;
 
                 h3 {
                     position: relative;
                     width: calc(~"100% - 30px");
-                    font-size: 18px;
+                    font-size: 16px;
                     font-weight: bold;
-                    line-height: 45px;
+                    line-height: 32px;
                     // display: inline-block;
-                    height: 55px;
-                    color: #abc4ff;
+                    height: 36px;
+                    color: #1990ff;
                     padding: 0 15px;
                     margin: 0;
                     background: url('./img/bigData_jz/title_bg.png') left bottom repeat-x;
@@ -193,770 +193,27 @@ li {
         .ex-bigdata-main {
             display: flex;
             flex-wrap: wrap;
-            flex: 1.5;
-            position: relative;
-
+            flex: 2.25;
+            height: 100%;
+            
             .item {
-                width: calc(~"100% - 22px");
-                height: calc(~"76% - 20px");
-                margin: 10px;
-                // box-shadow: inset 0 0 55px rgba(0, 153, 255, 0.822);
-                // border: 1px solid #1a727a;
-
-
-                .echarts-map {
-                    width: 100%;
-                    height: 100%;
-                    position: relative;
-
-
-                    .map-content {
-                        width: 80%;
-                        height: 80%;
-                        position: absolute;
-                        right: 15px;
-                        top: 5%;
-                    }
-
-
-
-
-
-
-
-                    .map-side-lf {
-                        width: 300px;
-                        height: calc(~'100% - 30px');
-                        position: absolute;
-                        left: 15px;
-                        top: 15px;
-
-                        .map-weather-box {
-                            width: 300px;
-                            height: 150px;
-                            background: url('./img/bigData_jz/weather_box.png') center no-repeat;
-                            background-size: 100% 100%;
-
-                            .top {
-                                width: 300px;
-                                height: 80px;
-                                background: url('./img/bigData_jz/weather_border.png') bottom center no-repeat;
-                                background-size: 80% auto;
-
-                                .icon {
-                                    width: 40px;
-                                    height: 40px;
-                                    margin: 20px 40px;
-                                    float: left;
-                                }
-
-                                .temp {
-                                    width: 180px;
-                                    height: 80px;
-                                    float: right;
-
-
-                                    h5 {
-                                        font-size: 20px;
-                                        height: 30px;
-                                        line-height: 50px;
-                                        color: #bed1ff;
-                                        margin: 0;
-                                    }
-
-                                    h6 {
-                                        font-size: 17px;
-                                        height: 20px;
-                                        line-height: 40px;
-                                        color: #4d78e3;
-                                        margin: 0;
-                                    }
-
-                                }
-                            }
-
-                            .bottom {
-                                width: 300px;
-                                height: 70px;
-
-                                .box {
-                                    width: 150px;
-                                    height: 70px;
-                                    float: left;
-
-                                    .icon {
-                                        width: 40px;
-                                        height: 40px;
-                                        margin: 15px 23px;
-                                        float: left;
-
-                                    }
-
-                                    .days {
-                                        height: 70px;
-                                        font-size: 17px;
-                                        line-height: 70px;
-                                        color: #4d78e3;
-                                        float: left;
-                                    }
-                                }
-                            }
-
-                        }
-
-                        .map-vechile-type {
-                            width: 300px;
-                            height: calc(~'100% - 150px');
-                            margin-top: 25px;
-                            position: relative;
-
-                            h3 {
-                                background: none;
-                                height: 32px;
-                                line-height: 32px;
-                            }
-
-                            div.slide-box {
-                                height: 440px;
-
-                                .el-carousel__container {
-                                    .el-carousel__item {
-                                        width: 300px;
-                                        height: 440px;
-
-                                        li {
-                                            width: 280px;
-                                            height: 70px;
-                                            margin: 15px 10px;
-                                            background: url('./img/bigData_jz/slide_box.png') center no-repeat;
-                                            background-size: 100% 100%;
-                                            clear: both;
-                                            overflow: hidden;
-
-
-                                            .icon {
-                                                width: 60px;
-                                                height: 60px;
-                                                margin: 20px 25px;
-                                                float: left;
-
-                                                img {
-                                                    width: 100%;
-                                                }
-
-                                            }
-
-                                            .info {
-                                                color: #51f9ff;
-
-                                                .num {
-                                                    font-size: 28px;
-                                                    padding-top: 5px;
-                                                }
-
-                                                .label {
-                                                    font-size: 15px;
-                                                    color: #ffffff;
-                                                }
-
-
-                                            }
-
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    .map-content-top {
-                        position: absolute;
-                        right: 95px;
-                        bottom: 15px;
-
-                        ul {
-
-                            li {
-                                width: 350px;
-                                height: 100px;
-                                background: url('./img/bigData_jz/data_box.png') center no-repeat;
-                                background-size: 100% 100%;
-                                margin: 5px;
-                                float: left;
-
-                                h2 {
-                                    font-size: 17px;
-                                    font-weight: normal;
-                                    margin-top: 15px;
-                                    padding-top: 10px;
-                                    padding-left: 80px;
-                                    color: #e1eaff;
-                                    background: url('./img/bigData_jz/weather_border.png') top center no-repeat;
-                                    background-size: 80% 2px;
-                                }
-
-                                p {
-
-                                    font-size: 26px;
-                                    font-weight: 800;
-                                    padding-left: 100px;
-                                    color: #34ebee;
-
-                                    span {
-                                        font-size: 14px;
-                                    }
-                                }
-
-
-
-
-                            }
-                        }
-
-                    }
-
-                    .map-icon-box {
-                        width: 119px;
-                        height: 138px;
-                        position: absolute;
-                        right: 135px;
-                        bottom: 180px;
-                        background: url('./img/bigData_jz/icon_bg.png') center no-repeat;
-                        background-size: 100% 100%;
-
-                        .map-icon {
-                            width: 16px;
-                            height: 16px;
-                            margin: 5px 5px 5px 15px;
-                            float: left;
-
-                            img {
-                                width: 100%
-                            }
-                        }
-
-                        .label {
-                            font-size: 14px;
-                            color: #cbdbff;
-                            line-height: 26px;
-                            margin: 15px 0;
-                        }
-
-                    }
-
-
-
-
-                    @media only screen and (max-width: 2560px) {
-                        .map-side-lf {
-                            width: 170px;
-                            height: calc(~'100% - 30px');
-                            position: absolute;
-                            left: 15px;
-                            top: 15px;
-
-                            .map-weather-box {
-                                width: 170px;
-                                height: 90px;
-                                background: url('./img/bigData_jz/weather_box.png') center no-repeat;
-                                background-size: 100% 100%;
-
-
-
-                                .top {
-                                    width: 170px;
-                                    height: 60px;
-                                    background: url('./img/bigData_jz/weather_border.png') bottom center no-repeat;
-                                    background-size: 80% auto;
-
-                                    .icon {
-                                        width: 40px;
-                                        height: 40px;
-                                        margin: 10px;
-                                        float: left;
-                                    }
-
-                                    .temp {
-                                        width: 110px;
-                                        height: 50px;
-                                        float: right;
-
-                                        h5 {
-                                            font-size: 18px;
-                                            height: 30px;
-                                            line-height: 40px;
-                                            color: #bed1ff;
-                                            margin: 0;
-                                        }
-
-                                        h6 {
-                                            font-size: 15px;
-                                            height: 20px;
-                                            line-height: 20px;
-                                            color: #4d78e3;
-                                            margin: 0;
-                                        }
-                                    }
-                                }
-
-
-                                .bottom {
-                                    width: 170px;
-                                    height: 45px;
-
-                                    .box {
-                                        width: 85px;
-                                        height: 45px;
-                                        float: left;
-
-                                        .icon {
-                                            width: 40px;
-                                            height: 40px;
-                                            margin: 3px;
-                                            float: left;
-
-                                        }
-
-                                        .days {
-                                            width: 39px;
-                                            height: 45px;
-                                            font-size: 13px;
-                                            line-height: 45px;
-                                            color: #4d78e3;
-                                            float: left;
-                                        }
-                                    }
-                                }
-                            }
-
-                            .map-vechile-type {
-                                width: 170px;
-                                height: calc(~'100% - 120px');
-                                margin-top: 25px;
-                                position: relative;
-
-                                h3 {
-                                    background: none;
-                                    height: 32px;
-                                    line-height: 32px;
-                                }
-
-                                div.arrow {
-                                    width: 170px;
-                                    height: 30px;
-                                    text-align: center;
-                                    cursor: pointer;
-                                    background: #fc0;
-                                }
-
-                                div.slide-box {
-                                    height: 500px;
-
-                                    .el-carousel__container {
-                                        .el-carousel__item {
-                                            width: 170px;
-                                            height: 500px;
-
-                                            li {
-                                                width: 160px;
-                                                height: 70px;
-                                                margin: 15px 5px;
-                                                background: url('./img/bigData_jz/slide_box.png') center no-repeat;
-                                                background-size: 100% 100%;
-                                                clear: both;
-                                                overflow: hidden;
-
-
-                                                .icon {
-                                                    width: 60px;
-                                                    height: 60px;
-                                                    margin: 20px 10px;
-                                                    float: left;
-
-                                                    img {
-                                                        width: 100%;
-                                                    }
-
-                                                }
-
-                                                .info {
-                                                    color: #51f9ff;
-
-                                                    .num {
-                                                        font-size: 24px;
-                                                        padding-top: 10px;
-                                                    }
-
-                                                    .label {
-                                                        font-size: 13px;
-                                                        color: #ffffff;
-                                                    }
-
-                                                }
-
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        .map-content-top {
-                            position: absolute;
-                            left: 195px;
-                            right: auto;
-                            bottom: 15px;
-
-                            ul {
-
-                                li {
-                                    width: 175px;
-                                    height: 90px;
-                                    background: url('./img/bigData_jz/data_box.png') center no-repeat;
-                                    background-size: 100% 100%;
-                                    margin: 5px;
-                                    float: left;
-
-                                    h2 {
-                                        font-size: 15px;
-                                        font-weight: normal;
-                                        margin-top: 15px;
-                                        padding-top: 10px;
-                                        padding-left: 30px;
-                                        color: #e1eaff;
-                                        background: url('./img/bigData_jz/weather_border.png') top center no-repeat;
-                                        background-size: 80% auto;
-                                    }
-
-                                    p {
-
-                                        font-size: 22px;
-                                        font-weight: 800;
-                                        padding-left: 30px;
-                                        color: #34ebee;
-
-                                        span {
-                                            font-size: 14px;
-                                        }
-                                    }
-
-
-
-                                }
-                            }
-
-
-                        }
-
-                        .map-icon-box {
-                            width: 119px;
-                            height: 138px;
-                            position: absolute;
-                            right: 25px;
-                            bottom: 140px;
-                            background: url('./img/bigData_jz/icon_bg.png') center no-repeat;
-                            background-size: 100% 100%;
-
-                            .map-icon {
-                                width: 16px;
-                                height: 16px;
-                                margin: 5px 5px 5px 15px;
-                                float: left;
-
-                                img {
-                                    width: 100%
-                                }
-                            }
-
-                            .label {
-                                font-size: 14px;
-                                color: #cbdbff;
-                                line-height: 26px;
-                                margin: 15px 0;
-                            }
-
-                        }
-
-
-                    }
-
-
-
-                    @media only screen and (max-width: 1920px) {
-                        .map-side-lf {
-                            width: 170px;
-                            height: calc(~'100% - 30px');
-                            position: absolute;
-                            left: 15px;
-                            top: 15px;
-
-                            .map-weather-box {
-                                width: 170px;
-                                height: 105px;
-                                background: url('./img/bigData_jz/weather_box.png') center no-repeat;
-                                background-size: 100% 100%;
-
-
-
-
-                                .top {
-                                    width: 170px;
-                                    height: 60px;
-                                    background: url('./img/bigData_jz/weather_border.png') bottom center no-repeat;
-                                    background-size: 80% auto;
-
-                                    .icon {
-                                        width: 40px;
-                                        height: 40px;
-                                        margin: 10px;
-                                        float: left;
-                                    }
-
-                                    .temp {
-                                        width: 110px;
-                                        height: 50px;
-                                        float: right;
-
-                                        h5 {
-                                            font-size: 18px;
-                                            height: 30px;
-                                            line-height: 40px;
-                                            color: #bed1ff;
-                                            margin: 0;
-                                        }
-
-                                        h6 {
-                                            font-size: 15px;
-                                            height: 20px;
-                                            line-height: 20px;
-                                            color: #4d78e3;
-                                            margin: 0;
-                                        }
-                                    }
-                                }
-
-
-                                .bottom {
-                                    width: 170px;
-                                    height: 45px;
-
-                                    .box {
-                                        width: 85px;
-                                        height: 45px;
-                                        float: left;
-
-                                        .icon {
-                                            width: 40px;
-                                            height: 40px;
-                                            margin: 3px;
-                                            float: left;
-
-                                        }
-
-                                        .days {
-                                            width: 39px;
-                                            height: 45px;
-                                            font-size: 13px;
-                                            line-height: 45px;
-                                            color: #4d78e3;
-                                            float: left;
-                                        }
-                                    }
-                                }
-
-
-                            }
-
-
-                            .map-vechile-type {
-                                width: 170px;
-                                height: calc(~'100% - 120px');
-                                margin-top: 25px;
-                                position: relative;
-
-                                h3 {
-                                    background: none;
-                                    height: 32px;
-                                    line-height: 32px;
-                                }
-
-                                div.arrow {
-                                    width: 170px;
-                                    height: 30px;
-                                    text-align: center;
-                                    cursor: pointer;
-                                    background: #fc0;
-                                }
-
-                                div.slide-box {
-                                    height: 500px;
-
-                                    .el-carousel__container {
-                                        .el-carousel__item {
-                                            width: 170px;
-                                            height: 500px;
-
-                                            li {
-                                                width: 160px;
-                                                height: 70px;
-                                                margin: 15px 5px;
-                                                background: url('./img/bigData_jz/slide_box.png') center no-repeat;
-                                                background-size: 100% 100%;
-                                                clear: both;
-                                                overflow: hidden;
-
-
-                                                .icon {
-                                                    width: 60px;
-                                                    height: 60px;
-                                                    margin: 20px 10px;
-                                                    float: left;
-
-                                                    img {
-                                                        width: 100%;
-                                                    }
-
-                                                }
-
-                                                .info {
-                                                    color: #51f9ff;
-
-                                                    .num {
-                                                        font-size: 24px;
-                                                        padding-top: 10px;
-                                                    }
-
-                                                    .label {
-                                                        font-size: 13px;
-                                                        color: #ffffff;
-                                                    }
-
-
-
-
-                                                }
-
-
-
-
-
-
-
-
-
-
-
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
-
-
-                        }
-
-
-                        .map-content-top {
-                            position: absolute;
-                            left: 195px;
-                            bottom: 15px;
-                            right: auto;
-
-                            ul {
-
-                                li {
-                                    width: 175px;
-                                    height: 90px;
-                                    background: url('./img/bigData_jz/data_box.png') center no-repeat;
-                                    background-size: 100% 100%;
-                                    margin: 5px;
-                                    float: left;
-
-                                    h2 {
-                                        font-size: 15px;
-                                        font-weight: normal;
-                                        margin-top: 15px;
-                                        padding-top: 10px;
-                                        padding-left: 30px;
-                                        color: #e1eaff;
-                                        background: url('./img/bigData_jz/weather_border.png') top center no-repeat;
-                                        background-size: 80% auto;
-                                    }
-
-                                    p {
-
-                                        font-size: 22px;
-                                        font-weight: 800;
-                                        padding-left: 30px;
-                                        color: #34ebee;
-
-                                        span {
-                                            font-size: 14px;
-                                        }
-                                    }
-
-
-
-
-                                }
-                            }
-
-
-
-
-
-
-                        }
-
-
-                        .map-icon-box {
-                            width: 119px;
-                            height: 138px;
-                            position: absolute;
-                            right: 25px;
-                            bottom: 140px;
-                            background: url('./img/bigData_jz/icon_bg.png') center no-repeat;
-                            background-size: 100% 100%;
-
-                            .map-icon {
-                                width: 16px;
-                                height: 16px;
-                                margin: 5px 5px 5px 15px;
-                                float: left;
-
-                                img {
-                                    width: 100%
-                                }
-                            }
-
-                            .label {
-                                font-size: 14px;
-                                color: #cbdbff;
-                                line-height: 26px;
-                                margin: 15px 0;
-                            }
-
-                        }
-
-                    }
-
-
-
-
-
-                }
+                width: calc(~"100% - 28px");
+                // height: calc(~"100% - 20px");
+                margin:10px 7px;
+                // box-shadow: inset 0 0 55px rgba(0, 153, 255, 0.322);
+                background: rgba(0, 0, 0, .35);
+                position: relative;
 
 
                 h3 {
                     position: relative;
                     width: calc(~"100% - 30px");
-                    font-size: 18px;
+                    font-size: 16px;
                     font-weight: bold;
-                    line-height: 45px;
+                    line-height: 32px;
                     // display: inline-block;
-                    height: 55px;
-                    color: #abc4ff;
+                    height: 36px;
+                    color: #1990ff;
                     padding: 0 15px;
                     margin: 0;
                     background: url('./img/bigData_jz/title_bg.png') left bottom repeat-x;

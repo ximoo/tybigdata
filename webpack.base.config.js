@@ -27,6 +27,7 @@ function getCssLoaderList() {
       options: {
         // main.css 相对根目录（dist）
         publicPath: '',
+        name:'[path][name].[ext]'
       },
     },
     'css-loader',
@@ -34,6 +35,8 @@ function getCssLoaderList() {
   ];
 }
 
+//配置页面
+var entryObj = getEntry();
 
 function getEntry() {
   var entry = {};
@@ -51,6 +54,12 @@ function getEntry() {
   return entry;
 }
 
+
+
+
+
+
+
 var getHtmlConfig = function (name, chunks) {
   return {
     template: `./src/pages/${name}/template.ejs`,
@@ -59,6 +68,9 @@ var getHtmlConfig = function (name, chunks) {
     inject: true
   }
 }
+
+
+
 
 
 module.exports = {
@@ -74,14 +86,14 @@ module.exports = {
       workerCount: "",
       uglifyJS: {
         output: {
-          beautify: false, // 不需要格式化
+          beautify: true, // 不需要格式化
           comments: false, // 保留注释
         },
         compress: { // 压缩
           warnings: false, // 删除无用代码时不输出警告
           drop_console: false, // 删除console语句
           collapse_vars: false, // 内嵌定义了但是只有用到一次的变量
-          reduce_vars: false, // 提取出出现多次但是没有定义成变量去引用的静态值
+          reduce_vars: true, // 提取出出现多次但是没有定义成变量去引用的静态值
         },
       },
       test: /.js$/g,
@@ -105,11 +117,6 @@ module.exports = {
       threadPool: happyThreadPool,
       verbose: true,
     }),
-    // new HtmlWebpackPlugin({
-    //   filename: './index.html',
-    //   template: path.join(__dirname, './src/common/template/index.ejs'),
-    //   inject: false,
-    // }),
     new webpack.HotModuleReplacementPlugin()
     // new BundleAnalyzerPlugin(),
   ],
@@ -143,7 +150,7 @@ module.exports = {
       },
       {
         test: /\.(gif|jpg|png)\??.*$/,
-        loader: 'file-loader?name=assets/img/[name].[ext]',
+        loader: 'file-loader?name=images/[path][name].[ext]',
       },
       {
         test: /\.(svg|woff|woff2|eot|ttf)\??.*$/,
@@ -169,8 +176,6 @@ module.exports = {
   },
 };
 
-//配置页面
-var entryObj = getEntry();
 var htmlArray = [];
 Object.keys(entryObj).forEach(function (element) {
   htmlArray.push({
@@ -179,6 +184,8 @@ Object.keys(entryObj).forEach(function (element) {
     chunks: [element]
   })
 })
+
+
 //自动生成html模板
 htmlArray.forEach(function (element) {
   module.exports.plugins.push(new HtmlWebpackPlugin(getHtmlConfig(element._html, element.chunks)));

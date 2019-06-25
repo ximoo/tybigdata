@@ -1,6 +1,6 @@
 <template>
   <div class="echarts-map">
-    <chart :options="map" autoresize class="map-content"/>
+    <Echarts :options="map" autoresize class="map-content"/>
 
     <div class="map-icon-box">
       <ul>
@@ -146,12 +146,10 @@
 
 
 <script>
-import ECharts from "./Echarts";
 import getMap from "./mapcharts.service.js";
 
 export default {
   name: "mapCharts",
-  components: { chart: ECharts },
   data() {
     return {
       map: getMap(),

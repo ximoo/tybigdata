@@ -24,7 +24,7 @@ Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 // 自定义组件
-import '~/component/components';
+import '~/publicComponent/components';
 import '~/common/plugin/element';
 import '~/stastic/bigdata_jz.less';
 
