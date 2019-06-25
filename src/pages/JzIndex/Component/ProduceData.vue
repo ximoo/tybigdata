@@ -1,5 +1,5 @@
 <template>
-  <div class="item">
+  <div class="item"  style="height:230px">
     <h3>生产数据</h3>
     <div class="ex-produce-data-box">fdfdsfs</div>
     <!-- 边框 -->
@@ -14,10 +14,3 @@ export default {
   name: "ProduceData"
 };
 </script>
-<style lang="less">
-.ex-produce-data-box {
-  min-width: 300px;
-  max-height: 300px;
-  height: 30%;
-}
-</style>

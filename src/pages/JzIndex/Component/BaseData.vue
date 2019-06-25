@@ -1,5 +1,5 @@
 <template>
-  <div class="item">
+  <div class="item" style="height:276px; margin-top:2px;">
     <h3>基础监控数据</h3>
     <ul class="ex-base-data-box">
       <li>
@@ -41,17 +41,17 @@ export default {
 </script>
 <style lang="less">
 .ex-base-data-box {
-  min-width: 300px;
-  max-height: 300px;
-  height: 30%;
+  min-width: 240px;
+  height: 240px;
   display: flex;
   flex-wrap: wrap;
 
   li {
-    min-width: calc(~"100% / 3 - 10px");
+    min-width: calc(~"100% / 3 - 4px");
     text-align: center;
-    margin: 10px 5px;
+    margin: 10px 2px;
     text-align: center;
+    text-shadow: 0 1px 8px rgba(153,200,255,.85);
 
     p {
       font-size: 28px;
@@ -61,7 +61,7 @@ export default {
       max-height: 100px;
       background: url("../../../stastic/img/bigData_jz/base_data_bg.png") center
         no-repeat;
-      background-size: 100%;
+      background-size: contain;
     }
 
     h4 {
@@ -69,6 +69,7 @@ export default {
       font-weight: normal;
       color: #99c8ff;
       margin-top: -25px;
+      
     }
   }
 }

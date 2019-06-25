@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 //引入页面模板文件
-import NotFound from '~/component/Error/notFound'; //404页面
+import NotFound from '~/publicComponent/Error/notFound'; //404页面
 import dHome from '~/pages/Demo/Home/dHome'; //Demo演示平台首页
 import setupMenu from '~/pages/Demo/System/setupMenu'
 

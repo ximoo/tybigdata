@@ -1,6 +1,6 @@
 <template>
-  <div class="item"  style="height:calc(100% - 520px);">
-    <h3>运营数据</h3>
+  <div class="item"  style="height:230px">
+    <h3>环境污染变化趋势</h3>
     <Echarts  :options="option" autoresize class="ex-bigdata-charts"/>
     <!-- 边框 -->
     <div class="corner lt"></div>
@@ -10,10 +10,10 @@
   </div>
 </template>
 <script>
-import getOption from "./operatedata.service";
+import getOption from "./airdata.service";
 
 export default {
-  name: "OperateData",
+  name: "AirData",
   data() {
     return {
       option: getOption()
@@ -21,4 +21,13 @@ export default {
   },
 };
 </script>
+<style lang="less">
+.ex-operate-data-box {
+  min-width: 240px;
+
+  .ex-bigdata-charts {
+    width: 100%;
+  }
+}
+</style>
 

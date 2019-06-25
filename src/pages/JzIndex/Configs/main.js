@@ -8,15 +8,21 @@ import App from '~/App.vue';
 
 import ECharts from 'vue-echarts'
 
-// Map of China
-import tyMap from '../../../stastic/ty.json'
-
-// registering map data
-ECharts.registerMap('ty', tyMap)
-
 
 // 注册组件后即可使用
 Vue.component('v-chart', ECharts)
+
+import VueAMap from 'vue-amap';
+Vue.use(VueAMap);
+VueAMap.initAMapApiLoader({
+  key: '6f713c69faa95286904fa173059eae94',
+  plugin: ['Map3D','AMap.DistrictSearch','AMap.SimpleMarker','AMap.DistrictLayer','AMap.ControlBar'],
+  v: '1.4.15'
+});
+
+
+
+
 
 
 import axios from 'axios'

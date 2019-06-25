@@ -7,5 +7,4 @@ import Echarts from './Public/Echarts.vue'
 Vue.component('fullScreen', fullScreen);
 Vue.component('pHeader', pHeader);
 Vue.component('pFooter', pFooter);
-
 Vue.component('Echarts', Echarts);
