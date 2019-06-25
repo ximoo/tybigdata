@@ -5,8 +5,8 @@ import VueRouter from 'vue-router';
 import NotFound from '~/publicComponent/Error/notFound'; //404页面
 import jHome from '~/pages/JzIndex/Home/jHome';
 import bigData from '~/pages/JzIndex/Views/bigData'
-import airModule from '~/pages/JzIndex/Home/airModule';
-import siteModule from '~/pages/JzIndex/Home/siteModule';
+import airModule from '~/pages/JzIndex/Modules/airModule';
+import siteModule from '~/pages/JzIndex/Modules/siteModule';
 
 Vue.use(VueRouter);
 

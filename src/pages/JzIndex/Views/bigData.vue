@@ -25,7 +25,7 @@
     </div>
 
     <!-- 可设置模块 -->
-    <transition name="el-fade-in">
+    <transition name="el-zoom-in-top">
       <router-view/>
     </transition>
   </div>

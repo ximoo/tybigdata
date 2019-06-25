@@ -21,7 +21,7 @@ export default function getData() {
           backgroundColor: '#505765'
         }
       },
-      formatter: '{a0}: {c0} 万吨<br />{a1}: {c1} 万吨'
+      formatter: '{a0}: {c0} 吨<br />{a1}: {c1} 吨'
     },
     xAxis: {
       type: 'category',

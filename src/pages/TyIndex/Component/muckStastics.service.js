@@ -29,7 +29,7 @@ export default function getData() {
       bottom:25,
     },
     tooltip: {
-      formatter: '{a}<br />{b}: {c} 万吨'
+      formatter: '{a}<br />{b}: {c} 吨'
     },
     xAxis: {
       type: 'category',
@@ -52,7 +52,7 @@ export default function getData() {
     // Declare Y axis, which is a value axis.
     yAxis: {
       axisLabel: {
-        formatter: '{value} 万吨'
+        formatter: '{value} 吨'
       },
       splitLine: {
         show: false

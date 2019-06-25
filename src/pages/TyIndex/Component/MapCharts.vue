@@ -82,7 +82,7 @@
                 </div>
                 <div class="info">
                   <p class="num">820</p>
-                  <p class="label">采石车</p>
+                  <p class="label">喷雾降尘车</p>
                 </div>
               </li>
               <li>

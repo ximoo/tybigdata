@@ -17,6 +17,7 @@
       :buildingAnimation="buildingAnimation"
       :expandZoomRange="expandZoomRange"
       :plugin="plugins"
+      :amap-manager="amapManager"
       style="height:calc(100% - 36px)"
     >
       <el-amap-polygon
@@ -36,6 +37,8 @@
 </template>
 <script>
 import getOption from "./operatedata.service";
+import VueAMap from "vue-amap";
+let amapManager = new VueAMap.AMapManager();
 
 export default {
   name: "OperateData",
@@ -43,7 +46,7 @@ export default {
     let self = this;
     return {
       mapStyle: "amap://styles/10bb9e67de185a47f6ee4b1595438c6e", //8ef17ea2354d5c3d45ec46141986a67b',//样式URL
-      zoom: 16,
+      zoom: 8,
       zooms: [5, 20],
       showLabel: true,
       resizeEnable: true,
@@ -52,39 +55,62 @@ export default {
       features: ["bg", "point", "road", "building"],
       pitch: 65,
       rotation: 15,
-          buildingAnimation: false,//楼块出现是否带动画
-          expandZoomRange: true,
-      TextTest: "2323123",
+      buildingAnimation: false, //楼块出现是否带动画
+      expandZoomRange: true,
+      amapManager,
+      polygons: [
+        {
+          draggable: true,
+          path: [
+            [121.5273285, 31.21515044],
+            [121.5293285, 31.21515044],
+            [121.5293285, 31.21915044],
+            [121.5273285, 31.21515044]
+          ],
+          events: {
+            click: () => {
+              alert("click polygon");
+              console.log(amapManager.getComponent(0));
+              console.log(this.$refs.map.$$getCenter());
+              console.log(this.$refs.polygon_0[0].$$getPath());
+            }
+          }
+        }
+      ],
       plugins: [
         {
           pName: "AMap.DistrictSearch",
           events: {
-            init(o) {
-              // o 是高德地图定位插件实例
-              o({
+            init(instance) {
+              new AMap.DistrictSearch({
                 extensions: "all",
                 subdistrict: 0
+              }).search("荆州市", (status, result) => {
+                // self.TextTest = result;
+
+                console.log(result);
+
+                var outer = [
+                  new AMap.LngLat(-360, 90, true),
+                  new AMap.LngLat(-360, -90, true),
+                  new AMap.LngLat(360, -90, true),
+                  new AMap.LngLat(360, 90, true)
+                ];
+                var holes = result.districtList[0].boundaries;
+                var pathArray = [outer];
+                pathArray.push.apply(pathArray, holes);
+                var polygon = new AMap.Polygon({
+                  pathL: pathArray,
+                  strokeColor: "#298bff",
+                  strokeWeight: 5,
+                  fillColor: "#0a0e1f",
+                  fillOpacity: 0.75
+                });
+                polygon.setPath(pathArray);
+
+                let o = amapManager.getMap();
+                o.add(polygon);
               });
-              o.search("荆州市", (status, result) => {
-                self.TextTest = result;
-              });
-              var outer = [
-                new AMap.LngLat(-360, 90, true),
-                new AMap.LngLat(-360, -90, true),
-                new AMap.LngLat(360, -90, true),
-                new AMap.LngLat(360, 90, true)
-              ];
-              var holes = result.districtList[0].boundaries;
-              var pathArray = [outer];
-              pathArray.push.apply(pathArray, holes);
-              var polygon = new AMap.Polygon({
-                pathL: pathArray,
-                strokeColor: "#e97d49",
-                strokeWeight: 5,
-                fillColor: "#10193f",
-                fillOpacity: 0.55
-              });
-              polygon.setPath(pathArray);
             }
           }
         }
