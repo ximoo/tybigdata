@@ -20,13 +20,7 @@
       :amap-manager="amapManager"
       style="height:calc(100% - 36px)"
     >
-      <el-amap-polygon
-        v-for="(polygon, index) in polygons"
-        :vid="index"
-        :ref="`polygon_${index}`"
-        :path="polygon.path"
-        :key="index"
-      ></el-amap-polygon>
+      
     </el-amap>
     <!-- 边框 -->
     <div class="corner lt"></div>
@@ -58,25 +52,6 @@ export default {
       buildingAnimation: false, //楼块出现是否带动画
       expandZoomRange: true,
       amapManager,
-      polygons: [
-        {
-          draggable: true,
-          path: [
-            [121.5273285, 31.21515044],
-            [121.5293285, 31.21515044],
-            [121.5293285, 31.21915044],
-            [121.5273285, 31.21515044]
-          ],
-          events: {
-            click: () => {
-              alert("click polygon");
-              console.log(amapManager.getComponent(0));
-              console.log(this.$refs.map.$$getCenter());
-              console.log(this.$refs.polygon_0[0].$$getPath());
-            }
-          }
-        }
-      ],
       plugins: [
         {
           pName: "AMap.DistrictSearch",
@@ -86,9 +61,6 @@ export default {
                 extensions: "all",
                 subdistrict: 0
               }).search("荆州市", (status, result) => {
-                // self.TextTest = result;
-
-                console.log(result);
 
                 var outer = [
                   new AMap.LngLat(-360, 90, true),
@@ -107,7 +79,6 @@ export default {
                   fillOpacity: 0.75
                 });
                 polygon.setPath(pathArray);
-
                 let o = amapManager.getMap();
                 o.add(polygon);
               });
