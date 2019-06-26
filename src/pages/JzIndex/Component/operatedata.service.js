@@ -1,65 +1,55 @@
 export default function getData() {
   return {
-    color: ['#345eca', '#ff7a56', '#22cbff', '#7761f6', '#f19638'],
-    legend: {
-      x: 'left',
-      top: 15,
-      data: ['喷雾降尘车', '垃圾清运车', '吸尘车', '洒水车', '环卫清扫车'],
-      textStyle: {
-        color: "#23c6de",
-        fontWeight: 700
-      }
-    },
+    color: ['rgba(25,144,255,.25)', 'rgba(255,122,86,.25)', 'rgba(34,203,255,.25)', 'rgba(119,97,246,.25)'],
     tooltip: {
       trigger: 'item',
       formatter: "{d}%"
-  },
+    },
     series: [{
       type: 'pie',
-      radius: ['40%', '80%'],
-      center: ['50%', '65%'],
-      avoidLabelOverlap: false,
+      radius: ['45%', '60%'],
+      center: ['50%', '50%'],
+      avoidLabelOverlap: true,
       data: [{
           value: 335,
-          name: '喷雾降尘车'
+          name: '运营车辆'
         },
         {
           value: 310,
-          name: '垃圾清运车'
+          name: '停车车辆'
         },
         {
           value: 274,
-          name: '吸尘车'
+          name: '离线车辆'
         },
         {
           value: 235,
-          name: '洒水车'
-        },
-        {
-          value: 400,
-          name: '环卫清扫车'
+          name: '设备损坏'
         }
       ],
-      roseType: 'radius',
       itemStyle: {
-        normal: {
-          shadowBlur: 200,
-          shadowColor: 'rgba(0, 0, 0, 0.5)'
-        }
+        borderColor: '#1990ff',
+        borderWidth: 2,
+        shadowBlur: 200,
+        shadowColor: 'rgba(0, 0, 0, 0.5)'
       },
       label: {
         normal: {
-          show: false,
-          position: 'center'
-        },
-        emphasis: {
           show: true,
           textStyle: {
-            fontSize: '28',
-            fontWeight: 'bold',
-            color: "#fff",
-          }
+            color: '#abc4ff'
+          },
+          formatter: "{b}：\n\r{c}辆"
         }
+      },
+      labelLine: {
+        // smooth: true,
+        length: 1,
+        length: 2,
+        lineStyle: {
+          color: '#1990ff',
+          width: 1
+        },
       },
       animationType: 'scale',
       animationEasing: 'elasticOut',

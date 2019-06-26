@@ -22,16 +22,19 @@
   </div>
 </template>
 <script>
-import getOption from "./operatedata.service";
+import mapEvent from "./allmonitor.service";
 
 import VueAMap from "vue-amap";
 let amapManager = new VueAMap.AMapManager();
 
+
+
+let mapTruckId;
+
 export default {
-  name: "OperateData",
+  name: "AllMoitor",
   data() {
     let self = this;
-
     return {
       mapStyle: "amap://styles/10bb9e67de185a47f6ee4b1595438c6e", //8ef17ea2354d5c3d45ec46141986a67b',//样式URL
       zoom: 9,
@@ -41,87 +44,23 @@ export default {
       animateEnable: true,
       center: [112.24069, 30.33479],
       amapManager,
-      polygons: [
-        {
-          draggable: false,
-          path: [
-            [121.5273285, 31.21515044],
-            [121.5293285, 31.21515044],
-            [121.5293285, 31.21915044],
-            [121.5273285, 31.21515044]
-          ]
-        }
-      ],
+      massTruck:null,
+      mass3DTruck:null,
       plugins: [
         {
           pName: "AMap.DistrictSearch",
           events: {
             init(instance) {
-              new AMap.DistrictSearch({
-                extensions: "all",
-                subdistrict: 0
-              }).search("荆州市", (status, result) => {
-                // self.TextTest = result;
-
-                console.log(result);
-
-                var outer = [
-                  new AMap.LngLat(-360, 90, true),
-                  new AMap.LngLat(-360, -90, true),
-                  new AMap.LngLat(360, -90, true),
-                  new AMap.LngLat(360, 90, true)
-                ];
-                var holes = result.districtList[0].boundaries;
-                var pathArray = [outer];
-                pathArray.push.apply(pathArray, holes);
-                var polygon = new AMap.Polygon({
-                  pathL: pathArray,
-                  strokeColor: "#298bff",
-                  strokeWeight: 5,
-                  fillColor: "#0a0e1f",
-                  fillOpacity: .75
-                });
-                polygon.setPath(pathArray);
-                let monitorMap = amapManager.getMap();
-                monitorMap.add(polygon);
-              });
+              mapEvent.initMap(amapManager,self)
             }
           }
         }
       ]
     };
-  }
-  /*
-  mounted() {
-    //行政区遮罩
-    new AMap.DistrictSearch({
-      extensions: "all",
-      subdistrict: 0
-    }).search("荆州市", function(status, result) {
-      console.log(result);
+  },
+  methods: {
 
-      // 外多边形坐标数组和内多边形坐标数组
-      var outer = [
-        new AMap.LngLat(-360, 90, true),
-        new AMap.LngLat(-360, -90, true),
-        new AMap.LngLat(360, -90, true),
-        new AMap.LngLat(360, 90, true)
-      ];
-      var holes = result.districtList[0].boundaries;
-      var pathArray = [outer];
-      pathArray.push.apply(pathArray, holes);
-      var polygon = new AMap.Polygon({
-        pathL: pathArray,
-        strokeColor: "#e97d49",
-        strokeWeight: 5,
-        fillColor: "#10193f",
-        fillOpacity: 0.55
-      });
-      polygon.setPath(pathArray);
-      // self.mapObj.add(polygon)
-    });
   }
-  */
 };
 </script>
 
