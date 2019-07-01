@@ -1,4 +1,3 @@
-let mapTruckId
 const simTruckGps = [
   [30.3418430241, 112.1938204765],
   [30.3414356152, 112.1867609024],
@@ -136,10 +135,17 @@ var siteGeo = [
   }
 ];
 
+
+let mapTruckId
+
+
+
+
+
 export default {
   monitorMap:null,
   initMap(obj, e) {
-    console.log(obj)
+    // console.log(obj)
     let that = this
     that.monitorMap = obj.getMap();
     new AMap.DistrictSearch({
@@ -298,7 +304,7 @@ export default {
     }
 
     siteMarkerGps.forEach(function (marker, index) {
-      console.log(index);
+      // console.log(index);
       marker.on("click", function () {
         console.log("click!!!!!        " + index);
         e.pantoSite(index);

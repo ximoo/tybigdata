@@ -276,7 +276,7 @@ export default {
       }
 
       siteMarkerGps.forEach(function (marker, index) {
-        console.log(index)
+        // console.log(index)
         marker.on('click', function () {
           // console.log('click!!!!!        ' + index)
           self.pantoSite(index)

@@ -3,12 +3,14 @@
     {{platformName}}
     <div class="ex-bigdata-tile-flip">{{platformName}}</div>
     <div class="ex-bigdata-timer">{{currentTime}}</div>
-
     <ul class="weather">
       <li v-for="item,index in weatherList" :key="index">
-        <div class="top">{{item.date}}</div>
+        <!-- <div class="top"></div> -->
         <div class="center">
-          <div class="weather-icon" :class="item.icon"></div>
+          <div style="float:left; line-height:24px; margin-right:10px;">{{item.date}}</div>
+          <el-tooltip :content="item.dayweather" placement="bottom">
+            <i class="weather-icon" :class="item.icon" style="float:left;"></i>
+          </el-tooltip>
         </div>
         <div class="bottom">{{item.daytemp + '℃/'+ item.nighttemp + '℃'}}</div>
       </li>
@@ -294,13 +296,7 @@ export default {
                   break;
               }
               weatherList.push({
-                date:
-                  i == 0
-                    ? list[i].date.split("-")[2] + "日(今日)"
-                    : list[i].date.split("-")[2] +
-                      "日(" +
-                      weekStr[parseInt(list[i].week)] +
-                      ")",
+                date: i == 0 ? "今日" : weekStr[parseInt(list[i].week)],
                 dayweather: list[i].dayweather,
                 daytemp: list[i].daytemp,
                 nighttemp: list[i].nighttemp,
@@ -322,22 +318,56 @@ export default {
 .weather {
   position: absolute;
   right: 25px;
-  top: 5px;
+  top: 10px;
   font-size: 12px;
   font-weight: normal;
   line-height: 1;
   display: flex;
   text-align: center;
   background-color: rgba(0, 37, 82, 0.75);
+  border: 1px solid #4366bf;
+  border-radius: 3px;
 
   li {
-    margin: 5px;
-    padding: 5px;
+    padding: 5px 10px;
+    border-right: 1px solid #4366bf;
 
     .weather-icon {
       margin: 0 auto;
     }
   }
+}
+
+.amap-luopan,
+.amap-luopan-bg {
+  background: url("../../../stastic/img/bigData_jz/ctb.png") -44px -60px
+    no-repeat !important;
+}
+.amap-pointers {
+  background: url("../../../stastic/img/bigData_jz/ctb.png") -562px -52px
+    no-repeat !important;
+}
+
+.amap-rotateLeft,
+.amap-rotateRight {
+  background: url("../../../stastic/img/bigData_jz/ctb.png") -603px -154px
+    no-repeat !important;
+}
+
+.amap-pitchDown,
+.amap-pitchUp {
+  background: url("../../../stastic/img/bigData_jz/ctb.png") -605px -98px
+    no-repeat !important;
+}
+
+.amap-pitchDown,
+.amap-pitchUp {
+  background: url("../../../stastic/img/bigData_jz/ctb.png") -605px -98px
+    no-repeat !important;
+}
+.amap-compass {
+  background: url("../../../stastic/img/bigData_jz/ctb.png") -462px -52px
+    no-repeat;
 }
 </style>
 

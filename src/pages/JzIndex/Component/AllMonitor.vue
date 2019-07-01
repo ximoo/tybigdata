@@ -22,12 +22,12 @@
   </div>
 </template>
 <script>
-import mapEvent from "./allmonitor.service";
 
+
+
+import mapEvent from "./allmonitor.service";
 import VueAMap from "vue-amap";
 let amapManager = new VueAMap.AMapManager();
-
-
 
 let mapTruckId;
 
