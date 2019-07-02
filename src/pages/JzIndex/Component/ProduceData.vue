@@ -25,10 +25,7 @@
       <el-col :span="6">
         <ul class="produce-lable">
           <li></li>
-          <li>拆迁渣土(吨)</li>
-          <li>粗骨料(吨)</li>
-          <li>细骨料(吨)</li>
-          <li>细骨料(吨)</li>
+          <li v-for="item,index in allmonitor.module.producedata.data">{{item.label}}({{item.unit}})</li>
         </ul>
       </el-col>
       <el-col :span="9">
@@ -61,7 +58,12 @@
 </template>
 <script>
 export default {
-  name: "ProduceData"
+  name: "ProduceData",
+  computed: {
+    allmonitor() {
+      return this.$store.state.platformData.module.allmonitor;
+    }
+  }
 };
 </script>
 <style lang="less">

@@ -37,10 +37,12 @@
             <el-button type="success" size="mini" v-show="!isFile">导入已有配置</el-button>
           </el-upload>
           <el-button type="success" v-show="isFile" size="mini" @click="importCfg">开始导入</el-button>
+
+          <p style="clear:both;font-weight:bold;">目前没时间做表单验证，请尽量将所有空填完，不然会出现问题。后期迭代会做验证更新</p>
         </blockquote>
         <el-divider></el-divider>
         <h3>基础配置</h3>
-        <el-form :inline="true" size="mini" label-width="120px" :model="pState">
+        <el-form :inline="true" size="mini" label-width="150px" :model="pState">
           <el-form-item label="平台名称：">
             <el-input v-model="pState.name"></el-input>
           </el-form-item>
@@ -57,6 +59,7 @@
             >定位城市</el-button>
           </el-form-item>
         </el-form>
+
         <el-divider></el-divider>
         <h3>模块选择</h3>
         <el-form :inline="true" size="mini" label-width="120px">
@@ -64,7 +67,7 @@
             <el-switch v-model="pModule.allmonitor.enable" disabled></el-switch>
           </el-form-item>
           <el-form-item label="环境监测">
-            <el-switch v-model="pModule.airmonitor.enable"></el-switch>
+            <el-switch v-model="pModule.airmonitor.enable" disabled></el-switch>
           </el-form-item>
           <el-form-item label="工地监控">
             <el-switch v-model="pModule.sitemonitor.enable"></el-switch>
@@ -78,7 +81,15 @@
           <el-tab-pane label="全局监管">
             <initAllMonitor />
           </el-tab-pane>
-          <el-tab-pane label="环境监测">配置管理</el-tab-pane>
+          <el-tab-pane label="围栏设置">
+            <initFences />
+          </el-tab-pane>
+          <el-tab-pane label="环境监测" v-if="pModule.airmonitor.enable">
+            <initAirMonitor />
+          </el-tab-pane>
+          <el-tab-pane label="工地监控" v-if="pModule.sitemonitor.enable">
+            <initAirMonitor />
+          </el-tab-pane>
         </el-tabs>
       </section>
       <span slot="footer" class="dialog-footer">
@@ -99,10 +110,11 @@ import service from "./initdatamodule.service";
 import store from "../Configs/store";
 
 import initAllMonitor from "./initData/initAllMonitor.vue";
-
+import initAirMonitor from "./initData/initAirMonitor.vue";
+import initFences from "./initData/initFences.vue";
 export default {
   name: "initDataModule",
-  components: { initAllMonitor },
+  components: { initAllMonitor, initAirMonitor, initFences },
   data() {
     return {
       showModal: true,
@@ -113,7 +125,7 @@ export default {
         { label: "完成初始配置", icon: "el-icon-s-claim" }
       ],
       dialogWidth: "40%",
-      initStep: 1,
+      initStep: 0,
       isFile: false,
       noIpt: true
     };
@@ -164,6 +176,11 @@ export default {
     },
     pModule() {
       return store.state.platformData.module;
+    },
+    platformUnit() {
+      let unitTemp = store.state.platformUnit;
+      unitTemp = unitTemp.join("|");
+      return unitTemp;
     }
   }
 };
@@ -173,7 +190,9 @@ export default {
 <style lang="less">
 .ex-init {
   line-height: 1.5;
-
+  .el-button--mini.is-circle {
+    padding: 3px !important;
+  }
   blockquote {
     padding: 10px;
     background-color: #fffdb7;

@@ -6,7 +6,7 @@
     </div>
 
     <ul class="status-stastic-box">
-      <li　v-for="item ,index in allmonitor.module.operatedata2.data" :key="index">
+      <li　v-for="item ,index in allmonitor.module.operatedata.data[1].list" :key="index">
         <ul class="status-stastic">
           <li>
             <em>184</em>
@@ -52,7 +52,7 @@ export default {
 .status-stastic-box {
   text-align: center;
   width: 100%;
-  height: calc(~"100% - 260px");
+  height: calc(~"100% - 280px");
   font-size: 12px;
   color: #1990ff;
   display: flex;
