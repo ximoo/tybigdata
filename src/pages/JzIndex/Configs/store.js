@@ -39,60 +39,188 @@ export default new Vuex.Store({
                     }]
                 }
             },
+            "basedata": {
+                "name": "基础数据：",
+                "tip": "演示平台的基本资产单位数据，平台将根据这些数据模拟生成动态数据，填入的数量为最大数量",
+                "timer": 30,
+                "data": [{
+                        "id": 1,
+                        "label": "车辆总数",
+                        "unit": "辆",
+                        "number": "600"
+                    },
+                    {
+                        "id": 2,
+                        "label": "工地总数",
+                        "unit": "个",
+                        "number": "300"
+                    },
+                    {
+                        "id": 3,
+                        "label": "消纳点总数",
+                        "unit": "个",
+                        "number": "10"
+                    }, {
+                        "id": 4,
+                        "label": "在线车辆",
+                        "unit": "辆",
+                        "number": "300",
+                    },
+                    {
+                        "id": 5,
+                        "label": "开工工地",
+                        "unit": "个",
+                        "number": "30"
+                    }, {
+                        "id": 6,
+                        "label": "运营消纳点",
+                        "unit": "个",
+                        "number": "30"
+                    },
+                    {
+                        "id": 7,
+                        "label": "出土量",
+                        "unit": "立方",
+                        "number": "710"
+                    },
+                    {
+                        "id": 8,
+                        "label": "消纳量",
+                        "unit": "立方",
+                        "number": "710"
+                    },
+                    {
+                        "id": 9,
+                        "label": "停车车辆",
+                        "unit": "辆",
+                        "number": "710"
+                    },
+                    {
+                        "id": 10,
+                        "label": "离线车辆",
+                        "unit": "辆",
+                        "number": "710"
+                    },
+                    {
+                        "id": 11,
+                        "label": "设备损坏",
+                        "unit": "台",
+                        "number": "710"
+                    },
+                    {
+                        "id": 11,
+                        "label": "出土次数",
+                        "unit": "次",
+                        "number": "710"
+                    },
+                    {
+                        "id": 11,
+                        "label": "消纳次数",
+                        "unit": "次",
+                        "number": "710"
+                    },
+                    {
+                        "id": 11,
+                        "label": "刷新时间",
+                        "unit": "秒",
+                        "number": "30"
+                    }
+
+                ]
+            },
             "module": {
                 "allmonitor": {
                     "name": "全局监管",
                     "enable": true,
                     "module": {
                         "basedata": {
-                            "name": "基础监控数据：",
+                            "name": "基础数据：",
+                            "tip": "演示平台的基本资产单位数据，平台将根据这些数据模拟生成动态数据，填入的数量为最大数量",
                             "timer": 30,
                             "data": [{
-                                "name": "-基本数据",
-                                "tip": "演示平台的基本资产单位数据，平台将根据这些数据模拟生成动态数据",
-                                "list": [{
-                                        "id": 1,
-                                        "label": "车辆总数",
-                                        "unit": "辆",
-                                        "number": "600"
-                                    },
-                                    {
-                                        "id": 2,
-                                        "label": "工地总数",
-                                        "unit": "个",
-                                        "number": "300"
-                                    },
-                                    {
-                                        "id": 3,
-                                        "label": "消纳点总数",
-                                        "unit": "个",
-                                        "number": "10"
-                                    }
-                                ]
-                            }, {
-                                "name": "-扩展数据",
-                                "tip": "最多3个统计字段",
-                                "timer": 30,
-                                "list": [{
-                                        "id": 1,
-                                        "label": "在线车辆",
-                                        "unit": "辆",
-                                        "number": "300",
-                                    },
-                                    {
-                                        "id": 2,
-                                        "label": "开工工地",
-                                        "unit": "个",
-                                        "number": "30"
-                                    },
-                                    {
-                                        "id": 3,
-                                        "label": "消纳量",
-                                        "unit": "立方",
-                                        "number": "710"
-                                    }
-                                ]
-                            }]
+                                    "id": 1,
+                                    "label": "车辆总数",
+                                    "unit": "辆",
+                                    "number": "600"
+                                },
+                                {
+                                    "id": 2,
+                                    "label": "工地总数",
+                                    "unit": "个",
+                                    "number": "300"
+                                },
+                                {
+                                    "id": 3,
+                                    "label": "消纳点总数",
+                                    "unit": "个",
+                                    "number": "10"
+                                }, {
+                                    "id": 4,
+                                    "label": "在线车辆",
+                                    "unit": "辆",
+                                    "number": "300",
+                                },
+                                {
+                                    "id": 5,
+                                    "label": "开工工地",
+                                    "unit": "个",
+                                    "number": "30"
+                                }, {
+                                    "id": 6,
+                                    "label": "运营消纳点",
+                                    "unit": "个",
+                                    "number": "30"
+                                },
+                                {
+                                    "id": 7,
+                                    "label": "出土量",
+                                    "unit": "立方",
+                                    "number": "710"
+                                },
+                                {
+                                    "id": 8,
+                                    "label": "消纳量",
+                                    "unit": "立方",
+                                    "number": "710"
+                                },
+                                {
+                                    "id": 9,
+                                    "label": "停车车辆",
+                                    "unit": "辆",
+                                    "number": "710"
+                                },
+                                {
+                                    "id": 10,
+                                    "label": "离线车辆",
+                                    "unit": "辆",
+                                    "number": "710"
+                                },
+                                {
+                                    "id": 11,
+                                    "label": "设备损坏",
+                                    "unit": "台",
+                                    "number": "710"
+                                },
+                                {
+                                    "id": 11,
+                                    "label": "出土次数",
+                                    "unit": "次",
+                                    "number": "710"
+                                },
+                                {
+                                    "id": 11,
+                                    "label": "消纳次数",
+                                    "unit": "次",
+                                    "number": "710"
+                                },
+                                {
+                                    "id": 11,
+                                    "label": "刷新时间",
+                                    "unit": "秒",
+                                    "number": "30"
+                                }
+
+                            ]
                         },
                         "operatedata": {
                             "name": "运营数据:",

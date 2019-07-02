@@ -1,43 +1,43 @@
 <template>
   <div class="module-base">
-    <el-form :inline="true" size="mini">
-      <el-collapse v-model="activeName" accordion>
-        <!-- 1 -->
-        <el-collapse-item name="1">
-          <template slot="title">
-            {{allmonitor.module.basedata.name}}{{allmonitor.module.basedata.data[0].name}}
-            <sup
-              style="margin-left:15px; color:#f30;"
-            >
-              (
-              <i class="header-icon el-icon-info"></i>
-              {{allmonitor.module.basedata.data[0].tip}} )
-            </sup>
-          </template>
-          <ul>
-            <li v-for="item ,index in allmonitor.module.basedata.data[0].list" :key="index">
-              <el-form-item label="统计名称：">
-                <el-input v-model="item.label"></el-input>
-              </el-form-item>
-              <el-form-item label="数量：">
+    <el-collapse v-model="activeNames" accordion>
+      <!-- 1 -->
+      <el-collapse-item name="1">
+        <template slot="title">
+          <i class="el-icon-caret-right" />
+          {{basedata.name}}
+          <sup style="margin-left:15px; color:#f30;">
+            (
+            <i class="header-icon el-icon-info"></i>
+            {{basedata.tip}} )
+          </sup>
+        </template>
+        <el-form :inline="true" label-position="right" label-width="150px" size="mini">
+          <el-row style="margin-top:15px;" :gutter="20">
+            <el-col :span="8" v-for="item ,index in basedata.data" :key="index">
+              <el-form-item :label="item.label + '：'">
                 <el-input-number v-model="item.number"></el-input-number>
+                {{item.unit}}
               </el-form-item>
-            </li>
-          </ul>
-          <el-divider></el-divider>
-        </el-collapse-item>
-        <!-- 1 -->
-        <el-collapse-item name="1">
-          <template slot="title">
-            {{allmonitor.module.basedata.name}}{{allmonitor.module.basedata.data[1].name}}
-            <sup
-              style="margin-left:15px; color:#f30;"
-            >
-              (
-              <i class="header-icon el-icon-info"></i>
-              {{allmonitor.module.basedata.data[1].tip}} )
-            </sup>
-          </template>
+            </el-col>
+          </el-row>
+        </el-form>
+        <el-divider></el-divider>
+      </el-collapse-item>
+      <!--
+      <el-collapse-item name="2">
+        <template slot="title">
+          <i class="el-icon-caret-right" />
+          {{allmonitor.module.basedata.name}}{{allmonitor.module.basedata.data[1].name}}
+          <sup
+            style="margin-left:15px; color:#f30;"
+          >
+            (
+            <i class="header-icon el-icon-info"></i>
+            {{allmonitor.module.basedata.data[1].tip}} )
+          </sup>
+        </template>
+        <el-form :inline="true" label-position="right"  size="mini">
           <ul>
             <li v-for="item ,index in allmonitor.module.basedata.data[1].list" :key="index">
               <el-form-item label="统计名称：">
@@ -93,19 +93,22 @@
               </el-form-item>
             </el-col>
           </el-row>
-        </el-collapse-item>
-        <!-- 2 -->
-        <el-collapse-item name="2">
-          <template slot="title">
-            {{allmonitor.module.operatedata.name}} {{allmonitor.module.operatedata.data[0].name}}
-            <sup
-              style="margin-left:15px; color:#f30;"
-            >
-              (
-              <i class="header-icon el-icon-info"></i>
-              {{allmonitor.module.operatedata.data[0].tip}} )
-            </sup>
-          </template>
+        </el-form>
+      </el-collapse-item>
+      
+      <el-collapse-item name="3">
+        <template slot="title">
+          <i class="el-icon-caret-right" />
+          {{allmonitor.module.operatedata.name}} {{allmonitor.module.operatedata.data[0].name}}
+          <sup
+            style="margin-left:15px; color:#f30;"
+          >
+            (
+            <i class="header-icon el-icon-info"></i>
+            {{allmonitor.module.operatedata.data[0].tip}} )
+          </sup>
+        </template>
+        <el-form :inline="true" label-position="right"  size="mini">
           <ul>
             <li v-for="item ,index in allmonitor.module.operatedata.data[0].list" :key="index">
               <el-form-item label="统计名称：">
@@ -159,19 +162,21 @@
               </el-form-item>
             </el-col>
           </el-row>
-        </el-collapse-item>
-        <!-- 3 -->
-        <el-collapse-item name="3">
-          <template slot="title">
-            {{allmonitor.module.operatedata.name}} {{allmonitor.module.operatedata.data[1].name}}
-            <sup
-              style="margin-left:15px; color:#f30;"
-            >
-              (
-              <i class="header-icon el-icon-info"></i>
-              {{allmonitor.module.operatedata.data[1].tip}} )
-            </sup>
-          </template>
+        </el-form>
+      </el-collapse-item>
+      <el-collapse-item name="4">
+        <template slot="title">
+          <i class="el-icon-caret-right" />
+          {{allmonitor.module.operatedata.name}} {{allmonitor.module.operatedata.data[1].name}}
+          <sup
+            style="margin-left:15px; color:#f30;"
+          >
+            (
+            <i class="header-icon el-icon-info"></i>
+            {{allmonitor.module.operatedata.data[1].tip}} )
+          </sup>
+        </template>
+        <el-form :inline="true" label-position="right"  size="mini">
           <ul>
             <li v-for="item ,index in allmonitor.module.operatedata.data[1].list" :key="index">
               <el-form-item label="统计名称：">
@@ -221,18 +226,23 @@
             </el-col>
             <el-col :span="12"></el-col>
           </el-row>
-        </el-collapse-item>
-
-        <!-- 4 -->
-        <el-collapse-item name="4">
-          <template slot="title">
-            {{allmonitor.module.producedata.name}}
-            <sup style="margin-left:15px; color:#f30;">
-              (
-              <i class="header-icon el-icon-info"></i>
-              {{allmonitor.module.producedata.tip}} )
-            </sup>
-          </template>
+        </el-form>
+      </el-collapse-item>
+      -->
+      <!-- 5 -->
+      <el-collapse-item name="5">
+        <template slot="title">
+          <i class="el-icon-caret-right" />
+          {{allmonitor.module.producedata.name}}
+          <sup
+            style="margin-left:15px; color:#f30;"
+          >
+            (
+            <i class="header-icon el-icon-info"></i>
+            {{allmonitor.module.producedata.tip}} )
+          </sup>
+        </template>
+        <el-form :inline="true" label-position="right" size="mini">
           <ul>
             <li v-for="item ,index in allmonitor.module.producedata.data" :key="index">
               <el-form-item label="统计名称：">
@@ -286,17 +296,15 @@
               </el-form-item>
             </el-col>
           </el-row>
-        </el-collapse-item>
-      </el-collapse>
-    </el-form>
+        </el-form>
+      </el-collapse-item>
+    </el-collapse>
   </div>
 </template>
 <script>
 export default {
   data() {
-    return {
-      activeName: "1"
-    };
+    return { activeNames: "1" };
   },
   methods: {
     handlePlusBase() {
@@ -389,6 +397,9 @@ export default {
     },
     platformUnit() {
       return this.$store.state.platformUnit;
+    },
+    basedata() {
+      return this.$store.state.platformData.basedata;
     }
   }
 };

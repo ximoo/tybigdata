@@ -43,7 +43,7 @@
         </blockquote>
         <el-divider></el-divider>
         <h3>基础配置</h3>
-        <el-form :inline="true" size="mini" label-width="150px" :model="pState">
+        <el-form :inline="true" size="mini"  label-position="right"  label-width="150px" :model="pState">
           <el-form-item label="平台名称：">
             <el-input v-model="pState.name"></el-input>
           </el-form-item>
