@@ -2,11 +2,11 @@
   <div class="item" style="height:calc(100% - 520px);">
     <h3>运营数据</h3>
     <div class="ex-operatedata-charts">
-      <Echarts :options="option" autoresize/>
+      <Echarts :options="option" autoresize />
     </div>
 
     <ul class="status-stastic-box">
-      <li>
+      <li　v-for="item ,index in allmonitor.module.operatedata2.data" :key="index">
         <ul class="status-stastic">
           <li>
             <em>184</em>
@@ -17,46 +17,7 @@
             <div style="height: 109.833%;"></div>
           </li>
         </ul>
-        <h5>出土次数</h5>
-      </li>
-      <li>
-        <ul class="status-stastic">
-          <li>
-            <em>638</em>
-            <div style="height: 12.5933%;"></div>
-          </li>
-          <li>
-            <em>11592</em>
-            <div style="height: 231.673%;"></div>
-          </li>
-        </ul>
-        <h5>出土量</h5>
-      </li>
-      <li>
-        <ul class="status-stastic">
-          <li>
-            <em>408</em>
-            <div style="height: 81.4333%;"></div>
-          </li>
-          <li>
-            <em>519</em>
-            <div style="height: 103.633%;"></div>
-          </li>
-        </ul>
-        <h5>消纳次数</h5>
-      </li>
-      <li>
-        <ul class="status-stastic">
-          <li>
-            <em>1006</em>
-            <div style="height: 19.9533%;"></div>
-          </li>
-          <li>
-            <em>10950</em>
-            <div style="height: 218.833%;"></div>
-          </li>
-        </ul>
-        <h5>消纳量</h5>
+        <h5>{{item.label}}({{item.unit}})</h5>
       </li>
     </ul>
 
@@ -76,6 +37,11 @@ export default {
     return {
       option: getOption()
     };
+  },
+  computed: {
+    allmonitor() {
+      return this.$store.state.platformData.module.allmonitor;
+    }
   }
 };
 </script>

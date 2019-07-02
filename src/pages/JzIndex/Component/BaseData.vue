@@ -2,30 +2,11 @@
   <div class="item" style="height:276px; margin-top:2px;">
     <h3>基础监控数据</h3>
     <ul class="ex-base-data-box">
-      <li>
-        <p>600</p>
-        <h4>车辆总数(辆)</h4>
+      <li v-for="item ,index in allmonitor.module.basedata.data" :key="index">
+        <p>{{item.number}}</p>
+        <h4>{{item.label}}({{item.unit}})</h4>
       </li>
-      <li>
-        <p>600</p>
-        <h4>工地总数(个)</h4>
-      </li>
-      <li>
-        <p>600</p>
-        <h4>消纳点总数(个)</h4>
-      </li>
-      <li>
-        <p>600</p>
-        <h4>在线车辆(辆)</h4>
-      </li>
-      <li>
-        <p>600</p>
-        <h4>开工工地(个)</h4>
-      </li>
-      <li>
-        <p>600</p>
-        <h4>消纳量(立方)</h4>
-      </li>
+     
     </ul>
     <!-- 边框 -->
     <div class="corner lt"></div>
@@ -36,7 +17,17 @@
 </template>
 <script>
 export default {
-  name: "BaseData"
+  name: "BaseData",
+  data(){
+    return{
+
+    }
+  },
+  computed: {
+    allmonitor() {
+      return this.$store.state.platformData.module.allmonitor;
+    }
+  }
 };
 </script>
 <style lang="less">

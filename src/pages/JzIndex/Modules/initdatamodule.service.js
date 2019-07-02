@@ -1,29 +1,31 @@
 const service = {};
 import API from '../Configs/api';
-let platformState = new Object();
+let platformData = new Object();
 
-//初始化数据
-service.init = (that) => {
-    platformState = JSON.parse(localStorage.$platformState)
-    return platformState
-}
+
+const dialogWidth = ["40%", "60%"];
+
+
+
+
+
+// //初始化数据
+// service.init = (that) => {
+//     platformState = JSON.parse(localStorage.$platformState)
+//     return platformState
+// }
 
 
 
 service.initStep = (step, that) => {
     if (service.isFirst) {
+        that.noIpt = true;
         switch (step) {
             case 0: //第一步：设置平台的一些相关属性数据初始化
-                that.noIpt = false;
-                that.diagTitle = "演示平台属性数据初始化"
-                that.step = 0
+                that.initStep = 0
                 break;
             case 1: //第一步：设置平台的一些相关属性数据初始化
-                that.diagTitle = "演示平台的模块选择"
-                that.noIpt = true;
-                that.step = 1
-                that.platformState.module.OverAll =true
-                that.platformState.module.airMonitor =true
+                that.initStep = 1
                 break;
         }
 

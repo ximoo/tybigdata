@@ -1,9 +1,7 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable no-new */
 import Vue from 'vue';
 import router from './router';
 import App from '~/App.vue';
-// import '~/common/plugin/axios';
+import Store from './store'
 
 
 import ECharts from 'vue-echarts'
@@ -36,8 +34,16 @@ import '~/common/plugin/element';
 import '~/stastic/bigdata_jz.less';
 
 
+
+
+
+
+
+
+
 new Vue({
   el: '#JzBigData',
   router,
+  store: Store,
   render: h => h(App),
 });

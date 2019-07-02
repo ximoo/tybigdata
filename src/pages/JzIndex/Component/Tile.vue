@@ -3,7 +3,7 @@
     {{platformName}}
     <div class="ex-bigdata-tile-flip">{{platformName}}</div>
     <div class="ex-bigdata-timer">{{currentTime}}</div>
-    <ul class="weather">
+    <ul class="weather" v-if="weatherList">
       <li v-for="item,index in weatherList" :key="index">
         <!-- <div class="top"></div> -->
         <div class="center">
@@ -15,20 +15,30 @@
         <div class="bottom">{{item.daytemp + '℃/'+ item.nighttemp + '℃'}}</div>
       </li>
     </ul>
+    <div class="weather" v-else>
+      <i class="el-icon-loading"></i>
+    </div>
   </div>
 </template>
 
 <script>
+import store from "../Configs/store";
+
 export default {
   data() {
     return {
-      platformName: "荆州市城市固废资源利用云平台",
+      platformName:
+        store.state.platformData.state.city +
+        store.state.platformData.state.name,
+      adcode: store.state.platformData.state.adcode,
       currentTime: "",
-      weatherList: []
+      weatherList: null
     };
   },
   mounted() {
-    this.weatherData();
+    setTimeout(() => {
+      this.weatherData();
+    }, 3000);
     let timer = setInterval(() => {
       this.currentTime = this.getCurrentTime();
     }, 1000);
@@ -79,7 +89,9 @@ export default {
       );
       self.$http
         .get(
-          "https://restapi.amap.com/v3/weather/weatherInfo?city=421000&extensions=all&key=0a2c31bc6770455f08b0fcdc1674831c"
+          "https://restapi.amap.com/v3/weather/weatherInfo?city=" +
+            self.adcode +
+            "&extensions=all&key=0a2c31bc6770455f08b0fcdc1674831c"
         )
         .then(function(res) {
           if (res.data.status == "1") {
