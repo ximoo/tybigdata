@@ -15,6 +15,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        "version": "3.4.1.1",
         "isFirst": localStorage.$isFirst ? !localStorage.$isFirst : true,
         "platformData": {
             "state": {
@@ -48,7 +49,7 @@ export default new Vuex.Store({
                             "timer": 30,
                             "data": [{
                                 "name": "-基本数据",
-                                "tip": "演示平台基本数据",
+                                "tip": "演示平台的基本资产单位数据，平台将根据这些数据模拟生成动态数据",
                                 "list": [{
                                         "id": 1,
                                         "label": "车辆总数",

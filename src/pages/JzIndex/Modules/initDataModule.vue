@@ -5,6 +5,7 @@
       width="60%"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
+      top="35px"
       :show-close="false"
     >
       <span slot="title">
@@ -59,7 +60,6 @@
             >定位城市</el-button>
           </el-form-item>
         </el-form>
-
         <el-divider></el-divider>
         <h3>模块选择</h3>
         <el-form :inline="true" size="mini" label-width="120px">
@@ -69,9 +69,9 @@
           <el-form-item label="环境监测">
             <el-switch v-model="pModule.airmonitor.enable" disabled></el-switch>
           </el-form-item>
-          <el-form-item label="工地监控">
+          <!-- <el-form-item label="工地监控">
             <el-switch v-model="pModule.sitemonitor.enable"></el-switch>
-          </el-form-item>
+          </el-form-item>-->
         </el-form>
       </section>
 
@@ -93,6 +93,8 @@
         </el-tabs>
       </section>
       <span slot="footer" class="dialog-footer">
+        <span class="ex-ver" style="float:left">当前版本：{{ver}}</span>
+
         <section v-if="initStep == 0">
           <!--    @click="submitUpload" -->
           <el-button type="primary" @click="handleStep(1)">下一步</el-button>
@@ -181,6 +183,9 @@ export default {
       let unitTemp = store.state.platformUnit;
       unitTemp = unitTemp.join("|");
       return unitTemp;
+    },
+    ver() {
+      return store.state.version;
     }
   }
 };
@@ -199,6 +204,9 @@ export default {
   }
   h3 {
     line-height: 42px;
+  }
+  .ex-ver {
+    font-size: 12px;
   }
 }
 </style>

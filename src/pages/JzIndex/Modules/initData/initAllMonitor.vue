@@ -412,7 +412,7 @@ export default {
 }
 .el-dialog__body {
   overflow: auto;
-  max-height: 550px;
+  max-height: 600px;
 }
 
 .el-collapse-item .el-collapse-item__header {
