@@ -2,7 +2,7 @@
   <div class="ex-init">
     <el-dialog
       :visible.sync="showModal"
-      width="60%"
+      width="80%"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       top="35px"
@@ -21,58 +21,7 @@
 
       <!-- 第一步 -->
       <section v-if="initStep == 0">
-        <blockquote>
-          <span
-            style="float:left;margin-right:15px;line-height:32px;"
-          >欢迎，这是您第一次使用本演示系统，现在需要您对平台填写一些初始化数据，或者按照配置模板导入配置文件。</span>
-          <el-upload
-            ref="upload"
-            action="###"
-            accept="application/json, text/json, .json"
-            :on-change="beforeFileUpload"
-            :auto-upload="false"
-            :show-file-list="false"
-            size="mini"
-            v-show="noIpt"
-          >
-            <el-button type="success" size="mini" v-show="!isFile">导入已有配置</el-button>
-          </el-upload>
-          <el-button type="success" v-show="isFile" size="mini" @click="importCfg">开始导入</el-button>
-
-          <p style="clear:both;font-weight:bold;">目前没时间做表单验证，请尽量将所有空填完，不然会出现问题。后期迭代会做验证更新</p>
-        </blockquote>
-        <el-divider></el-divider>
-        <h3>基础配置</h3>
-        <el-form :inline="true" size="mini"  label-position="right"  label-width="150px" :model="pState">
-          <el-form-item label="平台名称：">
-            <el-input v-model="pState.name"></el-input>
-          </el-form-item>
-          <el-form-item label="城市名称：">
-            <el-input v-model="pState.city" style="width:150px;"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button
-              type="primary"
-              size="mini"
-              icon="el-icon-location"
-              plain
-              @click="getCity"
-            >定位城市</el-button>
-          </el-form-item>
-        </el-form>
-        <el-divider></el-divider>
-        <h3>模块选择</h3>
-        <el-form :inline="true" size="mini" label-width="120px">
-          <el-form-item label="全局监管">
-            <el-switch v-model="pModule.allmonitor.enable" disabled></el-switch>
-          </el-form-item>
-          <el-form-item label="环境监测">
-            <el-switch v-model="pModule.airmonitor.enable" disabled></el-switch>
-          </el-form-item>
-          <!-- <el-form-item label="工地监控">
-            <el-switch v-model="pModule.sitemonitor.enable"></el-switch>
-          </el-form-item>-->
-        </el-form>
+        <initBaseData />
       </section>
 
       <!-- 第二步 -->
@@ -92,9 +41,13 @@
           </el-tab-pane>
         </el-tabs>
       </section>
+      <!-- 第三步 -->
+      <section v-if="initStep == 2">
+        <simData />
+      </section>
+
       <span slot="footer" class="dialog-footer">
         <span class="ex-ver" style="float:left">当前版本：{{ver}}</span>
-
         <section v-if="initStep == 0">
           <!--    @click="submitUpload" -->
           <el-button type="primary" @click="handleStep(1)">下一步</el-button>
@@ -103,20 +56,34 @@
           <el-button type="default" @click="handleStep(0)">上一步</el-button>
           <el-button type="primary" @click="handleStep(2)">下一步</el-button>
         </section>
+        <section v-if="initStep == 2">
+          <el-button type="default" @click="handleStep(1)">上一步</el-button>
+          <el-button type="primary" @click="handleStep(3)">下一步</el-button>
+        </section>
       </span>
     </el-dialog>
   </div>
 </template>
 <script>
+//调用的库文件
 import service from "./initdatamodule.service";
 import store from "../Configs/store";
 
-import initAllMonitor from "./initData/initAllMonitor.vue";
-import initAirMonitor from "./initData/initAirMonitor.vue";
-import initFences from "./initData/initFences.vue";
+import initBaseData from "./initData/initBaseData"; //初始化基础数据
+import initAllMonitor from "./initData/initAllMonitor.vue"; //初始化全局监控数据
+import initAirMonitor from "./initData/initAirMonitor.vue"; //初始化环境监测数据
+import initFences from "./initData/initFences.vue"; //初始化围栏数据
+import simData from "./initData/simData.vue"; //模拟数据生成
+
 export default {
   name: "initDataModule",
-  components: { initAllMonitor, initAirMonitor, initFences },
+  components: {
+    initBaseData,
+    initAllMonitor,
+    initAirMonitor,
+    initFences,
+    simData
+  },
   data() {
     return {
       showModal: true,
@@ -125,11 +92,7 @@ export default {
         { label: "模块配置", icon: "el-icon-s-help" },
         { label: "模拟数据生成", icon: "el-icon-s-open" },
         { label: "完成初始配置", icon: "el-icon-s-claim" }
-      ],
-      dialogWidth: "40%",
-      initStep: 0,
-      isFile: false,
-      noIpt: true
+      ]
     };
   },
   mounted() {
@@ -139,29 +102,12 @@ export default {
     });
   },
   methods: {
-    //定位城市
-    getCity() {
-      service.getCity(this);
-    },
-
     handleModulesEdit() {},
 
-    handleStep(initStep) {
-      console.log("step:" + initStep);
-      service.initStep(initStep, this);
+    handleStep(step) {
+      this.$store.commit("handle_step", step);
     },
-    importCfg(file) {
-      console.log("iptCfg");
-      service.importCfg(this.cfgFile, this);
-    },
-    beforeFileUpload(file) {
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      this.cfgFile = file;
-      this.isFile = true;
-    },
+
     airModule() {
       this.$router.push("/air");
     },
@@ -170,6 +116,9 @@ export default {
     }
   },
   computed: {
+    initStep() {
+      return store.state.initStep;
+    },
     initPlartform() {
       return store.state.initPlartform;
     },
@@ -177,7 +126,7 @@ export default {
       return store.state.platformData.state;
     },
     pModule() {
-      return store.state.platformData.module;
+      return this.$store.state.platformData.module;
     },
     platformUnit() {
       let unitTemp = store.state.platformUnit;

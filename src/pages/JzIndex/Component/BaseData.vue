@@ -6,7 +6,6 @@
         <p>{{item.number}}</p>
         <h4>{{item.label}}({{item.unit}})</h4>
       </li>
-     
     </ul>
     <!-- 边框 -->
     <div class="corner lt"></div>
@@ -18,14 +17,13 @@
 <script>
 export default {
   name: "BaseData",
-  data(){
-    return{
-
-    }
+  data() {
+    return {};
   },
   computed: {
     allmonitor() {
-      return this.$store.state.platformData.module.allmonitor;
+      let allmonitor = JSON.parse(localStorage.$platformData).module.allmonitor;
+      return allmonitor;
     }
   }
 };
@@ -42,7 +40,7 @@ export default {
     text-align: center;
     margin: 10px 2px;
     text-align: center;
-    text-shadow: 0 1px 8px rgba(153,200,255,.85);
+    text-shadow: 0 1px 8px rgba(153, 200, 255, 0.85);
 
     p {
       font-size: 28px;
@@ -60,7 +58,6 @@ export default {
       font-weight: normal;
       color: #99c8ff;
       margin-top: -25px;
-      
     }
   }
 }

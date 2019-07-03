@@ -22,13 +22,11 @@
   </div>
 </template>
 <script>
-
-
-
 import mapEvent from "./allmonitor.service";
 import VueAMap from "vue-amap";
-let amapManager = new VueAMap.AMapManager();
+import store from "../Configs/store"
 
+let amapManager = new VueAMap.AMapManager();
 let mapTruckId;
 
 export default {
@@ -42,24 +40,36 @@ export default {
       showLabel: true,
       resizeEnable: true,
       animateEnable: true,
-      center: [112.24069, 30.33479],
+      // center: [store.state.platformData.state.city],
       amapManager,
-      massTruck:null,
-      mass3DTruck:null,
+      massTruck: null,
+      mass3DTruck: null,
       plugins: [
         {
           pName: "AMap.DistrictSearch",
           events: {
             init(instance) {
-              mapEvent.initMap(amapManager,self)
+              mapEvent.initMap(amapManager, store.state.platformData.state.city, self);
             }
           }
         }
       ]
     };
   },
+  mounted(){
+  },
   methods: {
-
+    
+  },
+  computed: {
+    city(){
+      console.log(this.$store.state.platformData.state.city)
+      return this.$store.state.platformData.state.city
+    },
+    center() {
+      let centerArry = this.$store.state.platformData.state.center.split(",");
+      return [parseFloat(centerArry[0]), parseFloat(centerArry[1])];
+    }
   }
 };
 </script>

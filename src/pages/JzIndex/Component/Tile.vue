@@ -27,10 +27,6 @@ import store from "../Configs/store";
 export default {
   data() {
     return {
-      platformName:
-        store.state.platformData.state.city +
-        store.state.platformData.state.name,
-      adcode: store.state.platformData.state.adcode,
       currentTime: "",
       weatherList: null
     };
@@ -322,6 +318,17 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+    }
+  },
+  computed: {
+    platformName() {
+      return (
+        store.state.platformData.state.city +
+        store.state.platformData.state.name
+      );
+    },
+    adcode() {
+      return store.state.platformData.state.adcode;
     }
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="item"  style="height:230px">
-    <h3>环境污染变化趋势</h3>
+    <h3>场站空气质量变化趋势</h3>
     <Echarts  :options="option" autoresize class="ex-bigdata-charts"/>
     <!-- 边框 -->
     <div class="corner lt"></div>

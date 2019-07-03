@@ -5,11 +5,18 @@
       <Tile />
       <div class="ex-screen" style="left:40px">
         <div class="ex-message" v-if="setupBtn">
-          <el-tooltip content="环境监管" placement="bottom">
-            <i class="el-icon-coin" @click="airModule" />
+          <el-popover placement="bottom" trigger="click" v-model="wordPass">
+            <el-input placeholder="请输入管理员密码:admin" size="mini" v-model="adminPass">
+              <el-button slot="append" icon="el-icon-success" @click="handleSetup">确定</el-button>
+            </el-input>
+            <i class="el-icon-s-tools" slot="reference" />
+          </el-popover>
+
+          <el-tooltip content="环境监测" placement="bottom">
+            <i class="el-icon-cloudy" @click="handleModule('/air')" />
           </el-tooltip>
           <el-tooltip content="工地监管" placement="bottom">
-            <i class="el-icon-office-building" @click="siteModule" />
+            <i class="el-icon-office-building" @click="handleModule('/site')" />
           </el-tooltip>
         </div>
         <div v-else>
@@ -19,6 +26,8 @@
       <router-view />
     </div>
     <initDataModule v-else />
+
+    <!-- <adminPass /> -->
   </div>
 </template>
 <script>
@@ -37,30 +46,37 @@ export default {
       isFile: false,
       cfgFile: null,
       noIpt: false,
-      diagTitle: "",
-      step: 0,
-      setupBtn: false
+      setupBtn: false,
+      adminPass: null,
+      wordPass: false
     };
   },
   mounted() {
+
+
+    store.commit("init_data")
+
+    
     window.document.title =
       store.state.platformData.state.city + store.state.platformData.state.name;
-    console.log(this.isFirst);
-    setTimeout(() => {
-      store.commit("is_first", false);
-    }, 3000);
   },
   methods: {
-     airModule() {
-      this.$router.push("/air");
+    //管理员设置
+    handleSetup() {
+      if (this.adminPass === "admin") {
+        this.wordPass = false;
+        store.commit("adminPass");
+      }
     },
-    siteModule() {
-      this.$router.push("/site");
+    //模块切换
+    handleModule(url) {
+      this.$router.push(url);
     }
   },
   computed: {
     isFirst() {
-      return  true //store.state.isFirst;
+      this.setupBtn = !store.state.isFirst;
+      return store.state.isFirst;
     }
   }
 };

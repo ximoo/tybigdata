@@ -40,7 +40,8 @@ export default {
   },
   computed: {
     allmonitor() {
-      return this.$store.state.platformData.module.allmonitor;
+      let allmonitor = JSON.parse(localStorage.$platformData).module.allmonitor;
+      return allmonitor;
     }
   }
 };

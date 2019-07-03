@@ -5,72 +5,22 @@
       <el-collapse-item name="1">
         <template slot="title">
           <i class="el-icon-caret-right" />
-          {{basedata.name}}
+          {{allmonitor.module.basedata.name}}
           <sup style="margin-left:15px; color:#f30;">
             (
             <i class="header-icon el-icon-info"></i>
-            {{basedata.tip}} )
+            {{allmonitor.module.basedata.tip}} )
           </sup>
         </template>
-        <el-form :inline="true" label-position="right" label-width="150px" size="mini">
+        <el-form :inline="true" label-position="right" size="mini">
           <el-row style="margin-top:15px;" :gutter="20">
-            <el-col :span="8" v-for="item ,index in basedata.data" :key="index">
-              <el-form-item :label="item.label + '：'">
-                <el-input-number v-model="item.number"></el-input-number>
-                {{item.unit}}
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-        <el-divider></el-divider>
-      </el-collapse-item>
-      <!--
-      <el-collapse-item name="2">
-        <template slot="title">
-          <i class="el-icon-caret-right" />
-          {{allmonitor.module.basedata.name}}{{allmonitor.module.basedata.data[1].name}}
-          <sup
-            style="margin-left:15px; color:#f30;"
-          >
-            (
-            <i class="header-icon el-icon-info"></i>
-            {{allmonitor.module.basedata.data[1].tip}} )
-          </sup>
-        </template>
-        <el-form :inline="true" label-position="right"  size="mini">
-          <ul>
-            <li v-for="item ,index in allmonitor.module.basedata.data[1].list" :key="index">
-              <el-form-item label="统计名称：">
+            <el-col :span="8" v-for="item ,index in allmonitor.module.basedata.data" :key="index">
+              <el-form-item>
                 <el-input v-model="item.label"></el-input>
               </el-form-item>
-              <el-form-item label="最大数量：">
-                <el-input-number v-model="item.number"></el-input-number>
-              </el-form-item>
-              <el-form-item label="单位：">
-                <el-radio-group v-model="item.unit">
-                  <el-radio-button :label="i" v-for="i in platformUnit"></el-radio-button>
-                </el-radio-group>
-              </el-form-item>
-              <el-form-item>
-                <el-button
-                  v-if="index == allmonitor.module.basedata.data[1].list.length -1 && index !=2"
-                  type="success"
-                  icon="el-icon-plus"
-                  size="mini"
-                  circle
-                  @click="handlePlusBase"
-                ></el-button>
-                <el-button
-                  v-if="index == allmonitor.module.basedata.data[1].list.length-1"
-                  type="danger"
-                  icon="el-icon-minus"
-                  size="mini"
-                  circle
-                  @click="handleMinusBase"
-                ></el-button>
-              </el-form-item>
-            </li>
-          </ul>
+              <el-form-item>{{item.number}} ({{item.unit}})</el-form-item>
+            </el-col>
+          </el-row>
           <el-divider></el-divider>
           <el-row style="margin: 10px;">
             <el-col :span="12">
@@ -87,16 +37,21 @@
                 <span style="font-size:12px; margin-left:15px;">最大1800秒(半小时)</span>
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="6">
               <el-form-item label="图表标题:">
                 <el-input v-model="allmonitor.module.basedata.name"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item style="float:right;">
+                <el-button icon="el-icon-refresh" @click="hanldeBasedata('hanlde_basedata')">重新生成数据</el-button>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
       </el-collapse-item>
-      
-      <el-collapse-item name="3">
+      <!-- 2 -->
+      <el-collapse-item name="2">
         <template slot="title">
           <i class="el-icon-caret-right" />
           {{allmonitor.module.operatedata.name}} {{allmonitor.module.operatedata.data[0].name}}
@@ -108,7 +63,7 @@
             {{allmonitor.module.operatedata.data[0].tip}} )
           </sup>
         </template>
-        <el-form :inline="true" label-position="right"  size="mini">
+        <el-form :inline="true" label-position="right" size="mini">
           <ul>
             <li v-for="item ,index in allmonitor.module.operatedata.data[0].list" :key="index">
               <el-form-item label="统计名称：">
@@ -119,7 +74,7 @@
               </el-form-item>
               <el-form-item label="单位：">
                 <el-radio-group v-model="item.unit" size="mini">
-                  <el-radio-button :label="i" v-for="i in platformUnit"></el-radio-button>
+                  <el-radio-button :label="i" v-for="i,index in platformUnit" :key="index"></el-radio-button>
                 </el-radio-group>
               </el-form-item>
               <el-form-item v-show="index == allmonitor.module.operatedata.data[0].list.length-1">
@@ -156,15 +111,24 @@
                 <span style="font-size:12px; margin-left:15px;">最大1800秒(半小时)</span>
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="6">
               <el-form-item label="图表标题:">
                 <el-input v-model="allmonitor.module.operatedata.name"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item style="float:right;">
+                <el-button
+                  icon="el-icon-refresh"
+                  @click="hanldeBasedata('hanlde_operatedata')"
+                >重新生成数据</el-button>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
       </el-collapse-item>
-      <el-collapse-item name="4">
+      <!-- 3 -->
+      <el-collapse-item name="3">
         <template slot="title">
           <i class="el-icon-caret-right" />
           {{allmonitor.module.operatedata.name}} {{allmonitor.module.operatedata.data[1].name}}
@@ -176,7 +140,7 @@
             {{allmonitor.module.operatedata.data[1].tip}} )
           </sup>
         </template>
-        <el-form :inline="true" label-position="right"  size="mini">
+        <el-form :inline="true" label-position="right" size="mini">
           <ul>
             <li v-for="item ,index in allmonitor.module.operatedata.data[1].list" :key="index">
               <el-form-item label="统计名称：">
@@ -187,7 +151,7 @@
               </el-form-item>
               <el-form-item label="单位：">
                 <el-radio-group v-model="item.unit" size="mini">
-                  <el-radio-button :label="i" v-for="i in platformUnit"></el-radio-button>
+                  <el-radio-button :label="i" v-for="i,index in platformUnit" :key="index"></el-radio-button>
                 </el-radio-group>
               </el-form-item>
               <el-form-item v-show="index == allmonitor.module.operatedata.data[1].list.length-1">
@@ -210,7 +174,7 @@
           </ul>
           <el-divider></el-divider>
           <el-row style="margin: 10px;">
-            <el-col :span="12">
+            <el-col :span="18">
               <el-form-item label="刷新时间：">
                 <el-input-number
                   :min="1"
@@ -224,13 +188,19 @@
                 <span style="font-size:12px; margin-left:15px;">最大1800秒(半小时)</span>
               </el-form-item>
             </el-col>
-            <el-col :span="12"></el-col>
+            <el-col :span="6">
+              <el-form-item style="float:right;">
+                <el-button
+                  icon="el-icon-refresh"
+                  @click="hanldeBasedata('hanlde_operatedata2')"
+                >重新生成数据</el-button>
+              </el-form-item>
+            </el-col>
           </el-row>
         </el-form>
       </el-collapse-item>
-      -->
-      <!-- 5 -->
-      <el-collapse-item name="5">
+      <!-- 4 -->
+      <el-collapse-item name="4">
         <template slot="title">
           <i class="el-icon-caret-right" />
           {{allmonitor.module.producedata.name}}
@@ -253,7 +223,7 @@
               </el-form-item>
               <el-form-item label="单位：">
                 <el-radio-group v-model="item.unit" size="mini">
-                  <el-radio-button :label="i" v-for="i in platformUnit"></el-radio-button>
+                  <el-radio-button :label="i" v-for="i,index in platformUnit" :key="index"></el-radio-button>
                 </el-radio-group>
               </el-form-item>
               <el-form-item>
@@ -306,7 +276,17 @@ export default {
   data() {
     return { activeNames: "1" };
   },
+  mounted() {
+    this.hanldeBasedata("hanlde_basedata"); //生成左上角基础监控数据
+    this.hanldeBasedata("hanlde_operatedata"); //生成饼图监控数据
+    this.hanldeBasedata("hanlde_operatedata2"); //生成柱状图监控数据
+  },
   methods: {
+    //重新生成数据
+    hanldeBasedata(event) {
+      this.$store.commit(event);
+    },
+
     handlePlusBase() {
       let lastData = this.allmonitor.module.basedata.data[1].list;
       let temp = {
