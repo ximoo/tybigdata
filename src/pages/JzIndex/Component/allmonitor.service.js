@@ -245,6 +245,28 @@ export default {
 
   },
 
+
+  addVecMarker(mapObj, data, e) {
+    // if(vechileGroups) 
+    e.vecMarkers.clearOverlays();
+    e.vecMarkersGps = new Array()
+    console.log(data)
+    for (var i in data) {
+      let lnglat = data[i].lnglat.split(",")
+      let vecMarkers = new AMap.Marker({
+        icon: data[i].icon,
+        offset: new AMap.Pixel(-12, -15),
+        position: lnglat,
+        clickable: true
+      })
+      e.vecMarkersGps.push(vecMarkers);
+    }
+    e.vecMarkers.addOverlay(new AMap.OverlayGroup(e.vecMarkersGps));
+    mapObj.add(e.vecMarkers);
+    mapObj.setFitView(e.vecMarkersGps);
+
+  },
+
   mapAddPointer(mapObj, data, self) {
     let mapGps = []
     for (var i in data) {
@@ -254,6 +276,7 @@ export default {
         style: data[i].style
       })
     }
+
     self.massTruck.on("mouseover", function (e) {
       e.tipMapMarker.setPosition(e.data.lnglat);
       e.tipMapMarker.setLabel({

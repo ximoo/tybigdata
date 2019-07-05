@@ -54,6 +54,8 @@ export default {
       amapManager,
       massTruck: null,
       mass3DTruck: null,
+      vecMarkers: null,
+      vecMarkersGps: null,
       mapObj: null,
       truckMarkerGps: [],
       plugins: [
@@ -62,49 +64,16 @@ export default {
           events: {
             init(instance) {
               self.mapObj = amapManager.getMap();
-
-              //海量点图标样式
-              var style = [
-                {
-                  url: require("../../../stastic/img/bigData_jz/icon/icon-drive.png"),
-                  anchor: new AMap.Pixel(6, 6),
-                  size: new AMap.Size(12, 12)
-                },
-                {
-                  url: require("../../../stastic/img/bigData_jz/icon/icon-stop.png"),
-                  anchor: new AMap.Pixel(6, 6),
-                  size: new AMap.Size(12, 12)
-                },
-                {
-                  url: require("../../../stastic/img/bigData_jz/icon/icon-alerm.png"),
-                  anchor: new AMap.Pixel(6, 6),
-                  size: new AMap.Size(12, 12)
-                }
-              ];
-
-              //加载海量点
-              self.massTruck = new AMap.MassMarks([], {
-                opacity: 0.8,
-                zIndex: 111,
-                cursor: "pointer",
-                style: style
-              });
-              self.massTruck.setMap(self.mapObj);
-              self.tipMapMarker = new AMap.Marker({
-                content: " ",
-                map: self.mapObj
-              });
-
+              self.vecMarkers = new AMap.OverlayGroup();
               mapEvent.initMap(
                 amapManager,
                 store.state.platformData.state.city,
                 self
               );
-
+              mapEvent.addVecMarker(self.mapObj, self.mapGps, self);
               setInterval(() => {
-                mapEvent.mapAddPointer(self.mapObj, self.mapGps, self);
-              }, 3000);
-
+                mapEvent.addVecMarker(self.mapObj, self.mapGps, self);
+              }, store.state.platformData.alerms.timer * 1000);
               var toolBar = new AMap.ControlBar({
                 showZoomBar: false,
                 showControlButton: true,
@@ -114,7 +83,6 @@ export default {
                 }
               });
               self.mapObj.addControl(toolBar);
-              // self.addPointer()
             }
           }
         }
