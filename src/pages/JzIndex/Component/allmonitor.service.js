@@ -230,27 +230,17 @@ export default {
         strokeColor: "#298bff",
         strokeWeight: 5,
         fillColor: "#0a0e1f",
-        fillOpacity: 0.45
+        fillOpacity: 0.65
       });
       polygon.setPath(pathArray);
       that.monitorMap.add(polygon);
     });
-
-
-    // that.mapDataChange(that.monitorMap, e);
-    // mapTruckId = setInterval(function () {
-    //   // that.mapDataChange(that.monitorMap, e);
-    // }, 5000);
-
-
   },
-
-
   addVecMarker(mapObj, data, e) {
     // if(vechileGroups) 
     e.vecMarkers.clearOverlays();
     e.vecMarkersGps = new Array()
-    console.log(data)
+    // console.log(data)
     for (var i in data) {
       let lnglat = data[i].lnglat.split(",")
       let vecMarkers = new AMap.Marker({
@@ -266,7 +256,6 @@ export default {
     mapObj.setFitView(e.vecMarkersGps);
 
   },
-
   mapAddPointer(mapObj, data, self) {
     let mapGps = []
     for (var i in data) {
@@ -286,8 +275,6 @@ export default {
     self.massTruck.setData(mapGps)
     mapObj.setFitView(self.massTruck)
   },
-
-
   mapDataChange(mapObj, e, data) {
     e.massTruck.setData(data);
     // this.addSiteMarker(mapObj, e)

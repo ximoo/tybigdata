@@ -46,6 +46,7 @@ export default {
       showLabel: true,
       resizeEnable: true,
       animateEnable: true,
+      features: ["bg", "point", "road", "building"],
       // center: [store.state.platformData.state.city],
       pitch: 0,
       rotation: 0,
@@ -67,7 +68,7 @@ export default {
               self.vecMarkers = new AMap.OverlayGroup();
               mapEvent.initMap(
                 amapManager,
-                store.state.platformData.state.city,
+                self.city,
                 self
               );
               mapEvent.addVecMarker(self.mapObj, self.mapGps, self);
