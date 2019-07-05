@@ -52,11 +52,7 @@ export default {
     };
   },
   mounted() {
-
-
-    store.commit("init_data")
-
-    
+    store.commit("init_data");
     window.document.title =
       store.state.platformData.state.city + store.state.platformData.state.name;
   },
@@ -81,4 +77,3 @@ export default {
   }
 };
 </script>
-

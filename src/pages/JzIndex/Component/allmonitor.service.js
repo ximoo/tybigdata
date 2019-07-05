@@ -1,67 +1,3 @@
-const simTruckGps = [
-  [30.3418430241, 112.1938204765],
-  [30.3414356152, 112.1867609024],
-  [30.3388614925, 112.1981334686],
-  [30.3328055557, 112.1839284897],
-  [30.3342130852, 112.2034978867],
-  [30.3311201979, 112.2067379951],
-  [30.3338612047, 112.2147846222],
-  [30.3322129057, 112.2173166275],
-  [30.3328518564, 112.2130250931],
-  [30.332981498, 112.2025966644],
-  [30.3346112642, 112.1982085705],
-  [30.3371669791, 112.2035622597],
-  [30.3397596653, 112.1980905533],
-  [30.3421578389, 112.2035729885],
-  [30.3460836796, 112.1912670135],
-  [30.3481761624, 112.1790146828],
-  [30.3353983574, 112.161397934],
-  [30.304576617, 112.2799301147],
-  [30.2939794047, 112.3078250885],
-  [30.2931641871, 112.2321224213],
-  [30.3236931654, 112.2686862946],
-  [30.3393985453, 112.2476577759],
-  [30.3208777839, 112.3449897766],
-  [30.265813416, 112.2317790985],
-  [30.2510601076, 112.1681785583],
-  [30.322655929, 112.1654319763],
-  [30.3344353248, 112.1217441559],
-  [30.3405096796, 112.1042346954],
-  [30.3448059468, 112.0750522614],
-  [30.33315744, 112.257142067],
-  [30.3381948022, 112.2452330589],
-  [30.3320277019, 112.2392034531],
-  [30.3231745485, 112.2549104691],
-  [30.3150059715, 112.2646307945],
-  [30.3045025146, 112.2484087944],
-  [30.3167286532, 112.2599315643],
-  [30.3121532921, 112.2613477707],
-  [30.3129498278, 112.2531080246],
-  [30.3214519801, 112.224547863],
-  [30.3102082358, 112.2224020958],
-  [30.3345464444, 112.2476148605],
-  [30.3686912343, 112.162899971],
-  [30.3480650582, 112.1548318863],
-  [30.3225818402, 112.1542310715],
-  [30.327508619, 112.1840143204],
-  [30.3391392788, 112.2036266327],
-  [30.348953888, 112.2158575058],
-  [30.3637526425, 112.1659523249],
-  [30.3636045272, 112.1660113335],
-  [30.3630352068, 112.1665048599],
-  [30.3631509226, 112.167647481],
-  [30.3627065732, 112.1670305729],
-  [30.3625769709, 112.1668159962],
-  [30.3612809387, 112.1678566933],
-  [30.3606005149, 112.168366313],
-  [30.3600682072, 112.1688330173],
-  [30.3617299232, 112.1674919128],
-  [30.3629472627, 112.1665799618],
-  [30.362563085, 112.1668803692],
-  [30.3624242252, 112.1669822931],
-  [30.3630305782, 112.1683716774]
-];
-
 var siteGeo = [{
     title: "临时处置场",
     type: "upload",
@@ -265,10 +201,14 @@ var siteGeo = [{
   }
 ];
 
+import store from "../Configs/store"
+
+let massTruck
+
 export default {
   monitorMap: null,
   initMap(obj, city, e) {
-    console.log(city)
+    // console.log(city)
     let that = this
     that.monitorMap = obj.getMap();
     new AMap.DistrictSearch({
@@ -290,49 +230,13 @@ export default {
         strokeColor: "#298bff",
         strokeWeight: 5,
         fillColor: "#0a0e1f",
-        fillOpacity: 0.25
+        fillOpacity: 0.45
       });
       polygon.setPath(pathArray);
       that.monitorMap.add(polygon);
     });
 
-    //海量点图标样式
-    var style = [{
-        url: require("../../../stastic/img/bigData_jz/icon/icon-drive.png"),
-        anchor: new AMap.Pixel(6, 6),
-        size: new AMap.Size(12, 12)
-      },
-      {
-        url: require("../../../stastic/img/bigData_jz/icon/icon-stop.png"),
-        anchor: new AMap.Pixel(6, 6),
-        size: new AMap.Size(12, 12)
-      },
-      {
-        url: require("../../../stastic/img/bigData_jz/icon/icon-alerm.png"),
-        anchor: new AMap.Pixel(6, 6),
-        size: new AMap.Size(12, 12)
-      }
-    ];
 
-    //加载海量点
-    e.massTruck = new AMap.MassMarks([], {
-      opacity: 0.8,
-      zIndex: 111,
-      cursor: "pointer",
-      style: style
-    });
-    e.tipMapMarker = new AMap.Marker({
-      content: " ",
-      map: that.monitorMap
-    });
-    e.massTruck.on("mouseover", function (e) {
-      e.tipMapMarker.setPosition(e.data.lnglat);
-      e.tipMapMarker.setLabel({
-        content: e.data.name
-      });
-    });
-    e.massTruck.setMap(that.monitorMap);
-    // self.mass3DTruck.setData(truckMarkerGps);
     // that.mapDataChange(that.monitorMap, e);
     // mapTruckId = setInterval(function () {
     //   // that.mapDataChange(that.monitorMap, e);
@@ -340,22 +244,30 @@ export default {
 
 
   },
-  mapDataChange(mapObj, e) {
-    let truckMarkerGps = [];
-    let truckNum =
-      Math.round(Math.random() * (simTruckGps.length - 1)) < 30 ?
-      30 :
-      Math.round(Math.random() * (simTruckGps.length - 1));
-    for (var i = 0; i < truckNum; i++) {
-      let x = Math.round(Math.random() * (simTruckGps.length - 1));
-      truckMarkerGps.push({
-        lnglat: [simTruckGps[x][1], simTruckGps[x][0]],
-        style: Math.round(Math.random() * 2),
-        name: "鄂D" + (Math.round(Math.random() * 90000) + 10000)
-      });
+
+  mapAddPointer(mapObj, data, self) {
+    let mapGps = []
+    for (var i in data) {
+      mapGps.push({
+        name: data[i].name,
+        lnglat: data[i].lnglat.split(","),
+        style: data[i].style
+      })
     }
-    e.massTruck.setData(truckMarkerGps);
-    this.addSiteMarker(mapObj, e)
+    self.massTruck.on("mouseover", function (e) {
+      e.tipMapMarker.setPosition(e.data.lnglat);
+      e.tipMapMarker.setLabel({
+        content: e.data.name
+      });
+    });
+    self.massTruck.setData(mapGps)
+    mapObj.setFitView(self.massTruck)
+  },
+
+
+  mapDataChange(mapObj, e, data) {
+    e.massTruck.setData(data);
+    // this.addSiteMarker(mapObj, e)
     // e.mass3DTruck.setData(truckMarkerGps);
   },
   addSiteMarker(mapObj, e) {

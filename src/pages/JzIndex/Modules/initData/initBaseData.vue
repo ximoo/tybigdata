@@ -115,6 +115,44 @@
           </el-form>
         </el-row>
       </el-collapse-item>
+
+      <!-- 4 -->
+      <el-collapse-item name="4">
+        <template slot="title">
+          <i class="el-icon-caret-right" />
+          {{alerms.name}}
+          <sup style="margin-left:15px; color:#f30;">
+            (
+            <i class="header-icon el-icon-info"></i>请选择演示平台展示的车辆报警类型)
+          </sup>
+        </template>
+        <div style="margin:20px;">
+          <el-form :inline="true" size="mini">
+            <el-form-item>
+              <el-checkbox
+                v-model="item.enable"
+                v-for="item , index in alerms.list"
+                :key="index"
+              >{{item.label}}</el-checkbox>
+            </el-form-item>
+
+            <el-row :gutter="20">
+              <el-col :span="6">
+                <el-form-item label="单次报警最大车辆数">
+                  <el-input-number v-model="alerms.number"></el-input-number>
+                  &nbsp;&nbsp;辆
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="实时报警刷新时间">
+                  <el-input-number v-model="alerms.timer"></el-input-number>
+                  &nbsp;&nbsp;秒
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
+      </el-collapse-item>
     </el-collapse>
   </div>
 </template>
@@ -123,14 +161,14 @@ export default {
   name: "initBaseData",
   data() {
     return {
-      activeNames: ["1", "2", "3"],
+      activeNames: ["1", "2", "3", "4"],
       isFile: false,
       noIpt: true
     };
   },
 
   methods: {
-    //定位城市
+    // //定位城市
     getCity() {
       this.$store.commit("getCity");
     },
@@ -148,6 +186,9 @@ export default {
     }
   },
   computed: {
+    alerms() {
+      return this.$store.state.platformData.alerms;
+    },
     pState() {
       return this.$store.state.platformData.state;
     },

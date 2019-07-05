@@ -2,7 +2,7 @@
   <div class="item" style="height:276px; margin-top:2px;">
     <h3>基础监控数据</h3>
     <ul class="ex-base-data-box">
-      <li v-for="item ,index in allmonitor.module.basedata.data" :key="index">
+      <li v-for="item , index in BaseData" :key="index">
         <p>{{item.number}}</p>
         <h4>{{item.label}}({{item.unit}})</h4>
       </li>
@@ -24,6 +24,9 @@ export default {
     allmonitor() {
       let allmonitor = JSON.parse(localStorage.$platformData).module.allmonitor;
       return allmonitor;
+    },
+    BaseData() {
+      return this.allmonitor.module.basedata.data;
     }
   }
 };

@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        "version": "3.4.19.0703",
+        "version": "3.4.19.0705",
         "isFirst": !localStorage.$platformData,
         "initStep": 0,
         "platformData": localStorage.$platformData ? JSON.parse(localStorage.$platformData) : {
@@ -32,6 +32,36 @@ export default new Vuex.Store({
                         "path": ""
                     }]
                 }
+            },
+            "alerms": {
+                "name": "车辆报警类型",
+                "number": 10,
+                "timer": 5,
+                "list": [{
+                    "label": "超速驾驶",
+                    "enable": true
+                }, {
+                    "label": "超载驾驶",
+                    "enable": true
+                }, {
+                    "label": "疲劳驾驶",
+                    "enable": true
+                }, {
+                    "label": "分神驾驶",
+                    "enable": true
+                }, {
+                    "label": "接打电话",
+                    "enable": true
+                }, {
+                    "label": "抽烟驾驶",
+                    "enable": true
+                }, {
+                    "label": "前方碰撞",
+                    "enable": true
+                }, {
+                    "label": "车道偏离",
+                    "enable": true
+                }]
             },
             "basedata": {
                 "name": "基础数据：",
@@ -137,7 +167,7 @@ export default new Vuex.Store({
                         "basedata": {
                             "name": "基础监控数据：",
                             "tip": "由上一步基础数据得到左上角基本监控数据展示，您可以在这里修改展示字段名称，数量可通过返回上一步进行修改。也可以对展示项进行删减，建议最少留3项。",
-                            "timer": 30,
+                            "timer": 1800,
                             "data": []
                         },
                         "operatedata": {
@@ -145,19 +175,19 @@ export default new Vuex.Store({
                             "data": [{
                                 "name": "-饼状图:",
                                 "tip": "由上一步基础数据得到饼图运营数据，默认为车辆数据。也可以对展示项进行添加删减，不限项数，但要注意不要重复,数量为随机最大数",
-                                "timer": 30,
+                                "timer": 1800,
                                 "list": []
                             }, {
                                 "name": "-柱状图:",
                                 "tip": "由上一步基础数据得到饼图运营数据，默认为出土/消纳运营数据。也可以对展示项进行添加删减，最多4个统计字段,数量为随机最大数",
-                                "timer": 30,
+                                "timer": 1800,
                                 "list": []
                             }]
                         },
                         "producedata": {
                             "name": "生产数据:",
                             "tip": "最多4个统计字段,默认为固废利用产出物统计。也可以酌情修改成其他统计数据。",
-                            "timer": 30,
+                            "timer": 1800,
                             "data": [{
                                 "id": 1,
                                 "label": "拆迁渣土",
@@ -189,11 +219,17 @@ export default new Vuex.Store({
                 },
                 "sitemonitor": {
                     "name": "工地监控",
-                    "enable": false,
+                    "enable": true,
                     "module": {}
                 }
             }
         },
+        "simData": {
+            "vechile": [],
+            "gps": [],
+            "alerms": []
+        },
+        "mapGps": [],
         "platformUnit": ["人", "辆", "个", "台", "次", "吨", "立方", "小时"]
     },
     mutations: {
@@ -201,7 +237,7 @@ export default new Vuex.Store({
             if (localStorage.$platformData) {
                 state.platformData = JSON.parse(localStorage.$platformData)
             }
-            // localStorage.removeItem("$platformData");
+            localStorage.removeItem("$simdata");
             state.isFirst = true;
             state.initStep = 0
         },
@@ -209,12 +245,26 @@ export default new Vuex.Store({
             if (localStorage.$platformData) {
                 state.platformData = JSON.parse(localStorage.$platformData)
             }
+            if (localStorage.$simdata) {
+                state.simData = JSON.parse(localStorage.$simdata)
+            }
+        },
+        "cntTreData": (state, data) => {
+            // console.log(data)
+            state.platformData.module.allmonitor.module.operatedata.data[1].list = data
         },
         "handle_step": (state, data) => {
             state.initStep = data
             if (data == 1) {
-                axios.get(API.GET_AREACODE + "&extensions=all&subdistrict=1&keywords=" + state.platformData.state.city).then((res) => {
+                // state.alerms = []
+                for (var i in state.platformData.alerms.list) {
+                    if (state.platformData.alerms.list[i].enable) {
+                        state.simData.alerms.push(i)
+                    }
+                }
+                // console.log(state.simData.alerms)
 
+                axios.get(API.GET_AREACODE + "&extensions=all&subdistrict=1&keywords=" + state.platformData.state.city).then((res) => {
                     if (res.data.status === '1') {
                         // state.platformData.state.city = res.data.city
                         state.platformData.state.adcode = res.data.districts[0].adcode
@@ -227,16 +277,19 @@ export default new Vuex.Store({
                 })
             }
             if (data == 2) {
-                console.log(data)
+                // console.log(data)
                 // localStorage.$platformData = JSON.stringify(state.platformData)
                 // state.isFirst = false
                 // localStorage.$isFirst = false
                 // return false
             }
             if (data == 3) {
-                console.log(data)
+                // console.log(data)
                 localStorage.$platformData = JSON.stringify(state.platformData)
-                state.isFirst = false
+                setTimeout(function () {
+                    state.isFirst = false;
+                }, 5000)
+
                 // localStorage.$isFirst = false
             }
         },
@@ -320,6 +373,18 @@ export default new Vuex.Store({
                 }
             })
         },
+        //模拟车牌号
+        "simVechile": (state, data) => {
+            state.simData.vechile = data
+        },
+        "simGps": (state, data) => {
+            state.simData.gps = data
+            // localStorage.$gps = JSON.stringify(data)
+            localStorage.$simdata = JSON.stringify(state.simData)
+        },
+        "simMapGps": (state, data) => {
+            state.mapGps = data
+        }
     },
     getters: {}
 })

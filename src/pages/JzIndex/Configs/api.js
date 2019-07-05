@@ -1,4 +1,4 @@
-const AmapWebKey = '0ef6825bdde97686378638eb43882ccb'
+const AmapWebKey = '0a2c31bc6770455f08b0fcdc1674831c'
 
 export default {
 
@@ -11,5 +11,8 @@ export default {
     GET_CITY: 'https://restapi.amap.com/v3/ip?key=' + AmapWebKey,
     //获取所在城市编码
     GET_AREACODE: 'https://restapi.amap.com/v3/config/district?key=' + AmapWebKey,
+    //获取POI信息
+    GET_POI: 'https://restapi.amap.com/v3/place/text?key=' + AmapWebKey,
+    GET_AROUND: 'https://restapi.amap.com/v3/place/around?key=' + AmapWebKey,
 
 };

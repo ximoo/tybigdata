@@ -30,11 +30,12 @@
           <el-tab-pane label="全局监管">
             <initAllMonitor />
           </el-tab-pane>
-          <el-tab-pane label="围栏设置">
-            <initFences />
-          </el-tab-pane>
           <el-tab-pane label="环境监测" v-if="pModule.airmonitor.enable">
             <initAirMonitor />
+          </el-tab-pane>
+
+          <el-tab-pane label="围栏设置">
+            <initFences />
           </el-tab-pane>
           <el-tab-pane label="工地监控" v-if="pModule.sitemonitor.enable">
             <initAirMonitor />
@@ -45,7 +46,10 @@
       <section v-if="initStep == 2">
         <simData />
       </section>
-
+      <!-- 第四步 -->
+      <section v-if="initStep == 3">
+        <div style="text-align:center;font-size:18px;font-weight:bold;">完成平台配置,正在进入平台页面。</div>
+      </section>
       <span slot="footer" class="dialog-footer">
         <span class="ex-ver" style="float:left">当前版本：{{ver}}</span>
         <section v-if="initStep == 0">
@@ -95,25 +99,10 @@ export default {
       ]
     };
   },
-  mounted() {
-    this.$nextTick(function() {
-      //   this.handleStep(0);
-      //   this.getCity();
-    });
-  },
   methods: {
-    handleModulesEdit() {},
-
     handleStep(step) {
       this.$store.commit("handle_step", step);
     },
-
-    airModule() {
-      this.$router.push("/air");
-    },
-    siteModule() {
-      this.$router.push("/site");
-    }
   },
   computed: {
     initStep() {

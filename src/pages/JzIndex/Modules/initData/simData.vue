@@ -1,7 +1,14 @@
 <template>
   <div>
-    <el-button @click="simData">模拟车牌号</el-button>
-    {{simVechile}}
+    <!-- <el-button @click="simData">开始模拟数据</el-button> -->
+
+    <ul style="font-size:13px; line-height:32px; margin:20px;">
+      <li v-for="item ,index in simstep" :key="index" v-show="item.show">
+        <i class="el-icon-caret-right" />
+        {{item.info}}
+        <i class="el-icon-loading" style="color:#009a22" />
+      </li>
+    </ul>
   </div>
 </template>
 <script>
@@ -11,14 +18,75 @@ export default {
   name: "simData",
   data() {
     return {
-      simVechile: null
+      simVechile: null,
+      simstep: [
+        {
+          show: true,
+          info: ""
+        },
+        {
+          show: false,
+          info: ""
+        },
+        {
+          show: false,
+          info: ""
+        },
+        {
+          show: false,
+          info: ""
+        }
+      ]
     };
   },
+
+  mounted() {
+    let self = this;
+    this.$nextTick(() => {
+      this.simstep[0].show = true;
+      this.simstep[0].info = "开始模拟数据";
+      setTimeout(() => {
+        self.simData();
+      }, 1000);
+    });
+  },
+
   methods: {
     simData() {
+      let self = this;
       let city = this.$store.state.platformData.state.city;
-      let number = this.$store.state.platformData.basedata.data[0].number
-      this.simVechile = simData.simVechileData(number, city).join(" | ");
+      let number = this.$store.state.platformData.basedata.data[0].number;
+      // this.simVechile = simData.randomVehile(number, city).join(" | ");
+      this.$store.commit("simVechile", simData.randomVehile(number, city));
+      this.simstep[1].show = true;
+      this.simstep[1].info =
+        "正在模拟" +
+        number +
+        "辆车牌号..........................................";
+      setTimeout(function() {
+        self.simstep[1].info =
+          "正在模拟" +
+          number +
+          "辆车牌号..........................................已模拟完成";
+        setTimeout(self.simGpsData(), 3000);
+      }, 3000);
+    },
+    simGpsData() {
+      let self = this;
+      let adcode = this.$store.state.platformData.state.adcode;
+      let number = this.$store.state.platformData.basedata.data[0].number;
+      // console.log(localStorage.$simdata);
+      if (!localStorage.$simdata) {
+        simData.randomVechileGps(number, adcode);
+      }
+      this.simstep[2].show = true;
+      this.simstep[2].info =
+        "正在模拟车辆地理定位.........................................";
+      setTimeout(function() {
+        self.simstep[2].info =
+          "正在模拟车辆地理定位.........................................已模拟完成";
+          self.$store.commit("handle_step", 3);
+      }, 3000);
     }
   }
 };

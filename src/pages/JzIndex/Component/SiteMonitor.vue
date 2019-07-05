@@ -123,7 +123,6 @@ export default {
           events: {
             init(instance) {
               self.mapObj = amapManager.getMap();
-
               var buildingLayer = new AMap.Buildings({
                 zIndex: 30,
                 merge: true,
@@ -131,7 +130,6 @@ export default {
                 zooms: [16, 20],
                 heightFactor: 1
               });
-
               var toolBar = new AMap.ControlBar({
                 showZoomBar: false,
                 showControlButton: true,

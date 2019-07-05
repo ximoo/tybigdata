@@ -12,14 +12,7 @@
     <div class="ex-bigdata-main">
       <!-- 全局实时监控 -->
       <AllMonitor/>
-      <div class="item" style="width:240px;height:calc(100% - 240px)">
-        <h3>实时报警</h3>
-        <!-- 边框 -->
-        <div class="corner lt"></div>
-        <div class="corner rt"></div>
-        <div class="corner lb"></div>
-        <div class="corner rb"></div>
-      </div>
+      <realTimeMonitor/>
       <!-- 运营趋势 -->
       <TrendData/>
     </div>
@@ -44,6 +37,9 @@ import BaseData from "../Component/BaseData.vue";
 import OperateData from "../Component/OperateData.vue";
 import ProduceData from "../Component/ProduceData.vue";
 import AllMonitor from "../Component/AllMonitor.vue";
+import realTimeMonitor from "../Component/realTimeMonitor.vue";
+
+
 
 export default {
   name: "bigData",
@@ -52,7 +48,8 @@ export default {
     OperateData,
     ProduceData,
     TrendData,
-    AllMonitor
+    AllMonitor,
+    realTimeMonitor
   },
   mounted() {
     let self = this;

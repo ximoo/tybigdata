@@ -1,24 +1,24 @@
 <template>
   <div class="echarts-map">
-    <Echarts :options="map" autoresize class="map-content"/>
+    <Echarts :options="map" autoresize class="map-content" />
 
     <div class="map-icon-box">
       <ul>
         <li>
           <div class="map-icon">
-            <img src="../../../stastic/img/bigData/icon-garbage-site.png">
+            <img src="../../../stastic/img/bigData/icon-garbage-site.png" />
           </div>
           <div class="label">垃圾中转站</div>
         </li>
         <li>
           <div class="map-icon">
-            <img src="../../../stastic/img/bigData/icon-garbage.png">
+            <img src="../../../stastic/img/bigData/icon-garbage.png" />
           </div>
           <div class="label">垃圾桶站</div>
         </li>
         <li>
           <div class="map-icon">
-            <img src="../../../stastic/img/bigData/icon-garbage-download.png">
+            <img src="../../../stastic/img/bigData/icon-garbage-download.png" />
           </div>
           <div class="label">填埋场</div>
         </li>
@@ -63,13 +63,13 @@
           autoplay
           height="350px"
           indicator-position="none"
-          :interval="5000"
+          :interval="500"
         >
           <el-carousel-item>
             <ul>
               <li>
                 <div class="icon">
-                  <img src="../../../stastic/img/bigData/car-sashui.png">
+                  <img src="../../../stastic/img/bigData/car-sashui.png" />
                 </div>
                 <div class="info">
                   <p class="num">820</p>
@@ -78,7 +78,7 @@
               </li>
               <li>
                 <div class="icon">
-                  <img src="../../../stastic/img/bigData/car-caishi.png">
+                  <img src="../../../stastic/img/bigData/car-caishi.png" />
                 </div>
                 <div class="info">
                   <p class="num">820</p>
@@ -87,7 +87,7 @@
               </li>
               <li>
                 <div class="icon">
-                  <img src="../../../stastic/img/bigData/car-qingsao.png">
+                  <img src="../../../stastic/img/bigData/car-qingsao.png" />
                 </div>
                 <div class="info">
                   <p class="num">820</p>
@@ -96,7 +96,7 @@
               </li>
               <li>
                 <div class="icon">
-                  <img src="../../../stastic/img/bigData/car-zhatu.png">
+                  <img src="../../../stastic/img/bigData/car-zhatu.png" />
                 </div>
                 <div class="info">
                   <p class="num">820</p>
