@@ -66,11 +66,7 @@ export default {
             init(instance) {
               self.mapObj = amapManager.getMap();
               self.vecMarkers = new AMap.OverlayGroup();
-              mapEvent.initMap(
-                amapManager,
-                self.city,
-                self
-              );
+              mapEvent.initMap(amapManager, self.city, self);
               mapEvent.addVecMarker(self.mapObj, self.mapGps, self);
               setInterval(() => {
                 mapEvent.addVecMarker(self.mapObj, self.mapGps, self);

@@ -62,7 +62,7 @@
         </section>
         <section v-if="initStep == 2">
           <el-button type="default" @click="handleStep(1)">上一步</el-button>
-          <el-button type="primary" @click="handleStep(3)">下一步</el-button>
+          <!-- <el-button type="primary" @click="handleStep(3)">进入平台页面</el-button> -->
         </section>
       </span>
     </el-dialog>
