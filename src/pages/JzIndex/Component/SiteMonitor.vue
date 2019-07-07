@@ -1,6 +1,6 @@
 <template>
   <div class="item" style="width:calc(100% - 248px);height:calc(100% - 240px)">
-    <h3>场站实时状况</h3>
+    <h3 style="margin-left:25px;">场站实时状况</h3>
     <el-amap
       :vid="'amap-vue-air'"
       :center="center"

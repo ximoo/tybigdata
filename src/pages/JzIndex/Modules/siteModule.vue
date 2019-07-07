@@ -1,7 +1,9 @@
 <template>
-  <div class="ex-bigdata-main">
+  <div class="ex-bigdata-main" :class="{full:fullMain}">
+    <el-button @click="handleFull" icon="el-icon-d-arrow-left" type="info" size="mini" round class="full-main-btn" v-if="!fullMain"></el-button>
+    <el-button @click="handleFull" icon="el-icon-d-arrow-right" type="info" size="mini" round class="full-main-btn" v-else></el-button>
     <!-- 环境监测 -->
-    <SiteMonitor/>
+    <SiteMonitor />
     <div class="item" style="width:240px;height:calc(100% - 240px)">
       <h3>场站环境监测排名</h3>
       <!-- 边框 -->
@@ -12,7 +14,7 @@
     </div>
 
     <!-- 环境污染变化趋势 -->
-    <AirData/>
+    <AirData />
   </div>
 </template>
 <script>
@@ -21,7 +23,16 @@ import AirData from "../Component/AirData";
 
 export default {
   name: "jHome",
-  components: {  SiteMonitor, AirData },
-  methods: {}
+  data() {
+    return {
+      fullMain: false
+    };
+  },
+  components: { SiteMonitor, AirData },
+  methods: {
+    handleFull(){
+      this.fullMain = !this.fullMain
+    }
+  }
 };
 </script>

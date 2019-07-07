@@ -114,7 +114,7 @@ li {
             width: 320px;
             height: 100%;
             margin: 2px;
-            float:left;
+            float: left;
 
             .item {
                 width: 320px;
@@ -196,7 +196,27 @@ li {
             width: calc(~'50vw - 166px');
             height: 100%;
             margin: 2px;
-            float:left;
+            float: left;
+            position: relative;
+            transition: .5s width ease-in-out;
+
+            .full-main-btn {
+                position: absolute;
+                top: 7px;
+                left: 10px;
+                z-index: 20;
+                padding: 5px !important;
+            }
+
+            &.full {
+                width: calc(100vw - 330px);
+                position: absolute;
+                right: 0;
+                background: #1d1e4a;
+                z-index: 10;
+            }
+
+
             .item {
                 width: calc(~"100% - 4px");
                 // height: calc(~"100% - 20px");
@@ -204,7 +224,7 @@ li {
                 background: rgba(0, 0, 0, .35);
                 position: relative;
                 margin: 2px;
-                float:left;
+                float: left;
 
                 h3 {
                     position: relative;
