@@ -21,13 +21,19 @@ export default new Vuex.Store({
                 "site": {
                     "name": "工地",
                     "data": [{
+                        "type": "site",
+                        "icon": "icon-site-tab",
+                        "center": [],
                         "name": "",
-                        "path": ""
+                        "path": "",
                     }]
                 },
                 "landfill": {
                     "name": "消纳点",
                     "data": [{
+                        "type": "landfill",
+                        "icon": "icon-site-tab",
+                        "center": [],
                         "name": "",
                         "path": ""
                     }]
@@ -378,9 +384,11 @@ export default new Vuex.Store({
             console.log(data.index)
             switch (data.type) {
                 case "site":
+                    state.platformData.fences.site.data[data.index].center = data.center
                     state.platformData.fences.site.data[data.index].path = data.path
                     break;
                 case "landfill":
+                    state.platformData.landfill.site.data[data.index].center = data.center
                     state.platformData.fences.landfill.data[data.index].path = data.path
                     break;
             }

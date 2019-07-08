@@ -76,7 +76,7 @@ export default {
           lnglat: vechileGps[vechileIndex].location,
           address: vechileGps[vechileIndex].address,
           icon: icons[singalType],
-          alermname: alermsData.list[singalType].label,
+          alermname: alermsData.list[0].label,
           style: randomIze.randomLib(0, 2)
         });
         // console.log(singalType);

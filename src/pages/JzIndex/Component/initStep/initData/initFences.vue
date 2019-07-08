@@ -35,7 +35,6 @@
                 <el-form-item label="工地围栏路径：">
                   <el-input
                     type="textarea"
-                    
                     :rows="4"
                     v-model="item.path"
                     placeholder="请输入围栏经纬度，以'|'进行分隔'"
@@ -196,14 +195,23 @@ export default {
       self.mapObj.setDefaultCursor("crosshair");
       let index = self.indexRecord[0];
       let type = self.indexRecord[1];
-      let pathString = [];
+      let pathString = [],
+        tempPath = [];
       mouseTool.on("draw", function(e) {
         let path = e.obj.B.path;
+        console.log(e.obj);
         for (var i in path) {
-          pathString.push(path[i].lng + "," + path[i].lat);
+          // pathString.push(path[i].lng + "," + path[i].lat);
+          tempPath.push({
+            lng: parseFloat(path[i].lng),
+            lat: parseFloat(path[i].lat)
+          });
         }
+
+
         self.$store.commit("recodePath", {
-          path: pathString.join("|"),
+          path:JSON.stringify(tempPath),  //pathString.join("|"),
+          center:getCenterPoint(tempPath),
           index: index,
           type: type
         });
@@ -216,6 +224,23 @@ export default {
         strokeColor: "#80d8ff",
         strokeWeight: 5
       });
+
+      function getCenterPoint(path) {
+        //var path =e.;//Array<Point> 返回多边型的点数组
+        //var ret=parseFloat(num1)+parseFloat(num2);
+        var x = 0.0;
+        var y = 0.0;
+        for (var i = 0; i < path.length; i++) {
+          x = x + parseFloat(path[i].lng);
+          y = y + parseFloat(path[i].lat);
+        }
+        x = x / path.length;
+        y = y / path.length;
+
+        //return new BMap.Point(path[0].lng,path[0].lat);
+        return [x, y];
+        //return path[0];
+      }
     },
 
     handleDrawClose() {},
