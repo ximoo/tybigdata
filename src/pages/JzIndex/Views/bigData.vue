@@ -9,7 +9,9 @@
       <ProduceData/>
     </div>
 
-    <div class="ex-bigdata-main">
+    <div class="ex-bigdata-main" :class="{full:fullMain}">
+    <el-button @click="handleFull" icon="el-icon-d-arrow-left" type="info" size="mini" round class="full-main-btn right" v-if="fullMain"></el-button>
+    <el-button @click="handleFull" icon="el-icon-d-arrow-right" type="info" size="mini" round class="full-main-btn right" v-else></el-button>
       <!-- 全局实时监控 -->
       <AllMonitor/>
       <realTimeMonitor/>
@@ -32,17 +34,22 @@ require("echarts/lib/chart/map");
 require("echarts/lib/chart/pie");
 require("echarts/lib/chart/radar");
 
-import TrendData from "../Component/TrendData";
-import BaseData from "../Component/BaseData.vue";
-import OperateData from "../Component/OperateData.vue";
-import ProduceData from "../Component/ProduceData.vue";
-import AllMonitor from "../Component/AllMonitor.vue";
-import realTimeMonitor from "../Component/realTimeMonitor.vue";
+import TrendData from "../Component/AllMonitor/TrendData";
+import BaseData from "../Component/AllMonitor/BaseData.vue";
+import OperateData from "../Component/AllMonitor/OperateData.vue";
+import ProduceData from "../Component/AllMonitor/ProduceData.vue";
+import AllMonitor from "../Component/AllMonitor/AllMonitor.vue";
+import realTimeMonitor from "../Component/AllMonitor/realTimeMonitor.vue";
 
 
 
 export default {
   name: "bigData",
+  data() {
+    return {
+      fullMain: false
+    };
+  },
   components: {
     BaseData,
     OperateData,
@@ -54,6 +61,11 @@ export default {
   mounted() {
     let self = this;
     this.$nextTick(function() {});
+  },
+  methods: {
+    handleFull(){
+      this.fullMain = !this.fullMain
+    }
   }
 };
 </script>

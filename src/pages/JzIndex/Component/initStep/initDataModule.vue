@@ -13,8 +13,8 @@
           <el-step
             :title="item.label"
             :icon="item.icon"
-            v-for="item,index in dialogTitle"
             :key="index"
+            v-for="item,index in dialogTitle"
           ></el-step>
         </el-steps>
       </span>
@@ -30,15 +30,11 @@
           <el-tab-pane label="全局监管">
             <initAllMonitor />
           </el-tab-pane>
-          <el-tab-pane label="环境监测" v-if="pModule.airmonitor.enable">
-            <initAirMonitor />
-          </el-tab-pane>
-
-          <!-- <el-tab-pane label="围栏设置">
-            <initFences />
-          </el-tab-pane> -->
           <el-tab-pane label="场站管理" v-if="pModule.sitemonitor.enable">
             <initFences />
+          </el-tab-pane>
+          <el-tab-pane label="环境监测" v-if="pModule.airmonitor.enable">
+            <initAirMonitor />
           </el-tab-pane>
         </el-tabs>
       </section>
@@ -73,11 +69,11 @@
 import service from "./initdatamodule.service";
 import store from "../Configs/store";
 
-import initBaseData from "../../JzIndex/Component/initStep/initData/initBaseData"; //初始化基础数据
-import initAllMonitor from "../../JzIndex/Component/initStep/initData/initAllMonitor.vue"; //初始化全局监控数据
-import initAirMonitor from "../../JzIndex/Component/initStep/initData/initAirMonitor.vue"; //初始化环境监测数据
-import initFences from "../../JzIndex/Component/initStep/initData/initFences.vue"; //初始化围栏数据
-import simData from "../../JzIndex/Component/initStep/initData/simData.vue"; //模拟数据生成
+import initBaseData from "./initData/initBaseData"; //初始化基础数据
+import initAllMonitor from "./initData/initAllMonitor.vue"; //初始化全局监控数据
+import initAirMonitor from "./initData/initAirMonitor.vue"; //初始化环境监测数据
+import initFences from "./initData/initFences.vue"; //初始化围栏数据
+import simData from "./initData/simData.vue"; //模拟数据生成
 
 export default {
   name: "initDataModule",
@@ -102,7 +98,7 @@ export default {
   methods: {
     handleStep(step) {
       this.$store.commit("handle_step", step);
-    },
+    }
   },
   computed: {
     initStep() {

@@ -7,9 +7,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        "version": "3.4.19.0705",
+        "version": "3.4.19.0708",
         "isFirst": !localStorage.$platformData,
-        "initStep": 0,
+        "initStep": 1,
         "platformData": localStorage.$platformData ? JSON.parse(localStorage.$platformData) : {
             "state": {
                 "name": "城市固废资源利用云平台",
@@ -256,14 +256,11 @@ export default new Vuex.Store({
         "handle_step": (state, data) => {
             state.initStep = data
             if (data == 1) {
-                // state.alerms = []
                 for (var i in state.platformData.alerms.list) {
                     if (state.platformData.alerms.list[i].enable) {
                         state.simData.alerms.push(i)
                     }
                 }
-                // console.log(state.simData.alerms)
-
                 axios.get(API.GET_AREACODE + "&extensions=all&subdistrict=1&keywords=" + state.platformData.state.city).then((res) => {
                     if (res.data.status === '1') {
                         // state.platformData.state.city = res.data.city
@@ -276,21 +273,13 @@ export default new Vuex.Store({
                     console.log(error)
                 })
             }
-            if (data == 2) {
-                // console.log(data)
-                // localStorage.$platformData = JSON.stringify(state.platformData)
-                // state.isFirst = false
-                // localStorage.$isFirst = false
-                // return false
-            }
+            if (data == 2) {}
             if (data == 3) {
-                // console.log(data)
                 localStorage.$platformData = JSON.stringify(state.platformData)
                 setTimeout(function () {
                     state.isFirst = false;
+                    window.location.reload()
                 }, 5000)
-
-                // localStorage.$isFirst = false
             }
         },
         "hanlde_basedata": (state) => {
@@ -384,6 +373,17 @@ export default new Vuex.Store({
         },
         "simMapGps": (state, data) => {
             state.mapGps = data
+        },
+        "recodePath": (state, data) => {
+            console.log(data.index)
+            switch (data.type) {
+                case "site":
+                    state.platformData.fences.site.data[data.index].path = data.path
+                    break;
+                case "landfill":
+                    state.platformData.fences.landfill.data[data.index].path = data.path
+                    break;
+            }
         }
     },
     getters: {}

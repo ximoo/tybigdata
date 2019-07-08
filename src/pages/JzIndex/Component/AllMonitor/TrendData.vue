@@ -11,7 +11,7 @@
 </template>
 <script>
 import getOption from "./trenddata.service";
-import randomIze from "../Configs/service.lib";
+import randomIze from "../../Configs/service.lib";
 
 let TrendId;
 
@@ -127,4 +127,3 @@ export default {
   }
 }
 </style>
-

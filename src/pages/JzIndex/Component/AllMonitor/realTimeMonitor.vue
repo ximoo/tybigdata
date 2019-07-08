@@ -1,7 +1,6 @@
 <template>
   <div class="item" style="width:240px;height:calc(100% - 240px)">
     <h3>实时报警</h3>
-
     <div class="realtime-box">
       <ul>
         <transition name="el-zoom-in-center" v-for="item,index in alermVechile" :key="index">
@@ -22,8 +21,7 @@
   </div>
 </template>
 <script>
-import randomIze from "../Configs/service.lib";
-
+import randomIze from "../../Configs/service.lib";
 let actMonitorId;
 export default {
   name: "realTimeMonitor",
@@ -56,15 +54,15 @@ export default {
 
       //海量点图标样式
       var icons = [
-        require("../../../stastic/img/icon/map_icon_1.png"),
-        require("../../../stastic/img/icon/map_icon_2.png"),
-        require("../../../stastic/img/icon/map_icon_3.png"),
-        require("../../../stastic/img/icon/map_icon_4.png"),
-        require("../../../stastic/img/icon/map_icon_5.png"),
-        require("../../../stastic/img/icon/map_icon_6.png"),
-        require("../../../stastic/img/icon/map_icon_7.png"),
-        require("../../../stastic/img/icon/map_icon_8.png"),
-        require("../../../stastic/img/icon/map_icon_9.png")
+        require("../../../../stastic/img/icon/map_icon_1.png"),
+        require("../../../../stastic/img/icon/map_icon_2.png"),
+        require("../../../../stastic/img/icon/map_icon_3.png"),
+        require("../../../../stastic/img/icon/map_icon_4.png"),
+        require("../../../../stastic/img/icon/map_icon_5.png"),
+        require("../../../../stastic/img/icon/map_icon_6.png"),
+        require("../../../../stastic/img/icon/map_icon_7.png"),
+        require("../../../../stastic/img/icon/map_icon_8.png"),
+        require("../../../../stastic/img/icon/map_icon_9.png")
       ];
 
       // console.log(alermsTypes);
@@ -72,18 +70,17 @@ export default {
         let singalType = parseInt(
           alermsTypes[randomIze.randomLib(0, self.simData.alerms.length - 1)]
         );
+        let vechileIndex = randomIze.randomLib(0, vechileGps.length - 1);
         alermVechile.push({
           name: vechileData[randomIze.randomLib(0, vechileData.length - 1)],
-          lnglat:
-            vechileGps[randomIze.randomLib(0, vechileGps.length - 1)].location,
-          address:
-            vechileGps[randomIze.randomLib(0, vechileGps.length - 1)].address,
+          lnglat: vechileGps[vechileIndex].location,
+          address: vechileGps[vechileIndex].address,
           icon: icons[singalType],
           alermname: alermsData.list[singalType].label,
           style: randomIze.randomLib(0, 2)
         });
+        // console.log(singalType);
       }
-      // console.log(alermsData.list.length);
       self.alermVechile = alermVechile;
       this.$store.commit("simMapGps", alermVechile);
     }
@@ -111,7 +108,7 @@ export default {
     //   no-repeat;
 
     div {
-      background: url("../../../stastic/img/bigData_jz/alerm_box.png") left
+      background: url("../../../../stastic/img/bigData_jz/alerm_box.png") left
         no-repeat;
       padding: 0 10px;
 

@@ -1,6 +1,6 @@
 <template>
   <div class="item" style="width:calc(100% - 248px);height:calc(100% - 240px)">
-    <h3>全局实时监控</h3>
+    <h3 style="margin-left:25px;">全局实时监控</h3>
     <el-amap
       :vid="'amap-vue-monitor'"
       :center="center"
@@ -30,7 +30,7 @@
 <script>
 import mapEvent from "./allmonitor.service";
 import VueAMap from "vue-amap";
-import store from "../Configs/store";
+import store from "../../Configs/store";
 
 let amapManager = new VueAMap.AMapManager();
 let mapTruckId;

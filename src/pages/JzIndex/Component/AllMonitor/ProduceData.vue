@@ -45,7 +45,7 @@
   </div>
 </template>
 <script>
-import randomIze from "../Configs/service.lib";
+import randomIze from "../../Configs/service.lib";
 let activeBarId;
 export default {
   name: "ProduceData",
@@ -127,7 +127,7 @@ export default {
           float: left;
           border-radius: 0 5px 5px 0;
           background: #204ea1
-            url("../../../stastic/img/bigData_jz/charts_bar_v_bg.png");
+            url("../../../../stastic/img/bigData_jz/charts_bar_v_bg.png");
         }
       }
 
@@ -148,7 +148,7 @@ export default {
           white-space: nowrap;
           height: 8px;
           background: #1d857a
-            url("../../../stastic/img/bigData_jz/charts_bar_v_bg.png");
+            url("../../../../stastic/img/bigData_jz/charts_bar_v_bg.png");
           float: right;
           width: 30px;
           margin: 0;
@@ -167,4 +167,3 @@ export default {
   }
 }
 </style>
-

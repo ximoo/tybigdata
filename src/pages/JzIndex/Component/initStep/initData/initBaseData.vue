@@ -108,7 +108,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="6">
-              <el-form-item label="工地监控">
+              <el-form-item label="场站管理">
                 <el-switch v-model="pModule.sitemonitor.enable"></el-switch>
               </el-form-item>
             </el-col>

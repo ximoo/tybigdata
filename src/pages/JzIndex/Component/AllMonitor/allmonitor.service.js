@@ -201,8 +201,7 @@ var siteGeo = [{
   }
 ];
 
-import store from "../Configs/store"
-
+import store from "../../Configs/store"
 let massTruck
 
 export default {
@@ -305,7 +304,7 @@ export default {
       switch (siteGeo[i].type) {
         case "upload":
           var siteMarker = new AMap.Marker({
-            icon: require("../../../stastic/img/bigData_jz/icon/icon-upload.png"),
+            icon: require("../../../../stastic/img/bigData_jz/icon/icon-upload.png"),
             position: siteGeo[i].center,
             offset: new AMap.Pixel(-16, -16),
             clickable: true
@@ -313,7 +312,7 @@ export default {
           break;
         case "site":
           var siteMarker = new AMap.Marker({
-            icon: require("../../../stastic/img/bigData_jz/icon/icon-site.png"),
+            icon: require("../../../../stastic/img/bigData_jz/icon/icon-site.png"),
             position: siteGeo[i].center,
             offset: new AMap.Pixel(-16, -16),
             clickable: true
@@ -368,17 +367,17 @@ export default {
 
     //海量点图标样式
     var style = [{
-        url: require("../../../stastic/img/bigData_jz/icon/icon-drive.png"),
+        url: require("../../../../stastic/img/bigData_jz/icon/icon-drive.png"),
         anchor: new AMap.Pixel(6, 6),
         size: new AMap.Size(12, 12)
       },
       {
-        url: require("../../../stastic/img/bigData_jz/icon/icon-stop.png"),
+        url: require("../../../../stastic/img/bigData_jz/icon/icon-stop.png"),
         anchor: new AMap.Pixel(6, 6),
         size: new AMap.Size(12, 12)
       },
       {
-        url: require("../../../stastic/img/bigData_jz/icon/icon-alerm.png"),
+        url: require("../../../../stastic/img/bigData_jz/icon/icon-alerm.png"),
         anchor: new AMap.Pixel(6, 6),
         size: new AMap.Size(12, 12)
       }
@@ -477,18 +476,4 @@ export default {
     self.mapObj.setZoom(18);
     self.pantoBuild(self.siteMarkers[index].data);
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

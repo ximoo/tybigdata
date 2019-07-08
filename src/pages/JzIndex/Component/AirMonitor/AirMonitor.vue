@@ -1,6 +1,6 @@
 <template>
   <div class="item" style="width:calc(100% - 248px);height:calc(100% - 240px)">
-    <h3>全市空气质量监测</h3>
+    <h3 style="margin-left:25px;">全市空气质量监测</h3>
     <Echarts :options="map" autoresize class="map-content" style="height:calc(100% - 32px)"/>
     <!-- 边框 -->
     <div class="corner lt"></div>
@@ -14,9 +14,8 @@ import ECharts from "vue-echarts";
 import getMap from "./airmonitor.service.js";
 
 import axios from "axios";
-import store from "../Configs/store";
-
-import tyMaps from "../../../stastic/ty.json";
+import store from "../../Configs/store";
+import tyMaps from "../../../../stastic/ty.json";
 
 function randomize() {
   return Math.round(30 / 10 + (Math.random() * 70) / 10);

@@ -51,7 +51,7 @@ export default {
       width: 100%;
       line-height: 100px;
       max-height: 100px;
-      background: url("../../../stastic/img/bigData_jz/base_data_bg.png") center
+      background: url("../../../../stastic/img/bigData_jz/base_data_bg.png") center
         no-repeat;
       background-size: contain;
     }

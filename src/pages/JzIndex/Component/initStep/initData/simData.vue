@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import simData from "../../Configs/service.lib";
+import simData from "../../../Configs/service.lib";
 
 export default {
   name: "simData",

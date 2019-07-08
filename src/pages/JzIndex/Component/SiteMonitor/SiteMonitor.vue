@@ -28,7 +28,6 @@
   </div>
 </template>
 <script>
-import getOption from "./operatedata.service";
 import VueAMap from "vue-amap";
 
 let amapManager = new VueAMap.AMapManager();

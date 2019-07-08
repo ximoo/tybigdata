@@ -17,7 +17,7 @@
             <div :style="{'height': (item.today / item.number)*100+'%'}"></div>
           </li>
         </ol>
-        <h5>{{item.label}}({{item.unit}})</h5></li>
+        <h5>{{item.label}}<br/>({{item.unit}})</h5></li>
     </ul>
 
     <!-- 边框 -->
@@ -29,7 +29,7 @@
 </template>
 <script>
 import getOption from "./operatedata.service";
-import randomIze from "../Configs/service.lib"
+import randomIze from "../../Configs/service.lib"
 
 let activeBarId,activePieId
 
@@ -139,7 +139,7 @@ export default {
           max-height: calc(~"100% - 40px");
           border-radius: 1px 1px 0 0;
           background: #1d857a
-            url("../../../stastic/img/bigData_jz/charts_bar_bg.png");
+            url("../../../../stastic/img/bigData_jz/charts_bar_bg.png");
           position: absolute;
           bottom: 0;
           left: 50%;
@@ -149,11 +149,10 @@ export default {
       li:last-child {
         div {
           background: #204ea1
-            url("../../../stastic/img/bigData_jz/charts_bar_bg.png");
+            url("../../../../stastic/img/bigData_jz/charts_bar_bg.png");
         }
       }
     }
   }
 }
 </style>
-
