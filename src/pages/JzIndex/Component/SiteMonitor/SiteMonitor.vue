@@ -103,6 +103,7 @@ export default {
             data: {
               path: JSON.parse(siteGeo[i].path),
               door: siteGeo[i].door,
+              wash: siteGeo[i].wash,
               location: siteGeo[i].center,
               address: siteGeo[i].address,
               // pm: siteGeo[i].pm,
@@ -217,7 +218,7 @@ export default {
         var prismWash = new AMap.Object3D.Prism({
           path: boundsWash,
           height: 150,
-          color: "#ffcc00", // 支持 #RRGGBB、rgb()、rgba() 格式数据
+          color: "#ff3300", // 支持 #RRGGBB、rgb()、rgba() 格式数据
           zIndex: 50
         });
         self.object3Dlayer.add(prismWash);

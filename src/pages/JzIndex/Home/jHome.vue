@@ -1,7 +1,7 @@
 <template>
   <div class="ex-pages-bigdata">
     <fullScreen />
-    <div v-if="isFirst">
+    <div v-if="!isFirst">
       <Tile />
       <div class="ex-screen" style="left:40px">
         <div class="ex-message" v-if="setupBtn">

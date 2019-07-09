@@ -279,20 +279,39 @@ export default {
       showLabel: true,
       amapManager,
       mapObj: null,
-      mouseTool: {
-        fence:null,
-        door:null,
-        wash:null,
-      },
+      mouseTool: null,
+      ToolFence: null,
+      ToolDoor: null,
+      ToolWash: null,
       indexRecord: null,
       polygonFence: null,
       polygonDoor: null,
       polygonWash: null,
       events: {
         init(o) {
-          self.mouseTool.fence = new AMap.MouseTool(o);
-          self.mouseTool.door = new AMap.MouseTool(o);
-          self.mouseTool.wash = new AMap.MouseTool(o);
+          self.mouseTool = new AMap.MouseTool(o);
+
+          self.ToolFence = self.mouseTool.polygon({
+            fillColor: "#00b0ff",
+            strokeColor: "#80d8ff",
+            strokeWeight: 5,
+            zIndex: 50
+          });
+
+          self.ToolDoor = self.mouseTool.polygon({
+            fillColor: "#ffcc00",
+            strokeColor: "#ff6600",
+            strokeWeight: 3,
+            zIndex: 60
+          });
+
+          self.ToolWash = self.mouseTool.polygon({
+            fillColor: "#ffcc00",
+            strokeColor: "#ff6600",
+            strokeWeight: 3,
+            zIndex: 60
+          });
+
           self.mapObj = o;
         }
       },
@@ -391,43 +410,41 @@ export default {
     //开始画多边形
     startDraw() {
       let self = this;
-      if (self.mouseTool.fence) self.mouseTool.fence.close(true);
+      console.log(self.mouseTool);
+      if(self.tempPath) self.mapObj.remove(self.tempPath);
       if (self.polygonFence) self.mapObj.remove(self.polygonFence);
       self.mapObj.setDefaultCursor("crosshair");
       let index = self.indexRecord[0];
       let type = self.indexRecord[1].type;
       let pathString = [];
       self.tempPath = [];
-      self.mouseTool.fence.on("draw", function(e) {
-        let path = e.obj.B.path;
-        // console.log(e.obj);
-        for (var i in path) {
-          self.tempPath.push({
-            lng: parseFloat(path[i].lng),
-            lat: parseFloat(path[i].lat)
-          });
-        }
-      });
 
-      self.mouseTool.fence.polygon({
-        fillColor: "#00b0ff",
-        strokeColor: "#80d8ff",
-        strokeWeight: 5,
-        zIndex: 50
+
+
+      self.mouseTool.on("draw", function(e) {
+        let path = e.obj.getPath();
+        // console.log(e.obj);
+        self.tempPath.push(e.obj)
+        // for (var i in path) {
+        //   self.tempPath.push({
+        //     lng: parseFloat(path[i].lng),
+        //     lat: parseFloat(path[i].lat)
+        //   });
+        // }
       });
     },
 
     //开始画门禁
     startDrawDoor() {
       let self = this;
-      if (self.mouseTool.door) self.mouseTool.door.close(true);
+      if (self.mouseToolDoor) self.mouseToolDoor.close(true);
       if (self.polygonDoor) self.mapObj.remove(self.polygonDoor);
       self.mapObj.setDefaultCursor("crosshair");
       let index = self.indexRecord[0];
       let type = self.indexRecord[1].type;
       let pathString = [];
       self.tempDoor = [];
-      self.mouseTool.door.on("draw", function(e) {
+      self.mouseToolDoor.on("draw", function(e) {
         let path = e.obj.B.path;
         // console.log(e.obj);
         for (var i in path) {
@@ -437,26 +454,19 @@ export default {
           });
         }
       });
-
-      self.mouseTool.door.polygon({
-        fillColor: "#ffcc00",
-        strokeColor: "#ff6600",
-        strokeWeight: 3,
-        zIndex: 60
-      });
     },
 
     //开始画洗车槽
     startDrawWash() {
       let self = this;
-      if (self.mouseTool.wash) self.mouseTool.wash.close(true);
+      if (self.mouseToolWash) self.mouseToolWash.close(true);
       if (self.polygonWash) self.mapObj.remove(self.polygonWash);
       self.mapObj.setDefaultCursor("crosshair");
       let index = self.indexRecord[0];
       let type = self.indexRecord[1].type;
       let pathString = [];
       self.tempWash = [];
-      self.mouseTool.wash.on("draw", function(e) {
+      self.mouseToolWash.on("draw", function(e) {
         let path = e.obj.B.path;
         // console.log(e.obj);
         for (var i in path) {
@@ -465,13 +475,6 @@ export default {
             lat: parseFloat(path[i].lat)
           });
         }
-      });
-
-      self.mouseTool.wash.polygon({
-        fillColor: "#ffcc00",
-        strokeColor: "#ff6600",
-        strokeWeight: 3,
-        zIndex: 60
       });
     },
 
@@ -509,7 +512,9 @@ export default {
         });
 
       self.iFence.show = false;
-      self.mouseTool.close(true);
+      if (self.mouseToolFence) self.mouseToolFence.close(true);
+      if (self.mouseToolDoor) self.mouseToolDoor.close(true);
+      if (self.mouseToolWash) self.mouseToolFence.wash(true);
       self.mapObj.setDefaultCursor("pointer");
     },
 

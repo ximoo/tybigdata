@@ -9,7 +9,7 @@ export default new Vuex.Store({
     state: {
         "version": "3.4.19.0709",
         "isFirst": !localStorage.$platformData,
-        "initStep": 1,
+        "initStep": 0,
         "platformData": localStorage.$platformData ? JSON.parse(localStorage.$platformData) : {
             "state": {
                 "name": "城市固废资源利用云平台",
