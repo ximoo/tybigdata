@@ -14,5 +14,7 @@ export default {
     //获取POI信息
     GET_POI: 'https://restapi.amap.com/v3/place/text?key=' + AmapWebKey,
     GET_AROUND: 'https://restapi.amap.com/v3/place/around?key=' + AmapWebKey,
+    //逆地理编码
+    GET_ADDRESS: 'https://restapi.amap.com/v3/geocode/regeo?key=' + AmapWebKey,
 
 };

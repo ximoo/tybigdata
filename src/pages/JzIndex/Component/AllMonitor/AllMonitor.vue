@@ -20,11 +20,7 @@
       :amap-manager="amapManager"
       style="height:calc(100% - 36px)"
     ></el-amap>
-    <!-- 边框 -->
-    <div class="corner lt"></div>
-    <div class="corner rt"></div>
-    <div class="corner lb"></div>
-    <div class="corner rb"></div>
+    <Conner/>
   </div>
 </template>
 <script>
@@ -48,8 +44,8 @@ export default {
       animateEnable: true,
       features: ["bg", "point", "road", "building"],
       // center: [store.state.platformData.state.city],
-      pitch: 0,
-      rotation: 0,
+      pitch: 65,
+      rotation: 15,
       buildingAnimation: true, //楼块出现是否带动画
       expandZoomRange: true,
       amapManager,

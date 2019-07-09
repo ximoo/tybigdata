@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        "version": "3.4.19.0708",
+        "version": "3.4.19.0709",
         "isFirst": !localStorage.$platformData,
         "initStep": 1,
         "platformData": localStorage.$platformData ? JSON.parse(localStorage.$platformData) : {
@@ -16,28 +16,6 @@ export default new Vuex.Store({
                 "city": "武汉市",
                 "adcode": "420000",
                 "center": "114.374025,30.874155",
-            },
-            "fences": {
-                "site": {
-                    "name": "工地",
-                    "data": [{
-                        "type": "site",
-                        "icon": "icon-site-tab",
-                        "center": [],
-                        "name": "",
-                        "path": "",
-                    }]
-                },
-                "landfill": {
-                    "name": "消纳点",
-                    "data": [{
-                        "type": "landfill",
-                        "icon": "icon-site-tab",
-                        "center": [],
-                        "name": "",
-                        "path": ""
-                    }]
-                }
             },
             "alerms": {
                 "name": "车辆报警类型",
@@ -224,9 +202,46 @@ export default new Vuex.Store({
                     "module": {}
                 },
                 "sitemonitor": {
-                    "name": "工地监控",
+                    "name": "场站实时状况",
                     "enable": true,
-                    "module": {}
+                    "module": {
+                        "fences": {
+                            "site": [{
+                                "name": "",
+                                "type": "site",
+                                "icon": "icon-site-tab",
+                                "center": [],
+                                "path": "",
+                                "door": {
+                                    enable: true,
+                                    path: ""
+                                },
+                                "wash": {
+                                    enable: true,
+                                    path: ""
+                                }
+                            }],
+                            "landfill": [{
+                                "name": "",
+                                "type": "landfill",
+                                "icon": "icon-site-tab",
+                                "center": [],
+                                "path": "",
+                                "door": {
+                                    enable: true,
+                                    path: ""
+                                },
+                                "wash": {
+                                    enable: true,
+                                    path: ""
+                                }
+                            }]
+                        },
+                        "airmonitor": {
+                            enable: true,
+                            "type": []
+                        },
+                    }
                 }
             }
         },
@@ -381,17 +396,29 @@ export default new Vuex.Store({
             state.mapGps = data
         },
         "recodePath": (state, data) => {
-            console.log(data.index)
+            // console.log(data.index)
+
             switch (data.type) {
+
                 case "site":
-                    state.platformData.fences.site.data[data.index].center = data.center
-                    state.platformData.fences.site.data[data.index].path = data.path
+                    state.platformData.module.sitemonitor.module.fences.site[data.index].address = data.address
+                    state.platformData.module.sitemonitor.module.fences.site[data.index].center = data.center
+                    state.platformData.module.sitemonitor.module.fences.site[data.index].path = data.path
+                    state.platformData.module.sitemonitor.module.fences.site[data.index].door.path = data.door.path
+                    state.platformData.module.sitemonitor.module.fences.site[data.index].wash.path = data.wash.path
                     break;
+
                 case "landfill":
-                    state.platformData.landfill.site.data[data.index].center = data.center
-                    state.platformData.fences.landfill.data[data.index].path = data.path
+                    state.platformData.module.sitemonitor.module.fences.landfill[data.index].address = data.address
+                    state.platformData.module.sitemonitor.module.fences.landfill[data.index].center = data.center
+                    state.platformData.module.sitemonitor.module.fences.landfill[data.index].path = data.path
+                    state.platformData.module.sitemonitor.module.fences.landfill[data.index].door.path = data.door.path
+                    state.platformData.module.sitemonitor.module.fences.landfill[data.index].wash.path = data.wash.path
                     break;
+
             }
+
+
         }
     },
     getters: {}

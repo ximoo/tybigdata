@@ -85,7 +85,19 @@ export default {
       setTimeout(function() {
         self.simstep[2].info =
           "正在模拟车辆地理定位.........................................已模拟完成";
-          self.$store.commit("handle_step", 3);
+          self.simFencesData()
+      }, 3000);
+    },
+    simFencesData() {
+      let self = this;
+      let adcode = this.$store.state.platformData.state.adcode;
+      this.simstep[3].show = true;
+      this.simstep[3].info =
+        "正在模拟场站信息.........................................";
+        setTimeout(function() {
+        self.simstep[3].info =
+          "正在模拟场站信息.........................................已模拟完成";
+        self.$store.commit("handle_step", 3);
       }, 3000);
     }
   }

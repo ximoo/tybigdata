@@ -20,11 +20,7 @@
         <h5>{{item.label}}<br/>({{item.unit}})</h5></li>
     </ul>
 
-    <!-- 边框 -->
-    <div class="corner lt"></div>
-    <div class="corner rt"></div>
-    <div class="corner lb"></div>
-    <div class="corner rb"></div>F
+    <Conner/>
   </div>
 </template>
 <script>

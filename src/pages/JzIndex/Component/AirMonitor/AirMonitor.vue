@@ -2,11 +2,7 @@
   <div class="item" style="width:calc(100% - 248px);height:calc(100% - 240px)">
     <h3 style="margin-left:25px;">全市空气质量监测</h3>
     <Echarts :options="map" autoresize class="map-content" style="height:calc(100% - 32px)"/>
-    <!-- 边框 -->
-    <div class="corner lt"></div>
-    <div class="corner rt"></div>
-    <div class="corner lb"></div>
-    <div class="corner rb"></div>
+    <Conner/>
   </div>
 </template>
 <script>
