@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        "version": "3.4.19.0709",
+        "version": "3.4.19.0710",
         "isFirst": !localStorage.$platformData,
         "initStep": 0,
         "platformData": localStorage.$platformData ? JSON.parse(localStorage.$platformData) : {
@@ -16,6 +16,7 @@ export default new Vuex.Store({
                 "city": "武汉市",
                 "adcode": "420000",
                 "center": "114.374025,30.874155",
+                "districts": []
             },
             "alerms": {
                 "name": "车辆报警类型",
@@ -209,7 +210,7 @@ export default new Vuex.Store({
                             "site": [{
                                 "name": "",
                                 "type": "site",
-                                "icon": "icon-site-tab",
+                                "icon": "el-icon-office-building",
                                 "center": [],
                                 "path": "",
                                 "door": {
@@ -224,7 +225,7 @@ export default new Vuex.Store({
                             "landfill": [{
                                 "name": "",
                                 "type": "landfill",
-                                "icon": "icon-site-tab",
+                                "icon": "el-icon-office-building",
                                 "center": [],
                                 "path": "",
                                 "door": {
@@ -284,9 +285,11 @@ export default new Vuex.Store({
                 }
                 axios.get(API.GET_AREACODE + "&extensions=all&subdistrict=1&keywords=" + state.platformData.state.city).then((res) => {
                     if (res.data.status === '1') {
+                        console.log(res.data)
                         // state.platformData.state.city = res.data.city
                         state.platformData.state.adcode = res.data.districts[0].adcode
                         state.platformData.state.center = res.data.districts[0].center
+                        state.platformData.state.districts = res.data.districts[0].districts
                     } else {
                         alert("没有定位成功")
                     }
@@ -374,10 +377,17 @@ export default new Vuex.Store({
         },
         "getCity": (state) => {
             axios.get(API.GET_CITY).then((res) => {
-                console.log(res)
+
                 if (res.data.status === '1') {
                     state.platformData.state.city = res.data.city
                     state.platformData.state.adcode = res.data.adcode
+                    state.platformData.state.regions = res.data
+
+
+
+
+
+
                 } else {
                     alert("没有定位成功")
                 }
@@ -397,20 +407,24 @@ export default new Vuex.Store({
         },
         "recodePath": (state, data) => {
             // console.log(data.index)
-
             switch (data.type) {
-
                 case "site":
+                        state.platformData.module.sitemonitor.module.fences.site[data.index].icon = 'el-icon-office-building'
+                    state.platformData.module.sitemonitor.module.fences.site[data.index].adcode = data.adcode
                     state.platformData.module.sitemonitor.module.fences.site[data.index].address = data.address
                     state.platformData.module.sitemonitor.module.fences.site[data.index].center = data.center
+                    state.platformData.module.sitemonitor.module.fences.site[data.index].district = data.district
                     state.platformData.module.sitemonitor.module.fences.site[data.index].path = data.path
                     state.platformData.module.sitemonitor.module.fences.site[data.index].door.path = data.door.path
                     state.platformData.module.sitemonitor.module.fences.site[data.index].wash.path = data.wash.path
                     break;
 
                 case "landfill":
+                    state.platformData.module.sitemonitor.module.fences.landfill[data.index].icon = 'el-icon-office-building'
+                    state.platformData.module.sitemonitor.module.fences.landfill[data.index].adcode = data.adcode
                     state.platformData.module.sitemonitor.module.fences.landfill[data.index].address = data.address
                     state.platformData.module.sitemonitor.module.fences.landfill[data.index].center = data.center
+                    state.platformData.module.sitemonitor.module.fences.landfill[data.index].district = data.district
                     state.platformData.module.sitemonitor.module.fences.landfill[data.index].path = data.path
                     state.platformData.module.sitemonitor.module.fences.landfill[data.index].door.path = data.door.path
                     state.platformData.module.sitemonitor.module.fences.landfill[data.index].wash.path = data.wash.path

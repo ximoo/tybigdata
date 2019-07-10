@@ -1,7 +1,6 @@
 <template>
   <div class="item" style="width:calc(100% - 248px);height:calc(100% - 240px)">
     <h3 style="margin-left:25px;">场站实时状况</h3>
-
     <el-amap
       :vid="'amap-vue-air'"
       :center="center"
@@ -25,22 +24,41 @@
         <h4>{{FencesName.name}}</h4>
         <p>{{FencesName.address}}</p>
       </div>
+
+      <el-carousel
+        class="fences-control"
+        :autoplay="false"
+        indicator-position="none"
+        type="card"
+        arrow="never"
+        height="60px"
+      >
+        <el-carousel-item>
+          <el-button @click="groupShow = true">打开列表</el-button>
+        </el-carousel-item>
+      </el-carousel>
     </el-amap>
+    <SiteGroup
+      :groupShow="groupShow"
+      :siteData="fences"
+      v-on:pantoBuild="pantoBuild"
+      v-on:closeGroupDialog="closeGroupDialog"
+    />
+
     <Conner />
   </div>
 </template>
 <script>
 import VueAMap from "vue-amap";
-
 let amapManager = new VueAMap.AMapManager();
-
 import mapEvent from "./sitemonitor.service";
+import SiteGroup from "./SiteGroup.vue";
 
 export default {
   name: "AirMonitor",
+  components: { SiteGroup },
   data() {
     let self = this;
-
     return {
       mapStyle: "amap://styles/10bb9e67de185a47f6ee4b1595438c6e", //8ef17ea2354d5c3d45ec46141986a67b',//样式URL
       zoom: 8,
@@ -75,9 +93,10 @@ export default {
             }
           });
           o.addControl(toolBar);
-          self.addSiteMarker();
+          self.addMarker();
         }
-      }
+      },
+      groupShow: false
     };
   },
   mounted() {
@@ -85,16 +104,30 @@ export default {
     this.$nextTick(() => {});
   },
   methods: {
-    addSiteMarker() {
+    addMarker() {
       let self = this;
       let obj = amapManager.getMap();
-
       self.siteMarkers = [];
-      let siteGeo = self.fences.site;
+      let siteGeo = self.fences;
       for (var i in siteGeo) {
         if (siteGeo[i].path !== "") {
+          console.log(siteGeo[i].type);
+          let iconUrl;
+          switch (siteGeo[i].type) {
+            case "site":
+              iconUrl = new AMap.Icon({
+                image: require("../../../../stastic/img/bigData_jz/icon/icon-site.png")
+              });
+              break;
+            case "landfill":
+              iconUrl = new AMap.Icon({
+                image: require("../../../../stastic/img/bigData_jz/icon/icon-upload.png")
+              });
+              break;
+          }
+
           self.siteMarkers.push({
-            icon: require("../../../../stastic/img/bigData_jz/icon/icon-site.png"),
+            icon: iconUrl,
             position: siteGeo[i].center,
             label: {
               offset: new AMap.Pixel(32, 0),
@@ -142,18 +175,17 @@ export default {
             //                    click:self.showVideo()
           });
 
-          self.FencesName = {
-            name: marker.data.name,
-            address: marker.data.address
-          };
-
           mker.on("click", function() {
             obj.setFitView([polygon]);
+            self.FencesName = {
+              name: marker.data.name,
+              address: marker.data.address
+            };
           });
-
-          obj.setFitView([polygon]);
         });
       }
+      console.log(self.siteMarkers);
+      obj.setFitView();
     },
 
     addSiteFences(obj, marker) {
@@ -175,7 +207,8 @@ export default {
       var prismFence = new AMap.Object3D.Prism({
         path: boundsFence,
         height: 150,
-        color: "rgba(100, 150, 230, 0.35)" // 支持 #RRGGBB、rgb()、rgba() 格式数据
+        color: "rgba(100, 150, 230, 0.35)", // 支持 #RRGGBB、rgb()、rgba() 格式数据
+        zIndex: 50
       });
 
       // 开启透明度支持
@@ -197,9 +230,9 @@ export default {
 
         var prismDoor = new AMap.Object3D.Prism({
           path: boundsDoor,
-          height: 150,
+          height: 50,
           color: "#ffcc00", // 支持 #RRGGBB、rgb()、rgba() 格式数据
-          zIndex: 50
+          zIndex: 60
         });
         self.object3Dlayer.add(prismDoor);
       }
@@ -217,9 +250,9 @@ export default {
 
         var prismWash = new AMap.Object3D.Prism({
           path: boundsWash,
-          height: 150,
-          color: "#ff3300", // 支持 #RRGGBB、rgb()、rgba() 格式数据
-          zIndex: 50
+          height: 25,
+          color: "#11c711", // 支持 #RRGGBB、rgb()、rgba() 格式数据
+          zIndex: 60
         });
         self.object3Dlayer.add(prismWash);
       }
@@ -269,11 +302,25 @@ export default {
       };
       buildRadar();
       scan();
+    },
+    closeGroupDialog() {
+      this.groupShow = false;
+    },
+    pantoBuild(data) {
+      let obj = amapManager.getMap();
+      obj.setZoomAndCenter(18, data.center);
+      this.FencesName = {
+        name: data.label,
+        address: data.address
+      };
     }
   },
   computed: {
     fences() {
-      return this.$store.state.platformData.module.sitemonitor.module.fences;
+      let siteGeo = this.$store.state.platformData.module.sitemonitor.module.fences.site.concat(
+        this.$store.state.platformData.module.sitemonitor.module.fences.landfill
+      );
+      return siteGeo;
     },
     city() {
       return this.$store.state.platformData.state.city;
@@ -294,6 +341,33 @@ export default {
 
   p {
     font-size: 14px;
+  }
+}
+
+.fences-control {
+  position: absolute;
+  left: 15px;
+  bottom: 15px;
+  width: 30%;
+  overflow: hidden;
+
+  &.el-carousel--horizontal {
+    overflow: inherit;
+  }
+
+  .el-carousel__container {
+    position: inherit;
+
+    .el-carousel__arrow--left {
+      left: -60% !important;
+    }
+    .el-carousel__arrow--right {
+      right: -60% !important;
+    }
+  }
+  button {
+    width: 100%;
+    height: 100%;
   }
 }
 </style>

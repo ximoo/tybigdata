@@ -1,7 +1,7 @@
 import store from "../../Configs/store"
 
 
-let siteGeo = store.state.platformData.module.sitemonitor.module.fences.site
+
 
 let object3Dlayer, radar
 

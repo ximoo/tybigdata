@@ -279,132 +279,89 @@ export default {
     // this.addSiteMarker(mapObj, e)
     // e.mass3DTruck.setData(truckMarkerGps);
   },
-  addSiteMarker(mapObj, e) {
-    let that = this
-    e.siteMarkers = [];
-    let siteMarkerGps = [],
-      sitePathGps = [];
+
+  addSiteMarker(mapObj, data, e) {
+    let self = e;
+    let obj = mapObj;
+    self.siteMarkers = [];
+    let siteGeo = data;
     for (var i in siteGeo) {
-      e.siteMarkers.push({
-        icon: "   /assets/img/behavior/map_icon_2.png",
-        position: siteGeo[i].center,
-        label: {
-          offset: new AMap.Pixel(32, 0),
-          content: siteGeo[i].title
-        },
-        data: {
-          path: siteGeo[i].path,
-          location: siteGeo[i].center,
-          door: siteGeo[i].door,
-          pm: siteGeo[i].pm,
-          name: siteGeo[i].title,
-          truck: siteGeo[i].truck
+      if (siteGeo[i].path !== "") {
+        console.log(siteGeo[i].type);
+        let iconUrl;
+        switch (siteGeo[i].type) {
+          case "site":
+            iconUrl = new AMap.Icon({
+              image: require("../../../../stastic/img/bigData_jz/icon/icon-site.png")
+            });
+            break;
+          case "landfill":
+            iconUrl = new AMap.Icon({
+              image: require("../../../../stastic/img/bigData_jz/icon/icon-upload.png")
+            });
+            break;
         }
-      });
-      switch (siteGeo[i].type) {
-        case "upload":
-          var siteMarker = new AMap.Marker({
-            icon: require("../../../../stastic/img/bigData_jz/icon/icon-upload.png"),
-            position: siteGeo[i].center,
-            offset: new AMap.Pixel(-16, -16),
-            clickable: true
-          });
-          break;
-        case "site":
-          var siteMarker = new AMap.Marker({
-            icon: require("../../../../stastic/img/bigData_jz/icon/icon-site.png"),
-            position: siteGeo[i].center,
-            offset: new AMap.Pixel(-16, -16),
-            clickable: true
-          });
-          break;
-      }
-      var sitePath = [];
-      for (var x in siteGeo[i].path) {
-        sitePath.push([siteGeo[i].path[x].lng, siteGeo[i].path[x].lat]);
+
+        self.siteMarkers.push({
+          icon: iconUrl,
+          position: siteGeo[i].center,
+          label: {
+            offset: new AMap.Pixel(32, 0),
+            content: siteGeo[i].title
+          },
+          data: {
+            path: JSON.parse(siteGeo[i].path),
+            door: siteGeo[i].door,
+            wash: siteGeo[i].wash,
+            location: siteGeo[i].center,
+            address: siteGeo[i].address,
+            // pm: siteGeo[i].pm,
+            name: siteGeo[i].name
+            // truck: siteGeo[i].truck
+          }
+        });
       }
 
-      sitePathGps.push(
-        new AMap.Polygon({
-          path: sitePath,
-          isOutline: true,
-          borderWeight: 1,
-          strokeColor: "#2cc6b6",
-          strokeWeight: 5,
+      self.siteMarkers.forEach(function(marker) {
+        let polyPath = [];
+        for (var i in marker.data.path) {
+          polyPath.push([marker.data.path[i].lng, marker.data.path[i].lat]);
+        }
+
+        var polygon = new AMap.Polygon({
+          map: obj,
+          strokeColor: "rgba(100, 150, 230, 1)",
+          strokeWeight: 6,
           strokeOpacity: 1,
           strokeStyle: "dashed",
-          fillOpacity: 0.2,
-          lineJoin: "round",
-          lineCap: "round",
-          fillColor: "#2cc6b6",
-          zIndex: 50
-        })
-      );
+          fillOpacity: 0.25,
+          fillColor: "rgba(100, 150, 230, 0.75)"
+        });
+        polygon.setPath(polyPath);
 
-      siteMarker.emit("click", {
-        target: siteMarker
+        var mker = new AMap.Marker({
+          map: obj,
+          icon: marker.icon,
+          position: [marker.position[0], marker.position[1]],
+          offset: new AMap.Pixel(-12, -30)
+          //                    label: marker.label,
+          //                    animation:'AMAP_ANIMATION_DROP'
+          //                    click:self.showVideo()
+        });
+
+        mker.on("click", function() {
+          obj.setFitView([polygon]);
+          self.FencesName = {
+            name: marker.data.name,
+            address: marker.data.address
+          };
+        });
       });
-      siteMarkerGps.push(siteMarker);
     }
-
-    siteMarkerGps.forEach(function (marker, index) {
-      // console.log(index);
-      marker.on("click", function () {
-        console.log("click!!!!!        " + index);
-        e.pantoSite(index);
-      });
-    });
-
-    var siteGroups = new AMap.OverlayGroup(siteMarkerGps);
-    var sitePathGroups = new AMap.OverlayGroup(sitePathGps);
-    mapObj.add(siteGroups);
-    mapObj.add(sitePathGps);
-
-    setTimeout(function () {
-      // mapObj.setFitView(siteMarkerGps);
-      // that.pantoBuild(e.siteMarkers[0].data,mapObj,e);
-    }, 2000);
-
-    //海量点图标样式
-    var style = [{
-        url: require("../../../../stastic/img/bigData_jz/icon/icon-drive.png"),
-        anchor: new AMap.Pixel(6, 6),
-        size: new AMap.Size(12, 12)
-      },
-      {
-        url: require("../../../../stastic/img/bigData_jz/icon/icon-stop.png"),
-        anchor: new AMap.Pixel(6, 6),
-        size: new AMap.Size(12, 12)
-      },
-      {
-        url: require("../../../../stastic/img/bigData_jz/icon/icon-alerm.png"),
-        anchor: new AMap.Pixel(6, 6),
-        size: new AMap.Size(12, 12)
-      }
-    ];
-
-    //加载海量点
-    e.mass3DTruck = new AMap.MassMarks([], {
-      opacity: 0.8,
-      zooms: [3, 20],
-      zIndex: 111,
-      cursor: "pointer",
-      style: style
-    });
-
-    e.tip3DMapMarker = new AMap.Marker({
-      content: " ",
-      zIndex: 1111,
-      map: mapObj
-    });
-    e.mass3DTruck.on("mouseover", function (e) {
-      self.tip3DMapMarker.setPosition(e.data.lnglat);
-      self.tip3DMapMarker.setLabel({
-        content: e.data.name
-      });
-    });
-    e.mass3DTruck.setMap(mapObj);
+    obj.setFitView();
   },
+
+
   pantoBuild(data, mapObj, e) {
     let self = this;
     mapObj.clearMap();

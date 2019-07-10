@@ -52,39 +52,54 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="4">
-                    <el-form-item label="工地围栏路径：">
+                    <el-form-item label="工地围栏：">
                       <el-input
                         type="textarea"
                         :rows="4"
                         v-model="item.path"
                         placeholder="请输入围栏经纬度，以'|'进行分隔'"
                       ></el-input>
+                      <el-button
+                        class="item-draw"
+                        type="info"
+                        icon="el-icon-edit"
+                        circle
+                        @click="handleDraw(index,item,'fence')"
+                      ></el-button>
                     </el-form-item>
                   </el-col>
                   <el-col :span="4">
-                    <el-form-item>
-                      <template slot="label">
-                        <el-checkbox v-model="item.door.enable">工地门禁：</el-checkbox>
-                      </template>
+                    <el-form-item label="门禁：">
                       <el-input
                         type="textarea"
                         :rows="4"
                         v-model="item.door.path"
                         placeholder="请输入围栏经纬度，以'|'进行分隔'"
                       ></el-input>
+                      <el-button
+                        class="item-draw"
+                        type="info"
+                        icon="el-icon-edit"
+                        circle
+                        @click="handleDraw(index,item,'door')"
+                      ></el-button>
                     </el-form-item>
                   </el-col>
                   <el-col :span="4">
-                    <el-form-item>
-                      <template slot="label">
-                        <el-checkbox v-model="item.wash.enable">工地洗车槽：</el-checkbox>
-                      </template>
+                    <el-form-item label="洗车槽：">
                       <el-input
                         type="textarea"
                         :rows="4"
                         v-model="item.wash.path"
                         placeholder="请输入围栏经纬度，以'|'进行分隔'"
                       ></el-input>
+                      <el-button
+                        class="item-draw"
+                        type="info"
+                        icon="el-icon-edit"
+                        circle
+                        @click="handleDraw(index,item,'wash')"
+                      ></el-button>
                     </el-form-item>
                   </el-col>
                   <el-col :span="3">
@@ -93,16 +108,16 @@
                       <li>
                         <el-checkbox v-model="item.video">工地视频</el-checkbox>
                       </li>
+                      <li>
+                        <el-checkbox v-model="item.truck">工地进出车辆模拟</el-checkbox>
+                      </li>
+                      <li>
+                        <el-checkbox v-model="item.truck">工地报警</el-checkbox>
+                      </li>
                     </ul>
                   </el-col>
                   <el-col :span="3" style="padding-top: 45px;">
                     <el-form-item>
-                      <el-button
-                        type="info"
-                        icon="el-icon-edit"
-                        circle
-                        @click="handleDraw(index,item)"
-                      ></el-button>
                       <el-button
                         v-if="index == fences.site.length -1 && index !=5"
                         type="success"
@@ -138,39 +153,54 @@
                     </el-form-item>
                   </el-col>
                   <el-col :span="4">
-                    <el-form-item label="消纳点围栏路径：">
+                    <el-form-item label="消纳点围栏：">
                       <el-input
                         type="textarea"
                         :rows="4"
                         v-model="item.path"
                         placeholder="请输入围栏经纬度，以'|'进行分隔'"
                       ></el-input>
+                      <el-button
+                        class="item-draw"
+                        type="info"
+                        icon="el-icon-edit"
+                        circle
+                        @click="handleDraw(index,item,'fence')"
+                      ></el-button>
                     </el-form-item>
                   </el-col>
                   <el-col :span="4">
-                    <el-form-item>
-                      <template slot="label">
-                        <el-checkbox v-model="item.door.enable">消纳点门禁：</el-checkbox>
-                      </template>
+                    <el-form-item label="门禁">
                       <el-input
                         type="textarea"
                         :rows="4"
                         v-model="item.door.path"
                         placeholder="请输入围栏经纬度，以'|'进行分隔'"
                       ></el-input>
+                      <el-button
+                        class="item-draw"
+                        type="info"
+                        icon="el-icon-edit"
+                        circle
+                        @click="handleDraw(index,item,'door')"
+                      ></el-button>
                     </el-form-item>
                   </el-col>
                   <el-col :span="4">
-                    <el-form-item>
-                      <template slot="label">
-                        <el-checkbox v-model="item.wash.enable">消纳点洗车槽：</el-checkbox>
-                      </template>
+                    <el-form-item label="洗车槽">
                       <el-input
                         type="textarea"
                         :rows="4"
                         v-model="item.wash.path"
                         placeholder="请输入围栏经纬度，以'|'进行分隔'"
                       ></el-input>
+                      <el-button
+                        class="item-draw"
+                        type="info"
+                        icon="el-icon-edit"
+                        circle
+                        @click="handleDraw(index,item,'wash')"
+                      ></el-button>
                     </el-form-item>
                   </el-col>
                   <el-col :span="3">
@@ -183,12 +213,6 @@
                   </el-col>
                   <el-col :span="3" style="padding-top: 45px;">
                     <el-form-item>
-                      <el-button
-                        type="info"
-                        icon="el-icon-edit"
-                        circle
-                        @click="handleDraw(index,item)"
-                      ></el-button>
                       <el-button
                         v-if="index == fences.landfill.length -1 && index !=5"
                         type="success"
@@ -239,18 +263,19 @@
           :showLabel="showLabel"
           :mapStyle="mapStyle"
           :events="events"
+          :fullscreen="true"
           :amap-manager="amapManager"
           style="height:500px"
         ></el-amap>
-        <div class="btn-draw-fences" v-if="showBtn">
-          <el-button @click="startDraw">开始画围栏</el-button>
-          <el-button @click="startDrawDoor">开始画门禁</el-button>
-          <el-button @click="startDrawWash">开始画洗车槽</el-button>
+        <div class="btn-draw-fences">
+          <!--  -->
+          <el-button @click="startDraw('fence')" v-if="showBtn.fence">开始画场站</el-button>
+          <el-button @click="startDraw('door')" v-if="showBtn.door">开始画门禁</el-button>
+          <el-button @click="startDraw('wash')" v-if="showBtn.wash">开始画洗车槽</el-button>
+          <!--  -->
+          <el-button @click="storeFence" v-if="editBtn">结束编辑</el-button>
         </div>
       </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="storeFence">保存围栏数据</el-button>
-      </span>
     </el-dialog>
   </div>
 </template>
@@ -268,7 +293,12 @@ export default {
     let self = this;
     return {
       activeNames: ["1", "2"],
-      showBtn: false,
+      showBtn: {
+        fence: false,
+        door: false,
+        wash: false
+      },
+      editBtn: false,
       iFence: {
         title: "新增工地围栏",
         show: false
@@ -280,9 +310,7 @@ export default {
       amapManager,
       mapObj: null,
       mouseTool: null,
-      ToolFence: null,
-      ToolDoor: null,
-      ToolWash: null,
+      polygonEditor: null,
       indexRecord: null,
       polygonFence: null,
       polygonDoor: null,
@@ -290,28 +318,7 @@ export default {
       events: {
         init(o) {
           self.mouseTool = new AMap.MouseTool(o);
-
-          self.ToolFence = self.mouseTool.polygon({
-            fillColor: "#00b0ff",
-            strokeColor: "#80d8ff",
-            strokeWeight: 5,
-            zIndex: 50
-          });
-
-          self.ToolDoor = self.mouseTool.polygon({
-            fillColor: "#ffcc00",
-            strokeColor: "#ff6600",
-            strokeWeight: 3,
-            zIndex: 60
-          });
-
-          self.ToolWash = self.mouseTool.polygon({
-            fillColor: "#ffcc00",
-            strokeColor: "#ff6600",
-            strokeWeight: 3,
-            zIndex: 60
-          });
-
+          self.mouseTool.wash = new AMap.MouseTool(o);
           self.mapObj = o;
         }
       },
@@ -336,155 +343,244 @@ export default {
     }
   },
   methods: {
-    //
-    handleDraw(index, item) {
+    //触发编辑
+    handleDraw(index, item, action) {
       let self = this;
       this.iFence.show = true;
       this.indexRecord = [index, item];
 
-      if (item.path) {
+      if (item.path != "") {
         let polyPath = [],
-          polyDoor = [],
-          polyWash = [],
-          tempPath = JSON.parse(item.path),
-          tempDoor,
-          tempWash;
-        console.log(tempWash);
+          tempPath = JSON.parse(item.path);
         self.tempPath = tempPath;
         for (var i in tempPath) {
           polyPath.push([tempPath[i].lng, tempPath[i].lat]);
         }
+        self.polygonFence = new AMap.Polygon({
+          // map: self.mapObj,
+          path: polyPath,
+          fillColor: "#00b0ff",
+          strokeColor: "#80d8ff",
+          strokeWeight: 5,
+          zIndex: 50
+        });
 
-        console.log(item);
+        //
+        let polyDoor = [],
+          tempDoor = [];
+        if (item.door.path != "") tempDoor = JSON.parse(item.door.path);
+        self.tempDoor = tempDoor;
+        for (var i in tempDoor) {
+          polyDoor.push([tempDoor[i].lng, tempDoor[i].lat]);
+        }
+        self.polygonDoor = new AMap.Polygon({
+          // map: self.mapObj,
+          path: polyDoor,
+          fillColor: "#ffcc00",
+          strokeColor: "#ff6600",
+          strokeWeight: 3,
+          zIndex: 60
+        });
 
-        setTimeout(() => {
-          self.showBtn = true;
-          if (item.door.path && item.door.enable) {
-            tempDoor = JSON.parse(item.door.path);
-            for (var i in tempDoor) {
-              polyDoor.push([tempDoor[i].lng, tempDoor[i].lat]);
-            }
-            self.tempDoor = tempDoor;
-            self.polygonDoor = new AMap.Polygon({
-              // map: self.mapObj,
-              path: polyDoor,
-              fillColor: "#ffcc00",
-              strokeColor: "#ff6600",
-              strokeWeight: 3,
-              zIndex: 60
-            });
-            self.mapObj.add(self.polygonDoor);
-          }
-          if (item.wash.path && item.wash.enable) {
-            tempWash = JSON.parse(item.wash.path);
-            for (var i in tempWash) {
-              polyWash.push([tempWash[i].lng, tempWash[i].lat]);
-            }
-            self.tempWash = tempWash;
-            self.polygonWash = new AMap.Polygon({
-              // map: self.mapObj,
-              path: polyWash,
-              fillColor: "#ffcc00",
-              strokeColor: "#ff6600",
-              strokeWeight: 3,
-              zIndex: 60
-            });
-            self.mapObj.add(self.polygonWash);
-          }
-          self.polygonFence = new AMap.Polygon({
-            // map: self.mapObj,
-            path: polyPath,
+        //
+        let polyWash = [],
+          tempWash = [];
+        if (item.wash.path != "") tempWash = JSON.parse(item.wash.path);
+        self.tempWash = tempWash;
+        for (var i in tempWash) {
+          polyWash.push([tempWash[i].lng, tempWash[i].lat]);
+        }
+        self.polygonWash = new AMap.Polygon({
+          // map: self.mapObj,
+          path: polyWash,
+          fillColor: "#11c711",
+          strokeColor: "#008500",
+          strokeWeight: 3,
+          zIndex: 60
+        });
+
+        switch (action) {
+          case "fence":
+            setTimeout(() => {
+              self.mapObj.add(self.polygonFence);
+              self.mapObj.add(self.polygonDoor);
+              self.mapObj.add(self.polygonWash);
+              self.polygonEditor = new AMap.PolyEditor(
+                self.mapObj,
+                self.polygonFence
+              );
+              self.showBtn.fence = true;
+              self.polygonEditor.open();
+              self.polygonEditor.on("adjust", function(event) {
+                self.showBtn[action] = false;
+                self.editBtn = true;
+              });
+            }, 3000);
+            break;
+          case "door":
+            setTimeout(() => {
+              self.mapObj.add(self.polygonFence);
+              self.mapObj.add(self.polygonDoor);
+              self.mapObj.add(self.polygonWash);
+              self.polygonEditor = new AMap.PolyEditor(
+                self.mapObj,
+                self.polygonDoor
+              );
+              self.showBtn.door = true;
+              self.polygonEditor.open();
+              self.polygonEditor.on("adjust", function(event) {
+                self.showBtn[action] = false;
+                self.editBtn = true;
+              });
+            }, 3000);
+            break;
+          case "wash":
+            setTimeout(() => {
+              self.mapObj.add(self.polygonFence);
+              self.mapObj.add(self.polygonDoor);
+              self.mapObj.add(self.polygonWash);
+              self.polygonEditor = new AMap.PolyEditor(
+                self.mapObj,
+                self.polygonWash
+              );
+              self.showBtn.wash = true;
+              self.polygonEditor.open();
+              self.polygonEditor.on("adjust", function(event) {
+                self.showBtn[action] = false;
+                self.editBtn = true;
+              });
+            }, 3000);
+            break;
+        }
+        // self.mapObj.setFitView();
+      } else {
+        self.showBtn[action] = true;
+      }
+    },
+
+    //开始画多边形
+    startDraw(action) {
+      let self = this;
+      self.mapObj.setDefaultCursor("crosshair");
+      self.editBtn = false;
+      let index = self.indexRecord[0];
+      let type = self.indexRecord[1].type;
+      if (self.polygonEditor) self.polygonEditor.close();
+      self.polygonEditor = null;
+      //多边形样式
+      switch (action) {
+        case "fence":
+          if (self.polygonFence) self.mapObj.remove(self.polygonFence);
+          self.mouseTool.polygon({
+            extData: { id: "fence" },
             fillColor: "#00b0ff",
             strokeColor: "#80d8ff",
             strokeWeight: 5,
             zIndex: 50
           });
-          self.mapObj.add(self.polygonFence);
-          self.mapObj.setFitView([self.polygonFence]);
-        }, 3000);
-      } else {
-        self.showBtn = true;
+          self.tempPath = [];
+          break;
+        case "door":
+          if (self.polygonDoor) self.mapObj.remove(self.polygonDoor);
+          self.mouseTool.polygon({
+            extData: { id: "door" },
+            fillColor: "#ffcc00",
+            strokeColor: "#ff9000",
+            strokeWeight: 3,
+            zIndex: 50
+          });
+          self.tempDoor = [];
+          break;
+        case "wash":
+          if (self.polygonWash) self.mapObj.remove(self.polygonWash);
+          self.mouseTool.polygon({
+            extData: { id: "wash" },
+            fillColor: "#11c711",
+            strokeColor: "#008500",
+            strokeWeight: 3,
+            zIndex: 50
+          });
+          self.tempWash = [];
+          break;
       }
-    },
-
-    //开始画多边形
-    startDraw() {
-      let self = this;
-      console.log(self.mouseTool);
-      if(self.tempPath) self.mapObj.remove(self.tempPath);
-      if (self.polygonFence) self.mapObj.remove(self.polygonFence);
-      self.mapObj.setDefaultCursor("crosshair");
-      let index = self.indexRecord[0];
-      let type = self.indexRecord[1].type;
-      let pathString = [];
-      self.tempPath = [];
-
-
-
+      //保存路径
       self.mouseTool.on("draw", function(e) {
         let path = e.obj.getPath();
-        // console.log(e.obj);
-        self.tempPath.push(e.obj)
-        // for (var i in path) {
-        //   self.tempPath.push({
-        //     lng: parseFloat(path[i].lng),
-        //     lat: parseFloat(path[i].lat)
-        //   });
-        // }
-      });
-    },
 
-    //开始画门禁
-    startDrawDoor() {
-      let self = this;
-      if (self.mouseToolDoor) self.mouseToolDoor.close(true);
-      if (self.polygonDoor) self.mapObj.remove(self.polygonDoor);
-      self.mapObj.setDefaultCursor("crosshair");
-      let index = self.indexRecord[0];
-      let type = self.indexRecord[1].type;
-      let pathString = [];
-      self.tempDoor = [];
-      self.mouseToolDoor.on("draw", function(e) {
-        let path = e.obj.B.path;
-        // console.log(e.obj);
-        for (var i in path) {
-          self.tempDoor.push({
-            lng: parseFloat(path[i].lng),
-            lat: parseFloat(path[i].lat)
-          });
+        switch (action) {
+          case "fence":
+            for (var i in path) {
+              self.tempPath.push({
+                lng: parseFloat(path[i].lng),
+                lat: parseFloat(path[i].lat)
+              });
+            }
+            break;
+
+          case "door":
+            for (var i in path) {
+              self.tempDoor.push({
+                lng: parseFloat(path[i].lng),
+                lat: parseFloat(path[i].lat)
+              });
+            }
+
+            break;
+
+          case "wash":
+            for (var i in path) {
+              self.tempWash.push({
+                lng: parseFloat(path[i].lng),
+                lat: parseFloat(path[i].lat)
+              });
+            }
+            break;
         }
+        self.editDraw(action);
+        self.showBtn[action] = false;
+        self.editBtn = true;
       });
     },
 
-    //开始画洗车槽
-    startDrawWash() {
+    //编辑多边形
+    editDraw(action) {
       let self = this;
-      if (self.mouseToolWash) self.mouseToolWash.close(true);
-      if (self.polygonWash) self.mapObj.remove(self.polygonWash);
-      self.mapObj.setDefaultCursor("crosshair");
-      let index = self.indexRecord[0];
-      let type = self.indexRecord[1].type;
-      let pathString = [];
-      self.tempWash = [];
-      self.mouseToolWash.on("draw", function(e) {
-        let path = e.obj.B.path;
-        // console.log(e.obj);
-        for (var i in path) {
-          self.tempWash.push({
-            lng: parseFloat(path[i].lng),
-            lat: parseFloat(path[i].lat)
-          });
+      var polyArr = self.mapObj.getAllOverlays("polygon");
+      var currentArr;
+      for (var i in polyArr) {
+        switch (polyArr[i].B.extData.id) {
+          case "fence":
+            currentArr = polyArr[i];
+            break;
+          case "door":
+            currentArr = polyArr[i];
+            break;
+          case "wash":
+            currentArr = polyArr[i];
+            break;
         }
+      }
+      self.polygonEditor = new AMap.PolyEditor(self.mapObj, currentArr);
+      //注意通过map.getAllOverlays("polygon")对象获得的是一个数组，故取数组第一个对象
+      self.polygonEditor.open();
+      self.polygonEditor.on("adjust", function(event) {
+        self.showBtn[action] = false;
+        self.editBtn = true;
       });
     },
-
+    //
+    endDraw() {
+      this.polygonEditor.close();
+    },
     //保存多边形
-    storeFence() {
+    storeFence(action) {
       let self = this;
       let index = self.indexRecord[0];
       let type = self.indexRecord[1].type;
       let center = getCenterPoint(self.tempPath);
-      let address = "未知地点";
+      let address = "未知地点",
+        district,
+        adcode;
 
       axios
         .get(API.GET_ADDRESS + "&location=" + center.join(","))
@@ -492,9 +588,13 @@ export default {
           console.log(res);
           if (res.data.status == 1) {
             address = res.data.regeocode.formatted_address;
+            district = res.data.regeocode.addressComponent.district;
+            adcode = res.data.regeocode.addressComponent.adcode;
             self.$store.commit("recodePath", {
               path: JSON.stringify(self.tempPath),
+              adcode: adcode,
               address: address,
+              district: district,
               center: center,
               index: index,
               type: type,
@@ -506,25 +606,30 @@ export default {
               }
             });
           }
+          self.editBtn = false;
+          self.iFence.show = false;
+          self.mouseTool.close(true);
+          self.mapObj.setDefaultCursor("pointer");
+          self.showBtn.fence = false;
+          self.showBtn.door = false;
+          self.showBtn.wash = false;
+          self.polygonEditor.close();
+          if (self.polygonFence) self.mapObj.remove(self.polygonFence);
+          if (self.polygonDoor) self.mapObj.remove(self.polygonDoor);
+          if (self.polygonWash) self.mapObj.remove(self.polygonWash);
         })
         .catch(error => {
           console.log(error);
         });
-
-      self.iFence.show = false;
-      if (self.mouseToolFence) self.mouseToolFence.close(true);
-      if (self.mouseToolDoor) self.mouseToolDoor.close(true);
-      if (self.mouseToolWash) self.mouseToolFence.wash(true);
-      self.mapObj.setDefaultCursor("pointer");
     },
 
     addPolygons() {},
-
     //
     handleDrawClose() {},
     handlePlusSite() {
       let lastData = this.fences.site;
       let tempData = {
+        icon: "el-icon-office-building",
         name: "",
         path: "",
         door: {
@@ -550,6 +655,7 @@ export default {
     handlePlusLandfill() {
       let lastData = this.fences.landfill;
       let tempData = {
+        icon: "el-icon-office-building",
         name: "",
         path: "",
         door: {
@@ -596,5 +702,11 @@ function getCenterPoint(path) {
 .el-textarea.is-disabled .el-textarea__inner {
   background: none !important;
   color: #585858 !important;
+}
+
+.item-draw {
+  position: absolute;
+  bottom: 5px;
+  right: 22px;
 }
 </style>

@@ -168,7 +168,7 @@ export default {
   },
 
   methods: {
-    // //定位城市
+    // 定位城市
     getCity() {
       this.$store.commit("getCity");
     },

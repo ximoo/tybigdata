@@ -20,7 +20,7 @@
       :amap-manager="amapManager"
       style="height:calc(100% - 36px)"
     ></el-amap>
-    <Conner/>
+    <Conner />
   </div>
 </template>
 <script>
@@ -67,6 +67,9 @@ export default {
               setInterval(() => {
                 mapEvent.addVecMarker(self.mapObj, self.mapGps, self);
               }, store.state.platformData.alerms.timer * 1000);
+
+              mapEvent.addSiteMarker(self.mapObj, self.siteGps, self);
+
               var toolBar = new AMap.ControlBar({
                 showZoomBar: false,
                 showControlButton: true,
@@ -100,6 +103,12 @@ export default {
     },
     mapGps() {
       return this.$store.state.mapGps;
+    },
+    siteGps() {
+      let siteGeo = this.$store.state.platformData.module.sitemonitor.module.fences.site.concat(
+        this.$store.state.platformData.module.sitemonitor.module.fences.landfill
+      );
+      return siteGeo;
     }
   }
 };
