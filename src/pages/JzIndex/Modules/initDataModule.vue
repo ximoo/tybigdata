@@ -36,7 +36,7 @@
 
           <!-- <el-tab-pane label="围栏设置">
             <initFences />
-          </el-tab-pane> -->
+          </el-tab-pane>-->
           <el-tab-pane label="场站管理" v-if="pModule.sitemonitor.enable">
             <initFences />
           </el-tab-pane>
@@ -49,6 +49,7 @@
       <!-- 第四步 -->
       <section v-if="initStep == 3">
         <div style="text-align:center;font-size:18px;font-weight:bold;">完成平台配置,正在进入平台页面。</div>
+        <el-button type="success" @click="saveCfg">保存已有配置</el-button>
       </section>
       <span slot="footer" class="dialog-footer">
         <span class="ex-ver" style="float:left">当前版本：{{ver}}</span>
@@ -60,9 +61,9 @@
           <el-button type="default" @click="handleStep(0)">上一步</el-button>
           <el-button type="primary" @click="handleStep(2)">下一步</el-button>
         </section>
-        <section v-if="initStep == 2">
+        <section v-if="initStep == 3">
           <el-button type="default" @click="handleStep(1)">上一步</el-button>
-          <!-- <el-button type="primary" @click="handleStep(3)">进入平台页面</el-button> -->
+          <el-button type="primary" @click="handleStep(4)">进入平台页面</el-button>
         </section>
       </span>
     </el-dialog>
@@ -78,6 +79,8 @@ import initAllMonitor from "../../JzIndex/Component/initStep/initData/initAllMon
 import initAirMonitor from "../../JzIndex/Component/initStep/initData/initAirMonitor.vue"; //初始化环境监测数据
 import initFences from "../../JzIndex/Component/initStep/initData/initFences.vue"; //初始化围栏数据
 import simData from "../../JzIndex/Component/initStep/initData/simData.vue"; //模拟数据生成
+
+import { saveAs } from "file-saver";
 
 export default {
   name: "initDataModule",
@@ -103,6 +106,23 @@ export default {
     handleStep(step) {
       this.$store.commit("handle_step", step);
     },
+    saveCfg() {
+      let self = this;
+      var cfgJson = {
+        platformData: store.state.platformData,
+        simData: store.state.simData
+      };
+
+      var file = new File(
+        [JSON.stringify(cfgJson)],
+        this.pState.city + this.pState.name +"_配置.json",
+        {
+          type: "application/json;charset=utf-8"
+        }
+      );
+      saveAs(file);
+      self.$store.commit("handle_step", 4);
+    }
   },
   computed: {
     initStep() {

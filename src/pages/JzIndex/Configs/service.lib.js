@@ -44,7 +44,51 @@ export default {
 
     },
 
+    simVechileInfo: function () {
+        let self = this
+        let districts = store.state.platformData.state.districts
+        let vechileList = store.state.simData.vechile;
+        let gpsList = store.state.simData.gps;
+        let alerms = store.state.simData.alerms;
+        let vechileSimData = [];
+        for (var i in vechileList) {
+            var rIndexGps = self.randomLib(0, gpsList.length - 1);
+            var rIndexAlerm = self.randomLib(0, 7);
+            var state = self.randomLib(0, 4);
+            var speed = 0,
+                icon = "icon-gray";
+            switch (state) {
+                case 1:
+                    icon = "icon-alerm"
+                    break
+                case 2:
+                    icon = "icon-stop"
+                    speed = self.randomLib(0, 5);
+                    break;
+                case 3:
+                    icon = "icon-stop"
+                    speed = self.randomLib(1, 10);
+                    break;
+                case 4:
+                    icon = "icon-drive"
+                    speed = self.randomLib(40, 120);
+                    break;
+            }
 
+            vechileSimData.push({
+                label: vechileList[i],
+                adcode: gpsList[rIndexGps].adcode,
+                adname: gpsList[rIndexGps].adname,
+                location: gpsList[rIndexGps].location,
+                address: gpsList[rIndexGps].address,
+                almType: alerms[rIndexAlerm].label,
+                state: state,
+                speed: speed,
+                icon: icon
+            });
+        }
+        return vechileSimData
+    },
 
 
     randomVechileGps: function (number, adcode) {
@@ -57,7 +101,9 @@ export default {
                 for (var i in pois) {
                     self.poiArray.push({
                         address: pois[i].address,
-                        location: pois[i].location
+                        location: pois[i].location,
+                        adcode: pois[i].adcode,
+                        adname: pois[i].adname
                     })
                     self.getAroundGps(res.data.pois[i].location, adcode)
                 }
@@ -72,13 +118,15 @@ export default {
         let self = this
         let getPoiAroundUrl = api.GET_AROUND + "&extensions=all&radius=50000&citylimit=true&city=" + adcode + "&location=" + location
         axios.get(getPoiAroundUrl).then((res) => {
-            // console.log(res)
+            console.log(res)
             for (var i in res.data.pois) {
                 self.poiArray.push({
                     address: res.data.pois[i].address,
-                    location: res.data.pois[i].location
+                    location: res.data.pois[i].location,
+                    adcode: res.data.pois[i].adcode,
+                    adname: res.data.pois[i].adname
                 })
-                store.commit("simGps",self.poiArray)
+                store.commit("simGps", self.poiArray)
                 // self.getAroundGps2(res.data.pois[i].location, adcode)
 
             }
@@ -91,17 +139,19 @@ export default {
         let self = this
         let getPoiAroundUrl = api.GET_AROUND + "&extensions=all&radius=50000&citylimit=true&city=" + adcode + "&location=" + location
         axios.get(getPoiAroundUrl).then((res) => {
-            // console.log(res)
+            console.log(res)
             for (var i in res.data.pois) {
                 self.poiArray.push({
                     address: res.data.pois[i].address,
-                    location: res.data.pois[i].location
+                    location: res.data.pois[i].location,
+                    adcode: res.data.pois[i].adcode,
+                    adname: res.data.pois[i].adname
                 })
             }
             // console.log(self.poiArray)
             // return self.poiArray
 
-            store.commit("simGps",self.poiArray)
+            store.commit("simGps", self.poiArray)
 
         }).catch((error) => {
             console.log(error)
@@ -110,7 +160,7 @@ export default {
 
 
     randomLib(min, max) {
-        return Math.round(Math.random() * (max - min + 1) + min, 10);
+        return Math.round(Math.random() * (max - min) + min, 0);
     },
 
 

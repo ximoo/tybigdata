@@ -4,7 +4,7 @@
     <div class="realtime-box">
       <ul>
         <transition name="el-zoom-in-center" v-for="item,index in alermVechile" :key="index">
-          <li>
+          <li @click="pantoVec(item)" style="cursor:pointer">
             <div>
               <span class="number">{{item.name}}</span>
               <span class="alerm">{{item.alermname}}</span>
@@ -13,7 +13,7 @@
         </transition>
       </ul>
     </div>
-   <Conner/>
+    <Conner />
   </div>
 </template>
 <script>
@@ -28,7 +28,7 @@ export default {
   },
   mounted() {
     let self = this;
-    clearInterval(actMonitorId);
+    // clearInterval(actMonitorId);
     this.actMonitor();
     actMonitorId = setInterval(function() {
       self.actMonitor();
@@ -72,17 +72,30 @@ export default {
           lnglat: vechileGps[vechileIndex].location,
           address: vechileGps[vechileIndex].address,
           icon: icons[singalType],
-          alermname: alermsData.list[0].label,
+          alermname: alermsData.list[singalType].label,
           style: randomIze.randomLib(0, 2)
         });
         // console.log(singalType);
       }
       self.alermVechile = alermVechile;
       this.$store.commit("simMapGps", alermVechile);
+    },
+    pantoVec(data) {
+      let self = this;
+      self.allComponent.amapManager.getMap().setZoomAndCenter(16, data.lnglat.split(","));
+      clearInterval(actMonitorId);
+      setTimeout(() => {
+        actMonitorId = setInterval(function() {
+          self.actMonitor();
+        }, self.alerms.timer * 1000);
+      }, 5000);
     }
   },
 
   computed: {
+   allComponent() {
+      return this.$store.state.mapComponent.allComponent;
+    },
     simData() {
       return this.$store.state.simData;
     },

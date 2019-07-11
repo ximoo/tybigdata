@@ -7,7 +7,7 @@ import jHome from '~/pages/JzIndex/Home/jHome';
 import bigData from '~/pages/JzIndex/Views/bigData'
 import airModule from '~/pages/JzIndex/Modules/airModule';
 import siteModule from '~/pages/JzIndex/Modules/siteModule';
-
+import vecModule from '~/pages/JzIndex/Modules/vecModule';
 Vue.use(VueRouter);
 
 const routes = [{
@@ -30,6 +30,9 @@ const routes = [{
       },{
         path: '/site',
         component: siteModule
+      },{
+        path: '/vechile',
+        component: vecModule
       }]
     }]
   },

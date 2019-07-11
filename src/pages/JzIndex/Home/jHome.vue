@@ -11,7 +11,9 @@
             </el-input>
             <i class="el-icon-s-tools" slot="reference" />
           </el-popover>
-
+          <el-tooltip content="车辆监管" placement="bottom">
+            <i class="el-icon-office-building" @click="handleModule('/vechile')" />
+          </el-tooltip>
           <el-tooltip content="环境监测" placement="bottom">
             <i class="el-icon-cloudy" @click="handleModule('/air')" />
           </el-tooltip>

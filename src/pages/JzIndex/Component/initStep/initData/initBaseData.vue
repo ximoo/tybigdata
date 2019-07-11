@@ -14,7 +14,7 @@
         size="mini"
         v-show="noIpt"
       >
-        <el-button type="success" size="mini" v-show="!isFile">导入已有配置</el-button>
+        <el-button type="info" size="mini" v-show="!isFile">导入已有配置</el-button>
       </el-upload>
       <el-button type="success" v-show="isFile" size="mini" @click="importCfg">开始导入</el-button>
       <p style="clear:both;font-weight:bold;">目前没时间做表单验证，请尽量将所有空填完，不然会出现问题。后期迭代会做验证更新</p>
@@ -139,14 +139,12 @@
             <el-row :gutter="20">
               <el-col :span="6">
                 <el-form-item label="单次报警最大车辆数">
-                  <el-input-number v-model="alerms.number"></el-input-number>
-                  &nbsp;&nbsp;辆
+                  <el-input-number v-model="alerms.number"></el-input-number>&nbsp;&nbsp;辆
                 </el-form-item>
               </el-col>
               <el-col :span="6">
                 <el-form-item label="实时报警刷新时间">
-                  <el-input-number v-model="alerms.timer"></el-input-number>
-                  &nbsp;&nbsp;秒
+                  <el-input-number v-model="alerms.timer"></el-input-number>&nbsp;&nbsp;秒
                 </el-form-item>
               </el-col>
             </el-row>
@@ -163,7 +161,8 @@ export default {
     return {
       activeNames: ["1", "2", "3", "4"],
       isFile: false,
-      noIpt: true
+      noIpt: true,
+      cfgFile: null
     };
   },
 
@@ -173,8 +172,15 @@ export default {
       this.$store.commit("getCity");
     },
     importCfg(file) {
-      console.log("iptCfg");
-      //   service.importCfg(this.cfgFile, this);
+      let self = this;
+      var reader = new FileReader(); //这是核心,读取操作就是由它完成.
+      reader.readAsText(this.cfgFile.raw); //读取文件的内容,也可以读取文件的URL
+      reader.onload = function() {
+        //当读取完成后回调这个函数,然后此时文件的内容存储到了result中,直接操作即可
+        console.log(this.result);
+        let cfgData = this.result;
+        self.$store.commit("importCfg", cfgData);
+      };
     },
     beforeFileUpload(file) {
       const isLt2M = file.size / 1024 / 1024 < 2;
@@ -183,6 +189,7 @@ export default {
       }
       this.cfgFile = file;
       this.isFile = true;
+      console.log(file);
     }
   },
   computed: {

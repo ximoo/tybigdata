@@ -2,7 +2,7 @@
   <div class="item" style="width:calc(100% - 248px);height:calc(100% - 240px)">
     <h3 style="margin-left:25px;">场站实时状况</h3>
     <el-amap
-      :vid="'amap-vue-air'"
+      :vid="'amap-vue-site'"
       :center="center"
       :viewMode="'3D'"
       :pitch="pitch"
@@ -92,6 +92,7 @@ export default {
               bottom: "-75px"
             }
           });
+
           o.addControl(toolBar);
           self.addMarker();
         }
@@ -101,12 +102,15 @@ export default {
   },
   mounted() {
     let self = this;
-    this.$nextTick(() => {});
+    this.$nextTick(() => {
+      self.$store.state.mapComponent.siteComponent = self;
+    });
   },
   methods: {
     addMarker() {
       let self = this;
       let obj = amapManager.getMap();
+      
       self.siteMarkers = [];
       let siteGeo = self.fences;
       for (var i in siteGeo) {
@@ -308,7 +312,7 @@ export default {
     },
     pantoBuild(data) {
       let obj = amapManager.getMap();
-      obj.setZoomAndCenter(18, data.center);
+      obj.setZoomAndCenter(16, data.center);
       this.FencesName = {
         name: data.label,
         address: data.address

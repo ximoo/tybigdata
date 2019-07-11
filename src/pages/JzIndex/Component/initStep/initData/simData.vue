@@ -35,6 +35,22 @@ export default {
         {
           show: false,
           info: ""
+        },
+        {
+          show: false,
+          info: ""
+        },
+        {
+          show: false,
+          info: ""
+        },
+        {
+          show: false,
+          info: ""
+        },
+        {
+          show: false,
+          info: ""
         }
       ]
     };
@@ -76,26 +92,36 @@ export default {
       let adcode = this.$store.state.platformData.state.adcode;
       let number = this.$store.state.platformData.basedata.data[0].number;
       // console.log(localStorage.$simdata);
-      if (!localStorage.$simdata) {
-        simData.randomVechileGps(number, adcode);
-      }
+      simData.randomVechileGps(number, adcode);
       this.simstep[2].show = true;
       this.simstep[2].info =
         "正在模拟车辆地理定位.........................................";
       setTimeout(function() {
         self.simstep[2].info =
           "正在模拟车辆地理定位.........................................已模拟完成";
-          self.simFencesData()
+        self.simVechileData();
+      }, 3000);
+    },
+    simVechileData() {
+      let self = this;
+      this.$store.commit("simVechileData", simData.simVechileInfo());
+      this.simstep[3].show = true;
+      this.simstep[3].info =
+        "正在模拟车辆信息.........................................";
+      setTimeout(function() {
+        self.simstep[3].info =
+          "正在模拟车辆信息.........................................已模拟完成";
+        self.simFencesData();
       }, 3000);
     },
     simFencesData() {
       let self = this;
       let adcode = this.$store.state.platformData.state.adcode;
-      this.simstep[3].show = true;
-      this.simstep[3].info =
+      this.simstep[4].show = true;
+      this.simstep[4].info =
         "正在模拟场站信息.........................................";
-        setTimeout(function() {
-        self.simstep[3].info =
+      setTimeout(function() {
+        self.simstep[4].info =
           "正在模拟场站信息.........................................已模拟完成";
         self.$store.commit("handle_step", 3);
       }, 3000);

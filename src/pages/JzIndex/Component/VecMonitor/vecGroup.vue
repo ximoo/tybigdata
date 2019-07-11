@@ -1,7 +1,7 @@
 <template>
   <reDialog
     v-dialogDrag
-    title="场站列表"
+    title="车辆列表"
     :visible="groupShow"
     :modal="false"
     :modal-append-to-body="false"
@@ -10,9 +10,11 @@
     class="group-tree-dialog"
     @close="closeDialog"
   >
-    <el-tree :data="disTree" @node-click="handleNodeClick" accordion default-expand-all>
+    <el-tree :data="disTree" @node-click="handleNodeClick" accordion>
       <span slot-scope="{ node, data }">
-        <span>
+        <span
+          :class="{'vec-green': data.state == 4,'vec-green': data.state == 3,'vec-green': data.state == 2,'vec-red': data.state == 1,'vec-gray': data.state == 0}"
+        >
           <i :class="data.icon"></i>
           {{ node.label }}
         </span>
@@ -23,19 +25,20 @@
 <script>
 export default {
   name: "SiteGroup",
-  props: ["groupShow", "siteData"],
+  props: ["groupShow", "vechileInfo"],
   data() {
     return {};
   },
   mounted() {
-    console.log(this.siteData);
+    console.log(this.vechileInfo);
   },
   methods: {
     closeDialog() {
       this.$emit("closeGroupDialog");
     },
     handleNodeClick(e) {
-      this.$emit("pantoBuild", e);
+      console.log(e);
+      this.$emit("pantoVechile", e);
     }
   },
   computed: {
@@ -45,7 +48,7 @@ export default {
     disTree() {
       let self = this;
       let districts = self.districts;
-      let siteData = self.siteData;
+      let vechileInfo = self.vechileInfo;
       let disTree = [
         {
           label: self.$store.state.platformData.state.city,
@@ -53,6 +56,11 @@ export default {
           children: []
         }
       ];
+
+      for (var i in vechileInfo) {
+        vechileInfo[i]["lnglat"] = vechileInfo[i].location.split(",");
+        vechileInfo[i]["id"] = parseInt(i) + 1;
+      }
 
       for (var i in districts) {
         // console.log(districts[i])
@@ -66,18 +74,19 @@ export default {
       }
 
       for (var i in disTree[0].children) {
-        for (var j in siteData) {
+        for (var j in vechileInfo) {
           if (
-            parseInt(siteData[j].adcode) ==
+            parseInt(vechileInfo[j].adcode) ==
             parseInt(disTree[0].children[i].adcode)
           ) {
-            console.log(siteData[j].adcode);
             disTree[0].children[i].children.push({
-              label: siteData[j].name,
-              adcode: siteData[j].adcode,
-              center: siteData[j].center,
-              address: siteData[j].address,
-              icon: siteData[j].icon
+              id: vechileInfo[j].id,
+              label: vechileInfo[j].name,
+              adcode: vechileInfo[j].adcode,
+              center: vechileInfo[j].lnglat,
+              address: vechileInfo[j].address,
+              icon: "el-icon-s-opportunity",
+              state: vechileInfo[j].state
             });
           }
         }
@@ -123,6 +132,21 @@ export default {
     .el-dialog__body {
       padding: 0 !important;
 
+      &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #484598;
+        border-radius: 5px;
+      }
+      &::-webkit-scrollbar-track {
+        background-color: #112166;
+      }
+
       .el-tree {
         color: #42ecfa !important;
         background: #0a1854 !important;
@@ -134,5 +158,18 @@ export default {
       }
     }
   }
+}
+
+.vec-green {
+  color: #11c711;
+}
+.vec-red {
+  color: #ff3300;
+}
+.vec-yellow {
+  color: #eae200;
+}
+.vec-gray {
+  color: #959595;
 }
 </style>

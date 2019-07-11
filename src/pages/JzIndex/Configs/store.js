@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        "version": "3.4.19.0710",
+        "version": "3.4.19.0711",
         "isFirst": !localStorage.$platformData,
         "initStep": 0,
         "platformData": localStorage.$platformData ? JSON.parse(localStorage.$platformData) : {
@@ -249,10 +249,17 @@ export default new Vuex.Store({
         "simData": {
             "vechile": [],
             "gps": [],
-            "alerms": []
+            "alerms": [],
+            "vechileInfo": []
         },
         "mapGps": [],
-        "platformUnit": ["人", "辆", "个", "台", "次", "吨", "立方", "小时"]
+        "platformUnit": ["人", "辆", "个", "台", "次", "吨", "立方", "小时"],
+        "mapComponent": {
+            "allComponent": null,
+            "siteComponent": null,
+            "airComponent": null,
+            "vecComponent": null,
+        }
     },
     mutations: {
         "adminPass": (state) => {
@@ -298,8 +305,10 @@ export default new Vuex.Store({
                 })
             }
             if (data == 2) {}
-            if (data == 3) {
+            if (data == 3) {}
+            if (data == 4) {
                 localStorage.$platformData = JSON.stringify(state.platformData)
+                localStorage.$simData = JSON.stringify(state.simData)
                 setTimeout(function () {
                     state.isFirst = false;
                     window.location.reload()
@@ -393,9 +402,23 @@ export default new Vuex.Store({
                 }
             })
         },
+
+        "importCfg": (state, data) => {
+            console.log(JSON.parse(data))
+            let resouceData = JSON.parse(data)
+            state.platformData = resouceData.platformData
+            state.simData = resouceData.simData
+            localStorage.$platformData = JSON.stringify(state.platformData)
+            localStorage.$simData = JSON.stringify(state.simData)
+            state.initStep = 3
+        },
+
+
+
         //模拟车牌号
         "simVechile": (state, data) => {
             state.simData.vechile = data
+            localStorage.$simdata = JSON.stringify(state.simData)
         },
         "simGps": (state, data) => {
             state.simData.gps = data
@@ -404,12 +427,19 @@ export default new Vuex.Store({
         },
         "simMapGps": (state, data) => {
             state.mapGps = data
+            localStorage.$simdata = JSON.stringify(state.simData)
         },
+        "simVechileData": (state, data) => {
+            console.log(data)
+            state.simData.vechileInfo = data
+            localStorage.$simdata = JSON.stringify(state.simData)
+        },
+
         "recodePath": (state, data) => {
             // console.log(data.index)
             switch (data.type) {
                 case "site":
-                        state.platformData.module.sitemonitor.module.fences.site[data.index].icon = 'el-icon-office-building'
+                    state.platformData.module.sitemonitor.module.fences.site[data.index].icon = 'el-icon-office-building'
                     state.platformData.module.sitemonitor.module.fences.site[data.index].adcode = data.adcode
                     state.platformData.module.sitemonitor.module.fences.site[data.index].address = data.address
                     state.platformData.module.sitemonitor.module.fences.site[data.index].center = data.center

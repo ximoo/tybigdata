@@ -248,6 +248,12 @@ export default {
         position: lnglat,
         clickable: true
       })
+
+      vecMarkers.on("click", function () {
+        mapObj.setZoomAndCenter(16, lnglat);
+      });
+
+
       e.vecMarkersGps.push(vecMarkers);
     }
     e.vecMarkers.addOverlay(new AMap.OverlayGroup(e.vecMarkersGps));
@@ -279,7 +285,6 @@ export default {
     // this.addSiteMarker(mapObj, e)
     // e.mass3DTruck.setData(truckMarkerGps);
   },
-
   addSiteMarker(mapObj, data, e) {
     let self = e;
     let obj = mapObj;
@@ -322,23 +327,7 @@ export default {
         });
       }
 
-      self.siteMarkers.forEach(function(marker) {
-        let polyPath = [];
-        for (var i in marker.data.path) {
-          polyPath.push([marker.data.path[i].lng, marker.data.path[i].lat]);
-        }
-
-        var polygon = new AMap.Polygon({
-          map: obj,
-          strokeColor: "rgba(100, 150, 230, 1)",
-          strokeWeight: 6,
-          strokeOpacity: 1,
-          strokeStyle: "dashed",
-          fillOpacity: 0.25,
-          fillColor: "rgba(100, 150, 230, 0.75)"
-        });
-        polygon.setPath(polyPath);
-
+      self.siteMarkers.forEach(function (marker) {
         var mker = new AMap.Marker({
           map: obj,
           icon: marker.icon,
@@ -349,9 +338,10 @@ export default {
           //                    click:self.showVideo()
         });
 
-        mker.on("click", function() {
-          obj.setFitView([polygon]);
-          self.FencesName = {
+        mker.on("click", function () {
+          console.log(self.siteComponent)
+          self.siteComponent.amapManager.getMap().setZoomAndCenter(16, [marker.position[0], marker.position[1]]);
+          self.siteComponent.FencesName = {
             name: marker.data.name,
             address: marker.data.address
           };
@@ -359,78 +349,5 @@ export default {
       });
     }
     obj.setFitView();
-  },
-
-
-  pantoBuild(data, mapObj, e) {
-    let self = this;
-    mapObj.clearMap();
-    if (e.object3Dlayer) e.object3Dlayer.clear();
-    if (e.object3Dlayer2) e.object3Dlayer2.clear();
-
-    var path = data.path,
-      doorpath = data.door;
-    var bouns = [],
-      doorBouns = [];
-
-    for (var i in path) {
-      bouns.push(new AMap.LngLat(path[i].lng, path[i].lat));
-    }
-
-    for (var i in doorpath) {
-      doorBouns.push(new AMap.LngLat(doorpath[i].lng, doorpath[i].lat));
-    }
-
-    var height = 150;
-    var color = "#0088ff99"; //rgba
-
-    if (data.pm >= 90) {
-      color = "#ff3300aa";
-    }
-
-    var prism = new AMap.Object3D.Prism({
-      path: bouns,
-      height: height,
-      color: color
-    });
-    prism.transparent = true;
-    var door = new AMap.Object3D.Prism({
-      path: doorBouns,
-      height: 100,
-      color: "#ffcc0055"
-    });
-    door.transparent = false;
-    e.object3Dlayer.add(prism);
-    e.object3Dlayer.add(door);
-    mapObj.panTo(data.location);
-
-    var marker = new AMap.Circle({
-      center: data.location,
-      radius: 50,
-      fillColor: "#0088ff55",
-      strokeColor: "#0088ffcc",
-      strokeWeight: 0,
-      fillOpacity: 0.15,
-      zIndex: 3
-    });
-    marker.setMap(mapObj);
-    mapObj.setFitView(marker);
-  },
-  pantoSite(index) {
-    let self = this;
-    let siteGeo = self.siteGeo;
-    for (var i in siteGeo) {
-      siteGeo[i]["active"] = "";
-    }
-    siteGeo[index]["active"] = "active";
-    self.siteGeo = siteGeo;
-    self.siteEnv = [
-      Math.round(Math.random() * 50 + 40),
-      Math.round(Math.random() * 50 + 40),
-      Math.round(Math.random() * 50 + 40)
-    ];
-    self.mapObj.panTo(siteGeo[index].center);
-    self.mapObj.setZoom(18);
-    self.pantoBuild(self.siteMarkers[index].data);
   }
 }

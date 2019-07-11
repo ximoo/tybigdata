@@ -69,7 +69,6 @@ export default {
               }, store.state.platformData.alerms.timer * 1000);
 
               mapEvent.addSiteMarker(self.mapObj, self.siteGps, self);
-
               var toolBar = new AMap.ControlBar({
                 showZoomBar: false,
                 showControlButton: true,
@@ -85,7 +84,12 @@ export default {
       ]
     };
   },
-  mounted() {},
+  mounted() {
+    let self = this;
+    this.$nextTick(() => {
+      self.$store.state.mapComponent.allComponent = self;
+    });
+  },
   methods: {
     addPointer() {
       let self = this;
@@ -109,6 +113,9 @@ export default {
         this.$store.state.platformData.module.sitemonitor.module.fences.landfill
       );
       return siteGeo;
+    },
+    siteComponent() {
+      return this.$store.state.mapComponent.siteComponent;
     }
   }
 };
