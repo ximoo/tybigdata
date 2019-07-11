@@ -110,7 +110,7 @@ export default {
     addMarker() {
       let self = this;
       let obj = amapManager.getMap();
-      
+
       self.siteMarkers = [];
       let siteGeo = self.fences;
       for (var i in siteGeo) {
@@ -167,8 +167,6 @@ export default {
           });
           polygon.setPath(polyPath);
 
-          self.addSiteFences(obj, marker);
-          self.addRadar(obj, marker);
           var mker = new AMap.Marker({
             map: obj,
             icon: marker.icon,
@@ -178,13 +176,15 @@ export default {
             //                    animation:'AMAP_ANIMATION_DROP'
             //                    click:self.showVideo()
           });
-
+          self.addSiteFences(obj, marker);
           mker.on("click", function() {
             obj.setFitView([polygon]);
             self.FencesName = {
               name: marker.data.name,
               address: marker.data.address
             };
+
+            // self.addRadar(obj, marker);
           });
         });
       }

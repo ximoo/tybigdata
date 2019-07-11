@@ -437,6 +437,8 @@ export default new Vuex.Store({
 
         "recodePath": (state, data) => {
             // console.log(data.index)
+            if (data.door.path.length <= 0) data.door.path = ""
+            if (data.wash.path.length <= 0) data.wash.path = ""
             switch (data.type) {
                 case "site":
                     state.platformData.module.sitemonitor.module.fences.site[data.index].icon = 'el-icon-office-building'
