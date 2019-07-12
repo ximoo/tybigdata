@@ -53,9 +53,7 @@ export default {
       amapManager,
       mapObj: null,
       vecMarkers: [],
-      radar: null,
-      object3Dlayer: null,
-      polygon: null,
+      infoWindow: null,
       events: {
         init(o) {
           mapEvent.initMap(amapManager, self.city, self);
@@ -69,6 +67,15 @@ export default {
           });
           o.addControl(toolBar);
           self.addMarker();
+          // 创建 infoWindow 实例
+          self.infoWindow = new AMap.InfoWindow({
+            isCustom: true, //使用自定义窗体
+            content: "<div>dfasfsafsaf</div>",
+            autoMove: true,
+            offset: new AMap.Pixel(16, -50)
+          });
+
+          self.infoWindow.open();
         }
       },
       groupShow: true
@@ -76,11 +83,14 @@ export default {
   },
   mounted() {
     let self = this;
+
     this.$nextTick(() => {
       self.$store.state.mapComponent.vecComponent = self;
     });
+
   },
   methods: {
+
     addMarker() {
       let self = this;
       let obj = amapManager.getMap();
@@ -120,43 +130,55 @@ export default {
         vechileInfo[i]["name"] = vechileInfo[i].label;
         vechileInfo[i]["id"] = parseInt(i) + 1;
         vechileInfo[i]["style"] = vechileInfo[i].state;
-        markers.push(
-          new AMap.Marker({
-            id: vechileInfo[i].id,
-            icon: style[vechileInfo[i].state].iconUrl,
-            position: vechileInfo[i].location.split(",")
-          })
-        );
+
+        var mker = new AMap.Marker({
+          id: vechileInfo[i].id,
+          icon: style[vechileInfo[i].state].iconUrl,
+          position: vechileInfo[i].location.split(","),
+          clickable: true
+        });
+
+        mker.on("click", function() {
+          self.infoWindow.open(obj, vechileInfo[i].location.split(","));
+        });
+
+        markers.push(mker);
       }
 
-      // 创建样式对象
-
-      // var massMarks = new AMap.MassMarks(vechileInfo, {
-      //   zIndex: 5, // 海量点图层叠加的顺序
-      //   zooms: [3, 19], // 在指定地图缩放级别范围内展示海量点图层
-      //   style: style // 设置样式对象
-      // });
-
       var cluster = new AMap.MarkerClusterer(obj, markers, {
-        gridSize: 80
+        gridSize: 200
       });
 
       // 将海量点添加至地图实例
       // massMarks.setMap(obj);
       obj.setFitView();
     },
+
+    addInfoWindow() {
+      // 实现自定义窗体内容，返回拼接后的字符串
+      function createInfoWindow(title, content) {
+        // 内容拼接 ...
+        return content;
+      }
+    },
+
     pantoVechile(e) {
       let mapObj = amapManager.getMap();
       mapObj.setZoomAndCenter(20, e.center);
     }
+
   },
+
   computed: {
+
     vechileInfo() {
       return this.$store.state.simData.vechileInfo;
     },
+
     city() {
       return this.$store.state.platformData.state.city;
     }
+
   }
 };
 </script>

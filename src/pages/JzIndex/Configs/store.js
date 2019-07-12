@@ -308,7 +308,7 @@ export default new Vuex.Store({
             if (data == 3) {}
             if (data == 4) {
                 localStorage.$platformData = JSON.stringify(state.platformData)
-                localStorage.$simData = JSON.stringify(state.simData)
+                localStorage.$simdata = JSON.stringify(state.simData)
                 setTimeout(function () {
                     state.isFirst = false;
                     window.location.reload()
@@ -409,8 +409,8 @@ export default new Vuex.Store({
             state.platformData = resouceData.platformData
             state.simData = resouceData.simData
             localStorage.$platformData = JSON.stringify(state.platformData)
-            localStorage.$simData = JSON.stringify(state.simData)
-            state.initStep = 3
+            localStorage.$simdata = JSON.stringify(state.simData)
+            state.initStep = 2
         },
 
 

@@ -93,7 +93,7 @@ export default {
 
     randomVechileGps: function (number, adcode) {
         let self = this
-        let getPoiUrl = api.GET_POI + "&keywords='atm'&extensions=all&citylimit=true&city=" + adcode
+        let getPoiUrl = api.GET_POI + "&keywords='加油站'&extensions=all&citylimit=true&city=" + adcode
         axios.get(getPoiUrl).then((res) => {
             console.log(res)
             if (res.data.status = "1") {
@@ -105,7 +105,7 @@ export default {
                         adcode: pois[i].adcode,
                         adname: pois[i].adname
                     })
-                    self.getAroundGps(res.data.pois[i].location, adcode)
+                    if (i == pois.length - 1) self.getAroundGps(adcode)
                 }
             }
         }).catch((error) => {
@@ -114,25 +114,31 @@ export default {
     },
 
 
-    getAroundGps: function (location, adcode) {
+    getAroundGps: function (adcode) {
         let self = this
-        let getPoiAroundUrl = api.GET_AROUND + "&extensions=all&radius=50000&citylimit=true&city=" + adcode + "&location=" + location
-        axios.get(getPoiAroundUrl).then((res) => {
-            console.log(res)
-            for (var i in res.data.pois) {
-                self.poiArray.push({
-                    address: res.data.pois[i].address,
-                    location: res.data.pois[i].location,
-                    adcode: res.data.pois[i].adcode,
-                    adname: res.data.pois[i].adname
-                })
-                store.commit("simGps", self.poiArray)
-                // self.getAroundGps2(res.data.pois[i].location, adcode)
+        let doneOk
+        for (var i in self.poiArray) {
+            console.log(self.poiArray[i].location)
+            let getPoiAroundUrl = api.GET_AROUND + "&extensions=all&radius=50000&citylimit=true&city=" + adcode + "&location=" + self.poiArray[i].location
+            axios.get(getPoiAroundUrl).then((res) => {
+                for (var i in res.data.pois) {
+                    self.poiArray.push({
+                        address: res.data.pois[i].address,
+                        location: res.data.pois[i].location,
+                        adcode: res.data.pois[i].adcode,
+                        adname: res.data.pois[i].adname
+                    })
+                    // 
+                    if (i == res.data.pois.length - 1) self.getAroundGps2(res.data.pois[i].location, adcode)
+                }
 
-            }
-        }).catch((error) => {
-            console.log(error)
-        })
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+
+
+
     },
 
     getAroundGps2: function (location, adcode) {
@@ -151,11 +157,34 @@ export default {
             // console.log(self.poiArray)
             // return self.poiArray
 
-            store.commit("simGps", self.poiArray)
+            if (i == res.data.pois.length - 1) store.commit("simGps", uniq(self.poiArray))
 
         }).catch((error) => {
             console.log(error)
         })
+
+
+
+        function uniq(array) {
+            var newArr = [array[0]]
+            for (var i = 1; i < array.length; i++) {
+                var Item = array[i]
+                var repeat = false
+                for (var j = 0; j < newArr.length; j++) {
+                    if (Item.address == newArr[j].address) {
+                        repeat = true
+                        break
+                    }
+                }
+                if (!repeat) {
+                    newArr.push(Item)
+                }
+            }
+            console.log(newArr)
+            return newArr
+        }
+
+
     },
 
 

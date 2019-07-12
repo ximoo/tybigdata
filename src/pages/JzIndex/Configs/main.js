@@ -38,7 +38,7 @@ Vue.component('v-chart', ECharts)
 
 VueAMap.initAMapApiLoader({
   key: '6f713c69faa95286904fa173059eae94',
-  plugin: ['Map3D', 'AMap.DistrictSearch', 'AMap.SimpleMarker', 'AMap.DistrictLayer', 'AMap.ControlBar','AMap.MouseTool',"AMap.PolyEditor","AMap.MarkerClusterer"],
+  plugin: ['Map3D', 'AMap.DistrictSearch', 'AMap.SimpleMarker', 'AMap.DistrictLayer', 'AMap.ControlBar','AMap.MouseTool',"AMap.PolyEditor","AMap.MarkerClusterer","AMap.AdvancedInfoWindow"],
   v: '1.4.15'
 });
 
