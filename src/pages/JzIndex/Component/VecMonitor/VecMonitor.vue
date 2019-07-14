@@ -57,6 +57,20 @@ export default {
       events: {
         init(o) {
           mapEvent.initMap(amapManager, self.city, self);
+          // 创建 infoWindow 实例
+          // 信息窗体的内容
+          var content = [
+            "<div><b>高德软件有限公司1</b>",
+            "电话 : 010-84107000   邮编 : 100102",
+            "地址 : 北京市望京阜通东大街方恒国际中心A座16层</div></div>"
+          ];
+          self.infoWindow = new AMap.InfoWindow({
+            // isCustom: true,
+            autoMove: true,
+            content: content.join("<br>"), //传入 dom 对象，或者 html 字符串
+            offset: new AMap.Pixel(0, -50),
+            zIndex: 500
+          });
           var toolBar = new AMap.ControlBar({
             showZoomBar: false,
             showControlButton: true,
@@ -67,15 +81,6 @@ export default {
           });
           o.addControl(toolBar);
           self.addMarker();
-          // 创建 infoWindow 实例
-          self.infoWindow = new AMap.InfoWindow({
-            isCustom: true, //使用自定义窗体
-            content: "<div>dfasfsafsaf</div>",
-            autoMove: true,
-            offset: new AMap.Pixel(16, -50)
-          });
-
-          self.infoWindow.open();
         }
       },
       groupShow: true
@@ -87,10 +92,8 @@ export default {
     this.$nextTick(() => {
       self.$store.state.mapComponent.vecComponent = self;
     });
-
   },
   methods: {
-
     addMarker() {
       let self = this;
       let obj = amapManager.getMap();
@@ -130,16 +133,27 @@ export default {
         vechileInfo[i]["name"] = vechileInfo[i].label;
         vechileInfo[i]["id"] = parseInt(i) + 1;
         vechileInfo[i]["style"] = vechileInfo[i].state;
-
+        let poiLocation = vechileInfo[i].location.split(",");
+        let name = vechileInfo[i].label;
         var mker = new AMap.Marker({
           id: vechileInfo[i].id,
           icon: style[vechileInfo[i].state].iconUrl,
-          position: vechileInfo[i].location.split(","),
-          clickable: true
+          position: [parseFloat(poiLocation[0]), parseFloat(poiLocation[1])],
+          clickable: true,
+          label: vechileInfo[i].label
         });
 
-        mker.on("click", function() {
-          self.infoWindow.open(obj, vechileInfo[i].location.split(","));
+        mker.on("click", function(e) {
+          console.log(name);
+          self.infoWindow.setContent(name);
+          self.infoWindow.open(amapManager.getMap(), [
+            parseFloat(poiLocation[0]),
+            parseFloat(poiLocation[1])
+          ]);
+          obj.setCenter([
+            parseFloat(poiLocation[0]),
+            parseFloat(poiLocation[1])
+          ]);
         });
 
         markers.push(mker);
@@ -166,11 +180,9 @@ export default {
       let mapObj = amapManager.getMap();
       mapObj.setZoomAndCenter(20, e.center);
     }
-
   },
 
   computed: {
-
     vechileInfo() {
       return this.$store.state.simData.vechileInfo;
     },
@@ -178,10 +190,19 @@ export default {
     city() {
       return this.$store.state.platformData.state.city;
     }
-
   }
 };
 </script>
-<style lang="less" scoped>
+<style lang="less">
+.ex-bigdata-main {
+  .amap-info-content {
+    background: #0a1854 !important;
+    color: aqua !important;
+  }
+
+  .amap-info-sharp {
+    border-top: 8px solid #0a1854 !important;
+  }
+}
 </style>
 
