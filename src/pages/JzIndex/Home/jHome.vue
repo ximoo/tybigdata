@@ -20,6 +20,9 @@
           <el-tooltip content="工地监管" placement="bottom">
             <i class="el-icon-office-building" @click="handleModule('/site')" />
           </el-tooltip>
+          <el-tooltip content="数据输入" placement="bottom">
+            <i class="el-icon-office-building" @click="toDemo('/admin')" />
+          </el-tooltip>
         </div>
         <div v-else>
           <i class="el-icon-loading" />
@@ -68,6 +71,9 @@ export default {
     //模块切换
     handleModule(url) {
       this.$router.push(url);
+    },
+    toDemo(){
+      window.open("admin.html","_blank") 
     }
   },
   computed: {

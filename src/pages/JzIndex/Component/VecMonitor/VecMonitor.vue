@@ -19,8 +19,15 @@
       :events="events"
       :amap-manager="amapManager"
       style="height:calc(100% - 36px);position: relative"
-    ></el-amap>
-    <vecGroup :groupShow="groupShow" :vechileInfo="vechileInfo" v-on:pantoVechile="pantoVechile" />
+    >
+      <vecTab v-on:showVecTab="showVecTab" :list-show="groupShow" />
+    </el-amap>
+    <vecGroup
+      :group-show="groupShow"
+      :vechileInfo="vechileInfo"
+      v-on:closeGroupDialog="closeGroupDialog"
+      v-on:pantoVechile="pantoVechile"
+    />
     <Conner />
   </div>
 </template>
@@ -31,10 +38,11 @@ import mapEvent from "./vecmonitor.service";
 import randomIze from "../../Configs/service.lib";
 
 import vecGroup from "./vecGroup.vue";
+import vecTab from "./vecTab.vue";
 
 export default {
   name: "AirMonitor",
-  components: { vecGroup },
+  components: { vecGroup, vecTab },
   data() {
     let self = this;
     return {
@@ -58,16 +66,10 @@ export default {
         init(o) {
           mapEvent.initMap(amapManager, self.city, self);
           // 创建 infoWindow 实例
-          // 信息窗体的内容
-          var content = [
-            "<div><b>高德软件有限公司1</b>",
-            "电话 : 010-84107000   邮编 : 100102",
-            "地址 : 北京市望京阜通东大街方恒国际中心A座16层</div></div>"
-          ];
           self.infoWindow = new AMap.InfoWindow({
             // isCustom: true,
             autoMove: true,
-            content: content.join("<br>"), //传入 dom 对象，或者 html 字符串
+            content: "", //传入 dom 对象，或者 html 字符串
             offset: new AMap.Pixel(0, -50),
             zIndex: 500
           });
@@ -83,12 +85,11 @@ export default {
           self.addMarker();
         }
       },
-      groupShow: true
+      groupShow: false
     };
   },
   mounted() {
     let self = this;
-
     this.$nextTick(() => {
       self.$store.state.mapComponent.vecComponent = self;
     });
@@ -135,6 +136,8 @@ export default {
         vechileInfo[i]["style"] = vechileInfo[i].state;
         let poiLocation = vechileInfo[i].location.split(",");
         let name = vechileInfo[i].label;
+        let address = vechileInfo[i].address;
+
         var mker = new AMap.Marker({
           id: vechileInfo[i].id,
           icon: style[vechileInfo[i].state].iconUrl,
@@ -144,8 +147,14 @@ export default {
         });
 
         mker.on("click", function(e) {
-          console.log(name);
-          self.infoWindow.setContent(name);
+          var _content = "<div class='vec-info-box'>";
+          _content += "<div class='vec-number'>" + name + "</div>";
+          _content +=
+            "<div class='vec-address'><i class='el-icon-map-location' /> &nbsp;&nbsp;" +
+            address +
+            "</div>";
+          _content += "</div>";
+          self.infoWindow.setContent(_content);
           self.infoWindow.open(amapManager.getMap(), [
             parseFloat(poiLocation[0]),
             parseFloat(poiLocation[1])
@@ -179,6 +188,13 @@ export default {
     pantoVechile(e) {
       let mapObj = amapManager.getMap();
       mapObj.setZoomAndCenter(20, e.center);
+    },
+
+    closeGroupDialog() {
+      this.groupShow = false;
+    },
+    showVecTab(data) {
+      this.groupShow = data;
     }
   },
 
@@ -202,6 +218,33 @@ export default {
 
   .amap-info-sharp {
     border-top: 8px solid #0a1854 !important;
+  }
+
+  .amap-controls {
+    display: block;
+    .amap-controlbar {
+      // display: none;
+    }
+
+    &:hover .amap-controlbar {
+      display: block;
+    }
+  }
+
+  .vec-info-box {
+    width: 25vw;
+    height: 260px;
+    padding: 10px;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    background: #4e85b4;
+    background: linear-gradient(to bottom, #4e85b4 0%, #794aa9 100%);
+
+    .vec-number {
+      line-height: 1.9;
+      font-weight: bold;
+    }
   }
 }
 </style>

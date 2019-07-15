@@ -1,6 +1,6 @@
 <template>
   <transition name="dialog-fade" @after-enter="afterEnter" @after-leave="afterLeave">
-    <div style="top:0;right:0">
+    <div style="top:0;right:100px;height:0px;">
       <div
         role="dialog"
         aria-modal="true"

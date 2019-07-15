@@ -8,4 +8,349 @@ For example, to overwrite the theme color:
 /* icon font path, required */
 $--font-path: './theme-blue/lib/fonts';
 
+$--ex--font-path: './fonts';
+
+
 @import "./theme-blue/src/index";
+
+
+
+@font-face {
+    font-family: 'ex-icons';
+    src: url('#{$--ex--font-path}/iconfont.woff') format('woff'),
+    /* chrome, firefox */
+    url('#{$--ex--font-path}/iconfont.ttf') format('truetype');
+    /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+    font-weight: normal;
+    font-style: normal
+}
+
+[class^="ex-icon-"],
+[class*=" ex-icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'ex-icons' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    vertical-align: baseline;
+    display: inline-block;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+.ex-icon-upload:before {
+    content: "\e61f";
+}
+
+.ex-icon-alert:before {
+    content: "\e6f6";
+}
+
+.ex-icon-print:before {
+    content: "\e61e";
+}
+
+.ex-icon-back:before {
+    content: "\e669";
+}
+
+.ex-icon-clock4:before {
+    content: "\e61a";
+}
+
+.ex-icon-copy:before {
+    content: "\e8e0";
+}
+
+.ex-icon-fresh:before {
+    content: "\e636";
+}
+
+.ex-icon-speed:before {
+    content: "\e691";
+}
+
+.ex-icon-setup:before {
+    content: "\e64b";
+}
+
+.ex-icon-flash:before {
+    content: "\e683";
+}
+
+.ex-icon-ad-search:before {
+    content: "\e6f5";
+}
+
+.ex-icon-pin:before {
+    content: "\e639";
+}
+
+.ex-icon-lock:before {
+    content: "\e620";
+}
+
+.ex-icon-phone:before {
+    content: "\e61c";
+}
+
+.ex-icon-police:before {
+    content: "\e622";
+}
+
+.ex-icon-device-copy:before {
+    content: "\e61d";
+}
+
+.ex-icon-down:before {
+    content: "\e659";
+}
+
+.ex-icon-auth:before {
+    content: "\e627";
+}
+
+.ex-icon-contact:before {
+    content: "\e609";
+}
+
+.ex-icon-stastic:before {
+    content: "\e60a";
+}
+
+.ex-icon-dumping:before {
+    content: "\e7be";
+}
+
+.ex-icon-sex:before {
+    content: "\e67b";
+}
+
+.ex-icon-building:before {
+    content: "\e663";
+}
+
+.ex-icon-section:before {
+    content: "\e623";
+}
+
+.ex-icon-right:before {
+    content: "\e634";
+}
+
+.ex-icon-xinhao:before {
+    content: "\e621";
+}
+
+.ex-icon-aptitude:before {
+    content: "\e624";
+}
+
+.ex-icon-const:before {
+    content: "\e637";
+}
+
+.ex-icon-deeg:before {
+    content: "\e638";
+}
+
+.ex-icon-truck:before {
+    content: "\e6a2";
+}
+
+.ex-icon-icon-nav-ucenter:before {
+    content: "\e600";
+}
+
+.ex-icon-icon-fixed:before {
+    content: "\e601";
+}
+
+.ex-icon-icon-setup:before {
+    content: "\e602";
+}
+
+.ex-icon-icon-nav-works:before {
+    content: "\e603";
+}
+
+.ex-icon-icon-nav-search:before {
+    content: "\e604";
+}
+
+.ex-icon-icon-bag:before {
+    content: "\e605";
+}
+
+.ex-icon-icon-user:before {
+    content: "\e606";
+}
+
+.ex-icon-icon-eye:before {
+    content: "\e607";
+}
+
+.ex-icon-icon-navigation:before {
+    content: "\e608";
+}
+
+.ex-icon-icon-stastic:before {
+    content: "\e60b";
+}
+
+.ex-icon-icon-numbers:before {
+    content: "\e60c";
+}
+
+.ex-icon-icon-qcode:before {
+    content: "\e60d";
+}
+
+.ex-icon-weixing:before {
+    content: "\e61b";
+}
+
+.ex-icon-icon-car-door-switch:before {
+    content: "\e60e";
+}
+
+.ex-icon-icon-car-speed:before {
+    content: "\e60f";
+}
+
+.ex-icon-icon-car-big-light:before {
+    content: "\e610";
+}
+
+.ex-icon-icon-car-stop:before {
+    content: "\e611";
+}
+
+.ex-icon-icon-car-anode:before {
+    content: "\e612";
+}
+
+.ex-icon-icon-car-left-turn:before {
+    content: "\e613";
+}
+
+.ex-icon-icon-car-acc:before {
+    content: "\e614";
+}
+
+.ex-icon-icon-car-right-turn:before {
+    content: "\e615";
+}
+
+.ex-icon-icon-car-cathode:before {
+    content: "\e616";
+}
+
+.ex-icon-icon-car-small-light:before {
+    content: "\e617";
+}
+
+.ex-icon-icon-car-stop-oil:before {
+    content: "\e618";
+}
+
+.ex-icon-icon-car-weight:before {
+    content: "\e619";
+}
+
+.ex-icon-policecar:before {
+    content: "\e736";
+}
+
+.ex-icon-fill:before {
+    content: "\e652";
+}
+
+.ex-icon-fav:before {
+    content: "\e6e3";
+}
+
+.ex-icon-school-bus:before {
+    content: "\e684";
+}
+
+
+
+@font-face {
+    font-family: 'ex-new-icons';
+    src: url('#{$--ex--font-path}/exnew.woff') format('woff'),
+    /* chrome, firefox */
+    url('#{$--ex--font-path}/exnew.ttf') format('truetype');
+    /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+    font-weight: normal;
+    font-style: normal
+}
+
+[class^="ex-new-icon-"],
+[class*=" ex-new-icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'ex-new-icons' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    vertical-align: baseline;
+    display: inline-block;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.ex-new-icon-fatigue:before {
+    content: "\e600";
+    color: #f1c100
+}
+
+.ex-new-icon-phone:before {
+    content: "\e601";
+    color: #0cd067
+}
+
+.ex-new-icon-eyes:before {
+    content: "\e602";
+    color: #00dbdb
+}
+
+.ex-new-icon-driver:before {
+    content: "\e603";
+    color: #037aff
+}
+
+.ex-new-icon-smoke:before {
+    content: "\e604";
+    color: #623eff
+}
+
+.ex-new-icon-wheel:before {
+    content: "\e605";
+    color: #b233cd
+}
+
+.ex-new-icon-equipment:before {
+    content: "\e606";
+    color: #ff75cd
+}
+
+.ex-new-icon-collision:before {
+    content: "\e607";
+    color: #f2303f
+}
+
+.ex-new-icon-deviate:before {
+    content: "\e608";
+    color: #dc7733
+}

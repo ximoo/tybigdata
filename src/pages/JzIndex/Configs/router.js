@@ -8,6 +8,10 @@ import bigData from '~/pages/JzIndex/Views/bigData'
 import airModule from '~/pages/JzIndex/Modules/airModule';
 import siteModule from '~/pages/JzIndex/Modules/siteModule';
 import vecModule from '~/pages/JzIndex/Modules/vecModule';
+import adminModule from '~/pages/JzIndex/Modules/adminModule';
+
+
+
 Vue.use(VueRouter);
 
 const routes = [{
@@ -24,17 +28,20 @@ const routes = [{
       children: [{
         path: '/index',
         component: airModule
-      },{
+      }, {
         path: '/air',
         component: airModule
-      },{
+      }, {
         path: '/site',
         component: siteModule
-      },{
+      }, {
         path: '/vechile',
         component: vecModule
       }]
     }]
+  }, {
+    path: '/admin',
+    component: adminModule
   },
   {
     path: '*',
