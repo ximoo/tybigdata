@@ -25,26 +25,15 @@
         <p>{{FencesName.address}}</p>
       </div>
 
-      <el-carousel
-        class="fences-control"
-        :autoplay="false"
-        indicator-position="none"
-        type="card"
-        arrow="never"
-        height="60px"
-      >
-        <el-carousel-item>
-          <el-button @click="groupShow = true">打开列表</el-button>
-        </el-carousel-item>
-      </el-carousel>
-    </el-amap>
-    <SiteGroup
-      :groupShow="groupShow"
-      :siteData="fences"
-      v-on:pantoBuild="pantoBuild"
-      v-on:closeGroupDialog="closeGroupDialog"
-    />
+      <SiteTab v-on:showSiteTab="showSiteTab" :list-show="groupShow" />
 
+      <SiteGroup
+        :groupShow="groupShow"
+        :siteData="fences"
+        v-on:pantoBuild="pantoBuild"
+        v-on:closeGroupDialog="closeGroupDialog"
+      />
+    </el-amap>
     <Conner />
   </div>
 </template>
@@ -53,10 +42,10 @@ import VueAMap from "vue-amap";
 let amapManager = new VueAMap.AMapManager();
 import mapEvent from "./sitemonitor.service";
 import SiteGroup from "./SiteGroup.vue";
-
+import SiteTab from "./SiteTab.vue";
 export default {
   name: "AirMonitor",
-  components: { SiteGroup },
+  components: { SiteGroup, SiteTab },
   data() {
     let self = this;
     return {
@@ -82,6 +71,7 @@ export default {
         name: "",
         address: ""
       },
+      infoWindow: null,
       events: {
         init(o) {
           var toolBar = new AMap.ControlBar({
@@ -309,6 +299,9 @@ export default {
     },
     closeGroupDialog() {
       this.groupShow = false;
+    },
+    showSiteTab(data) {
+      this.groupShow = data;
     },
     pantoBuild(data) {
       let obj = amapManager.getMap();

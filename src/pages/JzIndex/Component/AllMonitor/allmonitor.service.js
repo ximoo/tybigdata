@@ -233,6 +233,11 @@ export default {
       });
       polygon.setPath(pathArray);
       that.monitorMap.add(polygon);
+
+      
+
+
+
     });
   },
   addVecMarker(mapObj, data, e) {
@@ -341,6 +346,28 @@ export default {
         mker.on("click", function () {
           console.log(self.siteComponent)
           self.siteComponent.amapManager.getMap().setZoomAndCenter(16, [marker.position[0], marker.position[1]]);
+          var _content = "<div class='vec-info-box'>";
+          _content += "<div class='vec-number'>" + marker.data.name + "</div>";
+          _content +=
+            "<div class='vec-address'><i class='el-icon-time'></i> 最后定位时间：" +
+            marker.data.address +
+            "</div>";
+          _content +=
+            "<div class='vec-address'><i class='el-icon-map-location'></i> 最后定位位置：" +
+            marker.data.address +
+            "</div>";
+          _content += "</div>";
+          console.log(self.siteComponent.infoWindow)
+           // 创建 infoWindow 实例
+           self.siteComponent.infoWindow = new AMap.InfoWindow({
+            // isCustom: true,
+            autoMove: true,
+            content: "", //传入 dom 对象，或者 html 字符串
+            offset: new AMap.Pixel(0, -50),
+            zIndex: 500
+          });
+          self.siteComponent.infoWindow.setContent(_content);
+          self.siteComponent.infoWindow.open(self.siteComponent.amapManager.getMap(), [marker.position[0], marker.position[1]]);
           self.siteComponent.FencesName = {
             name: marker.data.name,
             address: marker.data.address

@@ -150,7 +150,11 @@ export default {
           var _content = "<div class='vec-info-box'>";
           _content += "<div class='vec-number'>" + name + "</div>";
           _content +=
-            "<div class='vec-address'><i class='el-icon-map-location' /> &nbsp;&nbsp;" +
+            "<div class='vec-address'><i class='el-icon-time'></i> 最后定位时间：" +
+            address +
+            "</div>";
+          _content +=
+            "<div class='vec-address'><i class='el-icon-map-location'></i> 最后定位位置：" +
             address +
             "</div>";
           _content += "</div>";
@@ -175,14 +179,6 @@ export default {
       // 将海量点添加至地图实例
       // massMarks.setMap(obj);
       obj.setFitView();
-    },
-
-    addInfoWindow() {
-      // 实现自定义窗体内容，返回拼接后的字符串
-      function createInfoWindow(title, content) {
-        // 内容拼接 ...
-        return content;
-      }
     },
 
     pantoVechile(e) {
@@ -211,41 +207,7 @@ export default {
 </script>
 <style lang="less">
 .ex-bigdata-main {
-  .amap-info-content {
-    background: #0a1854 !important;
-    color: aqua !important;
-  }
-
-  .amap-info-sharp {
-    border-top: 8px solid #0a1854 !important;
-  }
-
-  .amap-controls {
-    display: block;
-    .amap-controlbar {
-      // display: none;
-    }
-
-    &:hover .amap-controlbar {
-      display: block;
-    }
-  }
-
-  .vec-info-box {
-    width: 25vw;
-    height: 260px;
-    padding: 10px;
-    color: #fff;
-    border: 1px solid #fff;
-    border-radius: 5px;
-    background: #4e85b4;
-    background: linear-gradient(to bottom, #4e85b4 0%, #794aa9 100%);
-
-    .vec-number {
-      line-height: 1.9;
-      font-weight: bold;
-    }
-  }
+  
 }
 </style>
 
