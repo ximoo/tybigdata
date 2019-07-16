@@ -259,6 +259,7 @@ export default new Vuex.Store({
             "siteComponent": null,
             "airComponent": null,
             "vecComponent": null,
+            "caseComponent":null
         }
     },
     mutations: {

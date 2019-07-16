@@ -11,18 +11,27 @@
             </el-input>
             <i class="el-icon-s-tools" slot="reference" />
           </el-popover>
-          <el-tooltip content="车辆监管" placement="bottom">
-            <i class="el-icon-office-building" @click="handleModule('/vechile')" />
-          </el-tooltip>
-          <el-tooltip content="环境监测" placement="bottom">
-            <i class="el-icon-cloudy" @click="handleModule('/air')" />
-          </el-tooltip>
-          <el-tooltip content="工地监管" placement="bottom">
-            <i class="el-icon-office-building" @click="handleModule('/site')" />
-          </el-tooltip>
-          <el-tooltip content="数据输入" placement="bottom">
-            <i class="el-icon-office-building" @click="toDemo('/admin')" />
-          </el-tooltip>
+
+          <el-popover placement="bottom" trigger="click" style="margin-left: 12px;">
+            <el-tooltip content="车辆监控" placement="bottom">
+              <el-button icon="ex-icon-truck" @click="handleModule('/vechile')"> 车辆监控</el-button>
+            </el-tooltip>
+            <!-- <el-tooltip content="环境监测" placement="bottom">
+              <el-button icon="el-icon-cloudy-and-sunny" @click="handleModule('/air')"> 环境监测</el-button>
+            </el-tooltip> -->
+            <el-tooltip content="场站管理" placement="bottom">
+              <el-button icon="el-icon-office-building" @click="handleModule('/site')"> 场站管理</el-button>
+            </el-tooltip>
+            <el-tooltip content="案件管理" placement="bottom">
+              <el-button icon="ex-icon-police" @click="handleModule('/cases')"> 案件管理</el-button>
+            </el-tooltip>
+            <el-tooltip content="资产管理" placement="bottom">
+              <el-button icon="ex-icon-document_fill" @click="toDemo('/admin')"> 资产管理</el-button>
+            </el-tooltip>
+            <el-tooltip content="选择模块" placement="bottom" slot="reference">
+              <i class="ex-icon-manage_fill" />
+            </el-tooltip>
+          </el-popover>
         </div>
         <div v-else>
           <i class="el-icon-loading" />
@@ -72,8 +81,8 @@ export default {
     handleModule(url) {
       this.$router.push(url);
     },
-    toDemo(){
-      window.open("admin.html","_blank") 
+    toDemo() {
+      window.open("admin.html", "_blank");
     }
   },
   computed: {
@@ -84,3 +93,34 @@ export default {
   }
 };
 </script>
+<style lang="less">
+.el-popover {
+  background: #112166 !important;
+  background: linear-gradient(to bottom, #4e85b4 0%, #112166 100%) !important;
+  border: 1px solid #4d53a5 !important;
+  padding: 0 !important;
+  box-shadow: inset 0 0 5px rgba(77, 83, 165, 0.85),
+    0 5px 5px rgba(0, 0, 0, 0.45);
+
+  .el-button {
+    background: transparent;
+    color: #6edbff;
+    border: none;
+    padding: 7px;
+    line-height: 1.9;
+  }
+
+  .el-button:hover,
+  .el-button:focus {
+    background: #597db7;
+    color: #fff;
+    border: none;
+  }
+}
+.el-popper[x-placement^="bottom"] .popper__arrow {
+  border-bottom-color: #4e85b4;
+}
+.el-popper[x-placement^="bottom"] .popper__arrow::after {
+  border-bottom-color: #4e85b4 !important;
+}
+</style>

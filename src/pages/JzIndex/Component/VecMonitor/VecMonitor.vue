@@ -36,6 +36,7 @@ import VueAMap from "vue-amap";
 let amapManager = new VueAMap.AMapManager();
 import mapEvent from "./vecmonitor.service";
 import randomIze from "../../Configs/service.lib";
+import Util from "../../Configs/util.lib";
 
 import vecGroup from "./vecGroup.vue";
 import vecTab from "./vecTab.vue";
@@ -151,7 +152,7 @@ export default {
           _content += "<div class='vec-number'>" + name + "</div>";
           _content +=
             "<div class='vec-address'><i class='el-icon-time'></i> 最后定位时间：" +
-            address +
+            Util.getNow() +
             "</div>";
           _content +=
             "<div class='vec-address'><i class='el-icon-map-location'></i> 最后定位位置：" +
@@ -207,7 +208,6 @@ export default {
 </script>
 <style lang="less">
 .ex-bigdata-main {
-  
 }
 </style>
 

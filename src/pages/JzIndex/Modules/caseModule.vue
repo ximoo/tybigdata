@@ -19,28 +19,23 @@
       v-else
     ></el-button>
     <!-- 工地/消纳场环境监测 -->
-    <AirMonitor />
-    <div class="item" style="width:240px;height:calc(100% - 240px)">
-      <h3>全市空气质量排名</h3>
+    <CaseMonitor />
+    <div class="item" style="width:240px;height:calc(100% - 6px)">
+      <h3>全市案件数量</h3>
       <Conner />
     </div>
-
-    <!-- 环境污染变化趋势 -->
-    <AirData />
   </div>
 </template>
 <script>
-import AirMonitor from "../Component/AirMonitor/AirMonitor.vue";
-import AirData from "../Component/AirMonitor/AirData";
-
+import CaseMonitor from "../Component/CaseMonitor/CaseMonitor.vue";
 export default {
-  name: "jHome",
+  name: "CaseModule",
+  components: { CaseMonitor },
   data() {
     return {
-      fullMain: false
+      fullMain: true
     };
   },
-  components: { AirMonitor, AirData },
   methods: {
     handleFull() {
       this.fullMain = !this.fullMain;
@@ -48,3 +43,4 @@ export default {
   }
 };
 </script>
+
