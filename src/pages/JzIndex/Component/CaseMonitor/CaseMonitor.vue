@@ -53,6 +53,7 @@ export default {
       massMarker: null,
       events: {
         init(o) {
+          self.mapObj = o;
           mapEvent.initMap(amapManager, self.city, self);
           var toolBar = new AMap.ControlBar({
             showZoomBar: false,
@@ -63,10 +64,8 @@ export default {
             }
           });
           o.addControl(toolBar);
-
           //地图海量点
           self.manMarker = [];
-
           self.casePlay();
         }
       }
@@ -78,7 +77,6 @@ export default {
       let GpsData = this.GpsData;
       let casePointers = new Array();
       let photos = [];
-
       self.massMarker = new AMap.MassMarks(self.manMarker, {
         opacity: 1,
         zIndex: 100,
@@ -94,6 +92,7 @@ export default {
         let url = "../../../../stastic/img/upload/" + i + ".jpg";
         photos.push(url);
       }
+
       for (var i in GpsData) {
         casePointers.push({
           id: parseInt(i) + 1,
@@ -116,6 +115,7 @@ export default {
           content: ""
         }
       });
+
       self.massMarker.on("mouseover", function(e) {
         marker.setPosition(e.data.lnglat);
         marker.setLabel({
@@ -128,10 +128,54 @@ export default {
             e.data.upDate
         });
       });
+
       self.massMarker.setData(casePointers);
       self.massMarker.setMap(amapManager.getMap());
 
-      console.log(casePointers);
+    },
+
+    //随机展示上传案件
+    loopPlay(data) {
+      let self = this;
+      let content =
+        "<div class='icon-sanitation-photo'><img src=" +
+        data.photo[0] +
+        " /></div><div class='info-sanitation-street'>" +
+        data.address +
+        "</div>";
+
+
+      //构建自定义信息窗体
+      function createInfoWindow(content) {
+        var middle = document.createElement("div");
+        middle.innerHTML = content;
+        middle.style.cursor = "pointer";
+        middle.addEventListener(
+          "click",
+          function(e) {
+            // self.showDetail(data);
+
+
+
+
+
+
+
+          },
+          false
+        );
+        return middle;
+      }
+
+      infoWindow = new AMap.InfoWindow({
+        offset: new AMap.Pixel(-20, -35),
+        content: createInfoWindow(content) //使用默认信息窗体框样式，显示信息内容
+      });
+
+      infoWindow.open(self.mapObj, data.location.split(","));
+
+      self.mapObj.panTo(data.location.split(","));
+
     }
   },
 
@@ -144,11 +188,9 @@ export default {
       let centerArry = this.$store.state.platformData.state.center.split(",");
       return [parseFloat(centerArry[0]), parseFloat(centerArry[1])];
     },
-
     GpsData() {
       return this.$store.state.simData.gps;
     },
-
     caseComponent() {
       return this.$store.state.mapComponent.caseComponent;
     }

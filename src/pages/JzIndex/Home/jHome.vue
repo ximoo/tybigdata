@@ -13,25 +13,19 @@
           </el-popover>
 
           <el-popover placement="bottom" trigger="click" style="margin-left: 12px;">
-            <el-tooltip content="车辆监控" placement="bottom">
-              <el-button icon="ex-icon-truck" @click="handleModule('/vechile')"> 车辆监控</el-button>
-            </el-tooltip>
+            <el-button icon="ex-icon-truck" @click="handleModule('/vechile')">车辆监控</el-button>
             <!-- <el-tooltip content="环境监测" placement="bottom">
               <el-button icon="el-icon-cloudy-and-sunny" @click="handleModule('/air')"> 环境监测</el-button>
-            </el-tooltip> -->
-            <el-tooltip content="场站管理" placement="bottom">
-              <el-button icon="el-icon-office-building" @click="handleModule('/site')"> 场站管理</el-button>
-            </el-tooltip>
-            <el-tooltip content="案件管理" placement="bottom">
-              <el-button icon="ex-icon-police" @click="handleModule('/cases')"> 案件管理</el-button>
-            </el-tooltip>
-            <el-tooltip content="资产管理" placement="bottom">
-              <el-button icon="ex-icon-document_fill" @click="toDemo('/admin')"> 资产管理</el-button>
-            </el-tooltip>
+            </el-tooltip>-->
+            <el-button icon="el-icon-office-building" @click="handleModule('/site')">场站管理</el-button>
+            <el-button icon="ex-icon-police" @click="handleModule('/cases')">案件管理</el-button>
+            <el-button icon="ex-icon-document_fill" @click="toDemo('/admin')">资产管理</el-button>
             <el-tooltip content="选择模块" placement="bottom" slot="reference">
               <i class="ex-icon-manage_fill" />
             </el-tooltip>
           </el-popover>
+
+          
         </div>
         <div v-else>
           <i class="el-icon-loading" />
