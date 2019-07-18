@@ -1,4 +1,4 @@
-const AmapWebKey = '0ef6825bdde97686378638eb43882ccb'
+const AmapWebKey = '84353ef481e125f9c9b8d74b4c952383'
 
 export default {
 
@@ -16,5 +16,6 @@ export default {
     GET_AROUND: 'https://restapi.amap.com/v3/place/around?key=' + AmapWebKey,
     //逆地理编码
     GET_ADDRESS: 'https://restapi.amap.com/v3/geocode/regeo?key=' + AmapWebKey,
-
+    //路径规划
+    GET_TRAIL:'https://restapi.amap.com/v4/direction/truck?key=' + AmapWebKey
 };

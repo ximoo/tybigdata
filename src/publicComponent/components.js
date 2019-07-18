@@ -5,7 +5,7 @@ import pFooter from './layout/pFooter.vue';
 import Echarts from './Public/Echarts.vue'
 import Conner from './Layout/Conner.vue'
 import reDialog from './Layout/reDialog.vue'
-
+import infoWindow from "./Monitor/infoWindow.vue"
 import iFrame from "./Public/iFrame.vue"
 
 
@@ -17,3 +17,4 @@ Vue.component('Echarts', Echarts);
 Vue.component('Conner', Conner);
 Vue.component('reDialog', reDialog);
 Vue.component('iFrame', iFrame);
+Vue.component('infoWindow', infoWindow);

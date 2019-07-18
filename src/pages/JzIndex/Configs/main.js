@@ -38,13 +38,10 @@ Vue.component('v-chart', ECharts)
 
 VueAMap.initAMapApiLoader({
   key: '6f713c69faa95286904fa173059eae94',
-  plugin: ['Map3D', 'AMap.DistrictSearch', 'AMap.SimpleMarker', 'AMap.DistrictLayer', 'AMap.ControlBar','AMap.MouseTool',"AMap.PolyEditor","AMap.MarkerClusterer","AMap.InfoWindow"],
-  v: '1.4.15'
+  plugin: ['AMap.PathSimplifier','AMap.SimpleMarker','Map3D', 'AMap.DistrictSearch', 'AMap.SimpleMarker', 'AMap.DistrictLayer', 'AMap.ControlBar', 'AMap.MouseTool', "AMap.PolyEditor", "AMap.MarkerClusterer", "AMap.InfoWindow"],
+  v: '1.4.15',
+  uiVersion: '1.0.11' // 版本号
 });
-
-
-
-
 
 
 

@@ -28,6 +28,19 @@
       v-on:closeGroupDialog="closeGroupDialog"
       v-on:pantoVechile="pantoVechile"
     />
+    <!-- 信息窗体 -->
+    <infoWindow ref="infoWindow" :data="infoWd.data">
+      <template slot="footer">
+        <el-button size="mini" @click="showDetail">详情</el-button>
+        <el-button size="mini" @click="showHisTrail">轨迹</el-button>
+      </template>
+    </infoWindow>
+    <vecDetail :vecInfo="infoWd" v-on:vecDetailClose="vecDetailClose"/>
+    <vecHisTrail
+      :vecInfo="infoWd.data"
+      :vecHisShow="vecHisShow"
+      v-on:vecHisClose="vecHisClose"
+    />
     <Conner />
   </div>
 </template>
@@ -40,10 +53,12 @@ import Util from "../../Configs/util.lib";
 
 import vecGroup from "./vecGroup.vue";
 import vecTab from "./vecTab.vue";
+import vecDetail from "./vecDetail.vue";
+import vecHisTrail from "./vecHisTrail.vue";
 
 export default {
   name: "AirMonitor",
-  components: { vecGroup, vecTab },
+  components: { vecGroup, vecTab, vecDetail, vecHisTrail },
   data() {
     let self = this;
     return {
@@ -86,11 +101,17 @@ export default {
           self.addMarker();
         }
       },
-      groupShow: false
+      groupShow: false,
+      infoWd: {
+        show: false,
+        data: { name: "123" }
+      },
+      vecHisShow: false
     };
   },
   mounted() {
     let self = this;
+    console.log(self.$refs.infoWindow);
     this.$nextTick(() => {
       self.$store.state.mapComponent.vecComponent = self;
     });
@@ -148,18 +169,12 @@ export default {
         });
 
         mker.on("click", function(e) {
-          var _content = "<div class='vec-info-box'>";
-          _content += "<div class='vec-number'>" + name + "</div>";
-          _content +=
-            "<div class='vec-address'><i class='el-icon-time'></i> 最后定位时间：" +
-            Util.getNow() +
-            "</div>";
-          _content +=
-            "<div class='vec-address'><i class='el-icon-map-location'></i> 最后定位位置：" +
-            address +
-            "</div>";
-          _content += "</div>";
-          self.infoWindow.setContent(_content);
+          self.infoWd.data = {
+            name: name,
+            address: address
+          };
+
+          self.infoWindow.setContent(self.$refs.infoWindow.$el);
           self.infoWindow.open(amapManager.getMap(), [
             parseFloat(poiLocation[0]),
             parseFloat(poiLocation[1])
@@ -192,10 +207,28 @@ export default {
     },
     showVecTab(data) {
       this.groupShow = data;
+    },
+
+    showDetail() {
+      console.log("detail");
+      this.infoWd.show = true;
+    },
+    vecDetailClose(b) {
+      this.infoWd.show = b;
+    },
+    showHisTrail() {
+      console.log("showHisTrail");
+      this.vecHisShow = true;
+    },
+    vecHisClose(b) {
+      this.vecHisShow = b;
     }
   },
 
   computed: {
+    inputListeners: function() {
+      console.log(this.text());
+    },
     vechileInfo() {
       return this.$store.state.simData.vechileInfo;
     },
@@ -207,7 +240,5 @@ export default {
 };
 </script>
 <style lang="less">
-.ex-bigdata-main {
-}
 </style>
 
