@@ -1,9 +1,8 @@
 <template>
-  <!-- vecHisShow" -->
   <reDialog
     v-dialogDrag
     :title="vecInfo.name + '的轨迹'"
-    :visible="true"
+    :visible="vecHisShow"
     :modal="false"
     :modal-append-to-body="true"
     :append-to-body="true"
@@ -176,52 +175,52 @@ export default {
       let landfillData = this.fences.landfill[0];
       let TrailPath = JSON.parse(localStorage.$polyline); //临时用
       let TrailPathData = TrailPath.length;
-      //这里构建两条简单的轨迹，仅作示例
-      self.pathSimplifierIns.setData([{ name: "轨迹0", path: TrailPath }]);
-      // self.TrailPathData = TrailPathData;
-      //创建一个巡航器
-      self.navg = self.pathSimplifierIns.createPathNavigator(
-        0, //关联第1条轨迹
-        { speed: 600 }
-      );
-      self.navg.on("move", function() {
-        self.mapObj.setCenter(self.navg.getPosition());
-        self.TrailPathData = parseInt(
-          (self.navg.getCursor().idx / TrailPathData) * 100
-        );
+
+      var driving = new AMap.TruckDriving({
+        policy: 1,
+        size: 4
       });
-      // Axios.get(
-      //   API.GET_TRAIL +
-      //     "&origin=" +
-      //     siteData.center +
-      //     "&destination=" +
-      //     landfillData.center +
-      //     "&size=4"
-      // )
-      //   .then(res => {
-      //     console.log(res);
-      //     if (res.data.errmsg === "OK") {
-      //       let stepPath = res.data.data.route.paths[0].steps;
-      //       let polyLine = [],
-      //         polyLines = [];
 
-      //       for (var i in stepPath) {
-      //         polyLine = polyLine.concat(stepPath[i].polyline.split(";"));
-      //       }
-      //       for (var i in polyLine) {
-      //         polyLines.push(polyLine[i].split(","));
-      //       }
+      driving.search(
+        [
+          {
+            lnglat: siteData.center
+          },
+          {
+            lnglat: landfillData.center
+          }
+        ],
+        function(status, result) {
+          // 未出错时，result即是对应的路线规划方案
+          console.log(result);
+          if (result.info === "OK") {
+            let stepPath = result.routes[0].steps;
+            let polyLine = [],
+              polyLines = [];
 
-      //       localStorage.$polyline = JSON.stringify(polyLines);
-      //     } else {
-      //       return [];
-      //     }
+            for (var i in stepPath) {
+              polyLine = polyLine.concat(stepPath[i].path);
+            }
 
-      //     console.log(JSON.parse(localStorage.$polyline));
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //   });
+            localStorage.$polyline = JSON.stringify(polyLine);
+
+            self.pathSimplifierIns.setData([{ name: "轨迹0", path: polyLine }]);
+            // self.TrailPathData = TrailPathData;
+            //创建一个巡航器
+            self.navg = self.pathSimplifierIns.createPathNavigator(
+              0, //关联第1条轨迹
+              { speed: 60 }
+            );
+            self.navg.on("move", function() {
+              self.mapObj.setCenter(self.navg.getPosition());
+              self.pathSimplifierIns.render();
+              self.TrailPathData = parseInt(
+                (self.navg.getCursor().idx / TrailPathData) * 100
+              );
+            });
+          }
+        }
+      );
     },
     //饼状图动态值
     activePieData() {},
@@ -243,6 +242,7 @@ export default {
       this.btnState.pause = false;
     },
     TrailResum() {
+      this.mapObj.setZoom(17);
       this.navg.resume();
       this.btnState.pause = true;
     },
@@ -254,6 +254,9 @@ export default {
     }
   },
   computed: {
+    city() {
+      return this.$store.state.platformData.state.city;
+    },
     fences() {
       return this.$store.state.platformData.module.sitemonitor.module.fences;
     }
@@ -278,11 +281,10 @@ export default {
   position: absolute;
   left: 25px;
   bottom: 25px;
-
   background-color: #fff;
   padding: 10px 20px;
   border-radius: 5px;
-  width: 80%;
+  width: calc(~"100% - 85px");
 
   i {
     font-size: 20px;
@@ -294,7 +296,7 @@ export default {
 }
 .vec-speed-charts {
   position: absolute;
-  right: 0;
+  right: 35px;
   bottom: 0;
   width: 150px;
   height: 150px;

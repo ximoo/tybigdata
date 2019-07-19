@@ -1,7 +1,7 @@
 export default function getData(pieData) {
   return {
     tooltip: {
-      formatter: "{a} <br/>{b} : {c}%"
+      formatter: "{a} <br/>{b} : {c}吨"
     },
     grid: {
       top: 0,
@@ -10,13 +10,13 @@ export default function getData(pieData) {
       bottom: 0
     },
     series: [{
-      name: '速度',
+      name: '载重',
       type: 'gauge',
       z: 3,
       min: 0,
-      max: 220,
-      splitNumber: 11,
-      center:['50%', '50%'],
+      max: 20,
+      splitNumber: 10,
+      center: ['50%', '50%'],
       radius: '90%',
       axisLine: { // 坐标轴线
         lineStyle: { // 属性lineStyle控制线条样式
@@ -36,6 +36,7 @@ export default function getData(pieData) {
         }
       },
       axisLabel: {
+        show: false,
         backgroundColor: 'auto',
         borderRadius: 2,
         color: '#eee',
@@ -54,10 +55,8 @@ export default function getData(pieData) {
       detail: {
         // 其余属性默认使用全局文本样式，详见TEXTSTYLE
         formatter: function (value) {
-          value = (value + '').split('.');
-          value.length < 2 && (value.push('00'));
-          return ('00' + value[0]).slice(-2) +
-            '.' + (value[1] + '00').slice(0, 2);
+          value = (value + '吨')
+          return value;
         },
         fontWeight: 'bolder',
         borderRadius: 3,
@@ -75,13 +74,13 @@ export default function getData(pieData) {
         textShadowOffsetX: 0,
         textShadowOffsetY: 0,
         fontFamily: 'Arial',
+        fontSize: 17,
         width: 100,
         color: '#eee',
         rich: {}
       },
       data: [{
-        value: 40,
-        name: 'km/h'
+        value: 10
       }]
     }, ]
   }

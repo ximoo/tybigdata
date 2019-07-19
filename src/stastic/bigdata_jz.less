@@ -99,7 +99,7 @@ li {
     position: relative;
     width: 100%;
     height: 100%;
-    // overflow: hidden;
+
 
 
     .amap-info-content {
@@ -109,16 +109,7 @@ li {
         background: #4e85b4;
         background: linear-gradient(to bottom, #4e85b4 0%, #794aa9 100%);
 
-        .vec-info-box {
-            width: 20vw;
-            height: 260px;
-            padding: 5px 10px;
 
-            .vec-number {
-                line-height: 1.9;
-                font-weight: bold;
-            }
-        }
     }
 
     .amap-info-sharp {
@@ -343,8 +334,107 @@ li {
         }
 
     }
+
 }
 
+// overflow: hidden;
+.vec-info-box {
+    width: 20vw;
+    font-size: 14px;
+    line-height: 1.9;
+    color: #abc4ff;
+
+    .vec-number {
+        line-height: 1.9;
+        font-weight: bold;
+    }
+
+    .vec-info-img {
+        width: 150px;
+        height: 84px;
+        float: left;
+        margin: 10px;
+    }
+
+    .vec-info-intro {
+        padding: 5px;
+
+        &::after {
+            clear: both;
+        }
+    }
+
+    .vec-info-address {
+        clear: both;
+    }
+
+    .vec-info-control {
+        margin-top: 20px;
+    }
+
+    .vec-detail-content {
+        padding: 5px 15px;
+    }
+
+    .vec-info-state {
+        li {
+            float: left;
+            margin: 5px;
+            width: 24px;
+            height: 24px;
+            list-style: none;
+            background: #5daf34;
+            line-height: 24px;
+            text-align: center;
+            color: #fff;
+            border-radius: 3px;
+            font-size: 18px;
+        }
+
+        &::after {
+            clear: both;
+        }
+    }
+
+
+
+    .el-table tr,
+    .el-table th,
+    .el-table {
+        background-color: transparent !important;
+    }
+
+    .el-table__body tr.hover-row>td,
+    .el-table__body tr.hover-row.current-row>td,
+    .el-table__body tr.hover-row.el-table__row--striped>td,
+    .el-table__body tr.hover-row.el-table__row--striped.current-row>td,
+    .el-table--enable-row-hover .el-table__body tr:hover>td {
+        background-color: #abc4ff30 !important;
+    }
+
+    .el-table th,
+    .el-table td {
+        padding: 5px 0 !important;
+        border-bottom: 1px solid #155cb7;
+        color: #abc4ff !important;
+    }
+
+    .el-tabs__nav-wrap::after {
+        background-color: #155cb7;
+    }
+
+    .el-tabs__active-bar {
+        background-color: #fff;
+    }
+
+    .el-tabs__item {
+        color: #abc4ff !important;
+
+        &.is-active {
+            color: #fff !important;
+        }
+    }
+}
 
 .weather-icon {
     background: url("img/bigData_jz/weather.png") 0 0 no-repeat;

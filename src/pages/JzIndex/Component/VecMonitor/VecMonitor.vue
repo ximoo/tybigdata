@@ -31,16 +31,14 @@
     <!-- 信息窗体 -->
     <infoWindow ref="infoWindow" :data="infoWd.data">
       <template slot="footer">
-        <el-button size="mini" @click="showDetail">详情</el-button>
-        <el-button size="mini" @click="showHisTrail">轨迹</el-button>
+        <div class="vec-info-control">
+          <el-button size="mini" @click="showDetail">详情</el-button>
+          <!-- <el-button size="mini" @click="showHisTrail">轨迹</el-button> -->
+        </div>
       </template>
     </infoWindow>
-    <vecDetail :vecInfo="infoWd" v-on:vecDetailClose="vecDetailClose"/>
-    <vecHisTrail
-      :vecInfo="infoWd.data"
-      :vecHisShow="vecHisShow"
-      v-on:vecHisClose="vecHisClose"
-    />
+    <vecDetail :vecInfo="infoWd" v-on:showHisTrail="showHisTrail" v-on:vecDetailClose="vecDetailClose" />
+    <vecHisTrail :vecInfo="infoWd.data" :vecHisShow="vecHisShow" v-on:vecHisClose="vecHisClose" />
     <Conner />
   </div>
 </template>
@@ -156,9 +154,17 @@ export default {
         vechileInfo[i]["name"] = vechileInfo[i].label;
         vechileInfo[i]["id"] = parseInt(i) + 1;
         vechileInfo[i]["style"] = vechileInfo[i].state;
+        vechileInfo[i]["weight"] = randomIze.randomLib(1, 20);
+        vechileInfo[i]["mileage"] = randomIze.randomLib(120, 999);
         let poiLocation = vechileInfo[i].location.split(",");
         let name = vechileInfo[i].label;
         let address = vechileInfo[i].address;
+        let state = vechileInfo[i].state;
+        let speed = vechileInfo[i].speed;
+        let mileage = vechileInfo[i].mileage;
+        let weight = vechileInfo[i].weight;
+
+        // console.log(vechileInfo[i]);
 
         var mker = new AMap.Marker({
           id: vechileInfo[i].id,
@@ -171,7 +177,11 @@ export default {
         mker.on("click", function(e) {
           self.infoWd.data = {
             name: name,
-            address: address
+            address: address,
+            speed: speed,
+            state: state,
+            mileage: mileage,
+            weight: weight
           };
 
           self.infoWindow.setContent(self.$refs.infoWindow.$el);
@@ -216,9 +226,9 @@ export default {
     vecDetailClose(b) {
       this.infoWd.show = b;
     },
-    showHisTrail() {
+    showHisTrail(b) {
       console.log("showHisTrail");
-      this.vecHisShow = true;
+      this.vecHisShow = b;
     },
     vecHisClose(b) {
       this.vecHisShow = b;

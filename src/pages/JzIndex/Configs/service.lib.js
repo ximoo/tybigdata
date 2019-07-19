@@ -53,7 +53,7 @@ export default {
         let vechileSimData = [];
         for (var i in vechileList) {
             var rIndexGps = self.randomLib(0, gpsList.length - 1);
-            var rIndexAlerm = self.randomLib(0, 7);
+            var rIndexAlerm = self.randomLib(0, alerms.length - 1);
             var state = self.randomLib(0, 4);
             var speed = 0,
                 icon = "icon-gray";

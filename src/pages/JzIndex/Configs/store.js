@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        "version": "3.4.19.0711",
+        "version": "3.4.19.0719",
         "isFirst": !localStorage.$platformData,
         "initStep": 0,
         "platformData": localStorage.$platformData ? JSON.parse(localStorage.$platformData) : {
@@ -23,15 +23,21 @@ export default new Vuex.Store({
                 "number": 10,
                 "timer": 5,
                 "list": [{
-                    "label": "超速驾驶",
-                    "enable": true
-                }, {
-                    "label": "超载驾驶",
-                    "enable": true
-                }, {
-                    "label": "疲劳驾驶",
-                    "enable": true
-                }, {
+                        "label": "超速驾驶",
+                        "level": 1,
+                        "enable": true
+                    }, {
+                        "label": "超载驾驶",
+                        "level": 2,
+                        "enable": true
+                    }, {
+                        "label": "道路抛洒",
+                        "level": 3,
+                        "enable": true
+                    }
+
+                /*
+                , {
                     "label": "分神驾驶",
                     "enable": true
                 }, {
@@ -46,7 +52,10 @@ export default new Vuex.Store({
                 }, {
                     "label": "车道偏离",
                     "enable": true
-                }]
+                }
+                */
+
+                ]
             },
             "basedata": {
                 "name": "基础数据：",
@@ -259,7 +268,7 @@ export default new Vuex.Store({
             "siteComponent": null,
             "airComponent": null,
             "vecComponent": null,
-            "caseComponent":null
+            "caseComponent": null
         }
     },
     mutations: {

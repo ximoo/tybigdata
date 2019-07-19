@@ -5,7 +5,7 @@
       <ul>
         <transition name="el-zoom-in-center" v-for="item,index in alermVechile" :key="index">
           <li @click="pantoVec(item)" style="cursor:pointer">
-            <div>
+            <div :class="'alerm-level' + item.level">
               <span class="number">{{item.name}}</span>
               <span class="alerm">{{item.alermname}}</span>
             </div>
@@ -73,6 +73,7 @@ export default {
           address: vechileGps[vechileIndex].address,
           icon: icons[singalType],
           alermname: alermsData.list[singalType].label,
+          level: alermsData.list[singalType].level,
           style: randomIze.randomLib(0, 2)
         });
         // console.log(singalType);
@@ -82,7 +83,9 @@ export default {
     },
     pantoVec(data) {
       let self = this;
-      self.allComponent.amapManager.getMap().setZoomAndCenter(16, data.lnglat.split(","));
+      self.allComponent.amapManager
+        .getMap()
+        .setZoomAndCenter(16, data.lnglat.split(","));
       clearInterval(actMonitorId);
       setTimeout(() => {
         actMonitorId = setInterval(function() {
@@ -93,7 +96,7 @@ export default {
   },
 
   computed: {
-   allComponent() {
+    allComponent() {
       return this.$store.state.mapComponent.allComponent;
     },
     simData() {
@@ -128,6 +131,18 @@ export default {
       .alerm {
         color: #c1daf8;
         float: right;
+      }
+
+      &.alerm-level1 {
+        background-image: url("../../../../stastic/img/bigData_jz/alerm_box.png");
+      }
+      &.alerm-level2 {
+        color: #fc0;
+        background-image: url("../../../../stastic/img/bigData_jz/alerm_box2.png");
+      }
+      &.alerm-level3 {
+        color: #f30;
+        background-image: url("../../../../stastic/img/bigData_jz/alerm_box3.png");
       }
     }
   }

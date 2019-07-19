@@ -1,8 +1,12 @@
 export default {
 
-    getNow: function () {
+    getNow: function (date) {
+
 
         var myDate = new Date();
+        if (date) {
+            myDate = new Date(date)
+        }
 
         //获取当前年
         var year = myDate.getFullYear();
