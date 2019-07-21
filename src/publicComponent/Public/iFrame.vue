@@ -1,5 +1,5 @@
 <template>
-  <iframe frameborder="0" scrolling="auto" :src="iframeUrl"></iframe>
+  <iframe frameborder="0" scrolling="auto" :src="iframeUrl"   @load="vueFunc" ></iframe>
 </template>
 <script>
 export default {

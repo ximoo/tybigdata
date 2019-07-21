@@ -173,8 +173,8 @@ export default {
       let self = this;
       let siteData = this.fences.site[0];
       let landfillData = this.fences.landfill[0];
-      let TrailPath = JSON.parse(localStorage.$polyline); //临时用
-      let TrailPathData = TrailPath.length;
+      // let TrailPath = JSON.parse(localStorage.$polyline); //临时用
+      let TrailPathData;
 
       var driving = new AMap.TruckDriving({
         policy: 1,
@@ -203,7 +203,7 @@ export default {
             }
 
             localStorage.$polyline = JSON.stringify(polyLine);
-
+            TrailPathData = polyLine.length;
             self.pathSimplifierIns.setData([{ name: "轨迹0", path: polyLine }]);
             // self.TrailPathData = TrailPathData;
             //创建一个巡航器

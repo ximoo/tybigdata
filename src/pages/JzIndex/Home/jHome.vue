@@ -19,7 +19,7 @@
             </el-tooltip>-->
             <el-button icon="el-icon-office-building" @click="handleModule('/site')">场站管理</el-button>
             <el-button icon="ex-icon-police" @click="handleModule('/cases')">案件管理</el-button>
-            <el-button icon="ex-icon-document_fill" @click="toDemo('/admin')">资产管理</el-button>
+            <el-button icon="ex-icon-document_fill" @click="toDemo('/admin')">后台管理</el-button>
             <el-tooltip content="选择模块" placement="bottom" slot="reference">
               <i class="ex-icon-manage_fill" />
             </el-tooltip>

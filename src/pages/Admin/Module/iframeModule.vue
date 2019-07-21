@@ -1,21 +1,30 @@
 <template>
-  <iFrame class="ex-pages" :iframeUrl="iframeUrl" />
+  <iframe frameborder="0" scrolling="auto" :src="iframeUrl"></iframe>
 </template>
 <script>
-const hostDomain = "http://192.168.1.200:10201";
-
+const hostDomain = "http://120.202.182.111:8060";
 export default {
-  name: "iframeModule",
+  name: "iFrame",
   data() {
     return {
-      iframeUrl: ""
+      iframeUrl: null
     };
   },
   mounted() {
-    console.log(this.$route.path);
-    this.iframeUrl = hostDomain + this.$route.path
+    this.iframeUrl = hostDomain + this.$route.path;
+  },
+  watch: {
+    $route(n) {
+      this.iframeUrl = hostDomain + n.path;
+    }
   }
 };
 </script>
-<style>
+<style lang="less">
+iframe {
+  border: none;
+  background: transparent;
+  width: 100%;
+  height: calc(~"100vh - 80px");
+}
 </style>

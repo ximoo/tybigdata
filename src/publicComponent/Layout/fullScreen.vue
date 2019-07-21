@@ -1,12 +1,12 @@
 <template>
   <div class="ex-screen">
     <div class="ex-message">
-      <el-tooltip content="进入全屏" placement="bottom">
+      <el-tooltip content="退出全屏" placement="bottom">
         <i class="el-icon-full-screen" @click="changeScreen" v-show="pageScreen"/>
       </el-tooltip>
     </div>
     <div class="ex-message">
-      <el-tooltip content="退出全屏" placement="bottom">
+      <el-tooltip content="进入全屏" placement="bottom">
         <i class="el-icon-full-screen" @click="changeScreen" v-show="!pageScreen"/>
       </el-tooltip>
     </div>
