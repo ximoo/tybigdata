@@ -21,6 +21,41 @@
       style="height:calc(100% - 36px);position: relative"
     ></el-amap>
     <Conner />
+
+    <reDialog
+      v-dialogDrag
+      :title="postCardList.title"
+      :visible="postCardList.show"
+      :modal="false"
+      :modal-append-to-body="false"
+      :append-to-body="true"
+      width="440px"
+      class="group-tree-dialog"
+      @close="closeDialog"
+    >
+      <div class="case-post-image">
+        <el-image :src="postCardList.photo" />
+      </div>
+
+      <el-form ref="form" :model="formModel" label-width="80px" class="case-post-form">
+        <el-form-item label="* 收件人:">
+          <el-select v-model="postMan.select" size="mini" placeholder="请选择收件人">
+            <el-option
+              v-for="item in postMan.options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="发送内容:">
+          <el-input type="textarea" :rows="2" placeholder="请输入内容"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="success" size="small" @click="tipOK">发 送</el-button>
+        </el-form-item>
+      </el-form>
+    </reDialog>
   </div>
 </template>
 <script>
@@ -30,6 +65,9 @@ import mapEvent from "./casemonitor.service";
 import Util from "../../Configs/util.lib";
 import Service from "../../Configs/service.lib";
 var randomName = require("chinese-random-name");
+
+let photoId;
+
 export default {
   name: "CaseMonitor",
   data() {
@@ -66,17 +104,35 @@ export default {
           o.addControl(toolBar);
           //地图海量点
           self.manMarker = [];
-          self.casePlay();
+          self.casePlay(o);
         }
-      }
+      },
+      postCardList: {
+        modifyTime: "2018-11-27 11:00:00",
+        state: "已上报",
+        title: "发现垃圾乱扔现象，现已拍照",
+        icon: "ivu-icon-logo-dropbox",
+        show: false
+      },
+      postMan: {
+        select: null,
+        options: [{ label: "" }]
+      },
+      casePointers: [],
+      formModel: null
     };
   },
 
+  mounted() {
+  },
+
   methods: {
-    casePlay() {
+    casePlay(mapObj) {
+      let self = this;
       let GpsData = this.GpsData;
       let casePointers = new Array();
       let photos = [];
+      let Generates = [];
       self.massMarker = new AMap.MassMarks(self.manMarker, {
         opacity: 1,
         zIndex: 100,
@@ -89,8 +145,16 @@ export default {
       });
 
       for (var i = 1; i <= 20; i++) {
-        let url = "../../../../stastic/img/upload/" + i + ".jpg";
+        let url = require("../../../../stastic/img/upload/" + i + ".jpg");
         photos.push(url);
+      }
+
+      for (var i = 1; i <= 20; i++) {
+        let label = randomName.generate();
+        Generates.push({
+          label: label,
+          value: i
+        });
       }
 
       for (var i in GpsData) {
@@ -129,53 +193,95 @@ export default {
         });
       });
 
+      self.massMarker.on("click", function(e) {
+        self.loopPlay(e.data);
+      });
+
+      self.postMan.options = Generates;
+      self.casePointers = casePointers;
       self.massMarker.setData(casePointers);
-      self.massMarker.setMap(amapManager.getMap());
+      self.massMarker.setMap(mapObj);
 
+      //随机展示上传案件
+      self.loopPlay(self.casePointers[0]);
+      self.changeInfo();
+      self.readyGps();
     },
-
-    //随机展示上传案件
     loopPlay(data) {
       let self = this;
       let content =
         "<div class='icon-sanitation-photo'><img src=" +
-        data.photo[0] +
-        " /></div><div class='info-sanitation-street'>" +
+        data.photo +
+        " /></div><h4 class='info-sanitation-type'>" +
+        data.caseName +
+        "</h4><div class='info-sanitation-street'>" +
         data.address +
         "</div>";
 
-
-      //构建自定义信息窗体
-      function createInfoWindow(content) {
-        var middle = document.createElement("div");
-        middle.innerHTML = content;
-        middle.style.cursor = "pointer";
-        middle.addEventListener(
-          "click",
-          function(e) {
-            // self.showDetail(data);
-
-
-
-
-
-
-
-          },
-          false
-        );
-        return middle;
-      }
-
-      infoWindow = new AMap.InfoWindow({
-        offset: new AMap.Pixel(-20, -35),
-        content: createInfoWindow(content) //使用默认信息窗体框样式，显示信息内容
+      var infoWindow = new AMap.InfoWindow({
+        offset: new AMap.Pixel(-6, -6),
+        content: self.createInfoWindow(content, data) //使用默认信息窗体框样式，显示信息内容
       });
+      infoWindow.open(self.mapObj, data.lnglat);
+      self.mapObj.setZoomAndCenter(16, data.lnglat);
+    },
 
-      infoWindow.open(self.mapObj, data.location.split(","));
+    //构建自定义信息窗体
+    createInfoWindow(content, data) {
+      let self = this;
+      // console.log(self);
+      var middle = document.createElement("div");
+      middle.innerHTML = content;
+      middle.style.cursor = "pointer";
+      middle.addEventListener(
+        "click",
+        function(e) {
+          console.log(data);
+          clearInterval(photoId);
+          self.postCardList = {
+            show: true,
+            photo: data.photo,
+            id: data.id,
+            name: data.name,
+            title: "乱扔垃圾 - " + data.address,
+            address: data.address,
+            adname: data.adname,
+            adcode: data.adcode,
+            lnglat: data.lnglat,
+            upDate: data.upDate
+          };
+        },
+        false
+      );
+      return middle;
+    },
 
-      self.mapObj.panTo(data.location.split(","));
+    changeInfo() {
+      let self = this;
+      photoId = setInterval(function() {
+        let randomDot = Service.randomLib(0, self.casePointers.length - 1);
+        self.loopPlay(self.casePointers[randomDot]);
+      }, 5000);
+    },
 
+    //
+    closeDialog() {
+      this.postCardList.show = false;
+      this.changeInfo();
+    },
+
+    readyGps() {
+      this.$emit("changeGps", this.casePointers);
+    },
+
+    tipOK() {
+      console.log("tipOK");
+      this.postCardList.show = false;
+      this.changeInfo();
+      this.$message({
+        message: "消息发送成功！",
+        type: "success"
+      });
     }
   },
 
@@ -197,3 +303,42 @@ export default {
   }
 };
 </script>
+<style lang="less">
+.icon-sanitation-photo {
+  img {
+    width: 250px;
+    height: 160px;
+  }
+}
+
+.info-sanitation-type {
+  font-size: 16px;
+}
+
+.info-sanitation-street {
+  font-size: 13px;
+}
+
+.case-post-image {
+  width: 80%;
+  height: 180px;
+  margin: 10px auto;
+  display: block;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.case-post-form {
+  margin: 25px auto;
+  color: #fff;
+  width: 80%;
+
+  .el-form-item__label {
+    color: #fff;
+  }
+}
+</style>

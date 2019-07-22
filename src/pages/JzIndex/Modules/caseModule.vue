@@ -19,26 +19,76 @@
       v-else
     ></el-button>
     <!-- 工地/消纳场环境监测 -->
-    <CaseMonitor />
-    <div class="item" style="width:240px;height:calc(100% - 6px)">
-      <h3>全市案件数量</h3>
-      <Conner />
-    </div>
+    <CaseMonitor v-on:changeGps="changeGps" />
+    <CaseStastic :caseStastic="caseStastic" />
+    <CaseManTrail />
+    <CaseEcharts />
   </div>
 </template>
 <script>
 import CaseMonitor from "../Component/CaseMonitor/CaseMonitor.vue";
+import CaseStastic from "../Component/CaseMonitor/CaseStastic.vue";
+import CaseEcharts from "../Component/CaseMonitor/CaseEcharts.vue";
+import CaseManTrail from "../Component/CaseMonitor/CaseManTrail.vue";
+import service from "../Configs/service.lib";
+
 export default {
   name: "CaseModule",
-  components: { CaseMonitor },
+  components: { CaseMonitor, CaseStastic, CaseEcharts, CaseManTrail },
   data() {
     return {
-      fullMain: true
+      fullMain: true,
+      caseStastic: []
     };
+  },
+  mounted() {
+    this.initDistricts();
   },
   methods: {
     handleFull() {
       this.fullMain = !this.fullMain;
+    },
+    initDistricts(data) {
+      let self = this;
+      let districts = self.districts;
+      let caseStastic = [];
+      for (var i in districts) {
+        caseStastic.push({
+          name: districts[i].name,
+          caseNumber: 0
+        });
+      }
+      self.caseStastic = caseStastic;
+    },
+    changeGps(data) {
+      let self = this;
+      let caseStastic = self.caseStastic;
+      console.log(data);
+
+      for (var i in data) {
+        for (var h in caseStastic) {
+          if (data[i].adname == caseStastic[h].name) {
+            caseStastic[h].caseNumber = caseStastic[h].caseNumber + 1;
+          }
+        }
+      }
+
+
+      console.log(caseStastic)
+      self.caseStastic = caseStastic;
+
+
+
+    },
+
+    changeStastic(data) {
+      this.caseStastic = data;
+    }
+
+  },
+  computed: {
+    districts() {
+      return this.$store.state.platformData.state.districts;
     }
   }
 };
