@@ -80,7 +80,7 @@ export default {
       resizeEnable: true,
       animateEnable: true,
       features: ["bg", "point", "road", "building"],
-      pitch: 45,
+      pitch: 65,
       rotation: 0,
       buildingAnimation: false, //楼块出现是否带动画
       expandZoomRange: true,
@@ -123,8 +123,7 @@ export default {
     };
   },
 
-  mounted() {
-  },
+  mounted() {},
 
   methods: {
     casePlay(mapObj) {
@@ -144,7 +143,7 @@ export default {
         }
       });
 
-      for (var i = 1; i <= 20; i++) {
+      for (var i = 1; i <= 19; i++) {
         let url = require("../../../../stastic/img/upload/" + i + ".jpg");
         photos.push(url);
       }
@@ -283,8 +282,11 @@ export default {
         type: "success"
       });
     }
-  },
 
+  },
+  destroyed() {
+    clearInterval(photoId);
+  },
   computed: {
     city() {
       console.log(this.$store.state.platformData.state.city);
