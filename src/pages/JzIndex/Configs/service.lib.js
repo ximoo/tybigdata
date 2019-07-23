@@ -93,7 +93,7 @@ export default {
 
     randomVechileGps: function (number, adcode) {
         let self = this
-        let getPoiUrl = api.GET_POI + "&keywords='加油站'&extensions=all&citylimit=true&city=" + adcode
+        let getPoiUrl = api.GET_POI + "&keywords='车站'&extensions=all&citylimit=true&city=" + adcode
         axios.get(getPoiUrl).then((res) => {
             console.log(res)
             if (res.data.status = "1") {

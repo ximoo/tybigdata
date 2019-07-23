@@ -46,12 +46,6 @@ export default function getData(pieData) {
         textShadowOffsetY: 1,
         textShadowColor: '#222'
       },
-      title: {
-        // 其余属性默认使用全局文本样式，详见TEXTSTYLE
-        fontWeight: 'bolder',
-        fontSize: 20,
-        fontStyle: 'italic'
-      },
       detail: {
         // 其余属性默认使用全局文本样式，详见TEXTSTYLE
         formatter: function (value) {
@@ -80,7 +74,7 @@ export default function getData(pieData) {
         rich: {}
       },
       data: [{
-        value: 10
+        value: pieData
       }]
     }, ]
   }
