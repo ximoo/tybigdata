@@ -88,6 +88,7 @@ a {
     .ex-screen {
         float: left;
         margin-top: 3px;
+
         .ex-message {
             float: left;
             margin: 0 7px;
@@ -242,6 +243,7 @@ a {
         height: 100%;
         float: left;
         box-shadow: inset 3px 0 10px rgba(0, 0, 0, .05);
+        overflow: hidden;
     }
 
     .ex-pages-content.hide-menu {
@@ -251,6 +253,7 @@ a {
 
     .ex-table-content {
         margin: 15px;
+        height: calc(~"100% - 119px");
 
         .ex-pagination {
             text-align: right;
@@ -275,7 +278,6 @@ a {
         }
     }
 
-
 }
 
 
@@ -289,7 +291,7 @@ a {
 .el-table {
     border: 1px solid #cacbe2 !important;
     box-shadow: 0 3px 3px rgba(0, 0, 0, .05);
-
+    overflow: initial !important;
 
 
 }

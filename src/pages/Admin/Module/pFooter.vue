@@ -10,12 +10,18 @@
       >
         <el-button type="primary" slot="reference" icon="el-icon-user-solid" size="mini" circle></el-button>
       </el-popover>
-      <span>超级管理员 - 城管委</span>
+      <span>超级管理员 - 城管委 {{version}}</span>
+      <span class="fr"></span>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: "pFooter"
+  name: "pFooter",
+  computed:{
+    version(){
+      return this.$store.state.version
+    }
+  }
 };
 </script>

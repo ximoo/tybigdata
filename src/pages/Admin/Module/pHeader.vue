@@ -70,7 +70,6 @@
   </div>
 </template>
 <script>
-import store from "../../../pages/JzIndex/Configs/store";
 export default {
   name: "layout",
   data() {
@@ -86,7 +85,6 @@ export default {
     handleMenu() {
       let self = this;
       let platformAdminNav = self.platformAdminNav;
-
       console.log(platformAdminNav);
     },
     handleSelect(url) {
@@ -99,15 +97,15 @@ export default {
   computed: {
     platformName() {
       return (
-        store.state.platformData.state.city +
-        store.state.platformData.state.name
+        this.$store.state.platformData.state.city +
+        this.$store.state.platformData.state.name
       );
     },
     adcode() {
-      return store.state.platformData.state.adcode;
+      return this.$store.state.platformData.state.adcode;
     },
     platformAdminNav() {
-      return store.state.platformAdminNav;
+      return this.$store.state.platformAdminNav;
     }
   }
 };

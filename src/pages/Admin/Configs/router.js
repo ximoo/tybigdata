@@ -4,7 +4,7 @@ import VueRouter from 'vue-router';
 //引入页面模板文件
 import NotFound from '~/publicComponent/Error/notFound'; //404页面
 import dHome from '~/pages/Admin/Home/dHome'; //Demo演示平台首页
-import setupMenu from '~/pages/Admin/System/setupMenu'
+import setupMenu from '~/pages/Admin/Components/System/setupMenu'
 
 import iframeModule from "~/pages/Admin/Module/iframeModule"
 

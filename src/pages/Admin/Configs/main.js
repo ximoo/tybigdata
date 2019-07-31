@@ -9,8 +9,14 @@ import '~/publicComponent/components';
 import '~/stastic/style.less';
 import '~/common/plugin/element';
 
+import Store from "./store"
+
+
+
+
 new Vue({
   el: '#WebApp',
   router,
+  store:Store,
   render: h => h(App),
 });

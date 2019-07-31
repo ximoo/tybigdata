@@ -143,6 +143,7 @@ export default {
       return unitTemp;
     },
     ver() {
+      localStorage.$version = store.state.version
       return store.state.version;
     }
   }
