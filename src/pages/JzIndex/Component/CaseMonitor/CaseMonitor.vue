@@ -126,11 +126,10 @@ export default {
   mounted() {},
 
   methods: {
+    
     casePlay(mapObj) {
       let self = this;
-      let GpsData = this.GpsData;
-      let casePointers = new Array();
-      let photos = [];
+
       let Generates = [];
       self.massMarker = new AMap.MassMarks(self.manMarker, {
         opacity: 1,
@@ -143,30 +142,11 @@ export default {
         }
       });
 
-      for (var i = 1; i <= 19; i++) {
-        let url = require("../../../../stastic/img/upload/" + i + ".jpg");
-        photos.push(url);
-      }
-
       for (var i = 1; i <= 20; i++) {
         let label = randomName.generate();
         Generates.push({
           label: label,
           value: i
-        });
-      }
-
-      for (var i in GpsData) {
-        casePointers.push({
-          id: parseInt(i) + 1,
-          name: randomName.generate(),
-          caseName: "乱扔垃圾",
-          address: GpsData[i].address,
-          adname: GpsData[i].adname,
-          adcode: GpsData[i].adcode,
-          lnglat: GpsData[i].location.split(","),
-          upDate: Util.getNow(),
-          photo: photos[Service.randomLib(0, 20)]
         });
       }
 
@@ -197,15 +177,22 @@ export default {
       });
 
       self.postMan.options = Generates;
-      self.casePointers = casePointers;
-      self.massMarker.setData(casePointers);
       self.massMarker.setMap(mapObj);
-
-      //随机展示上传案件
-      self.loopPlay(self.casePointers[0]);
-      self.changeInfo();
+      self.simCase();
       self.readyGps();
+      //随机展示上传案件
+      setTimeout(function() {
+        self.loopPlay(self.casePointers[0]);
+        self.changeInfo();
+      }, 20000);
+
+      var caseId = setInterval(function() {
+        self.simCase();
+        self.changeInfo();
+        self.readyGps();
+      }, 150000);
     },
+
     loopPlay(data) {
       let self = this;
       let content =
@@ -225,6 +212,37 @@ export default {
       self.mapObj.setZoomAndCenter(16, data.lnglat);
     },
 
+    simCase() {
+      let self = this;
+      let casePointers = new Array();
+      let GpsData = self.GpsData;
+      let randomCase = Service.randomLib(1, 50);
+      let photos = [];
+      for (var i = 1; i <= 4; i++) {
+        let url = require("../../../../stastic/img/upload/" + i + ".jpg");
+        photos.push(url);
+      }
+
+      for (var i = 0; i < randomCase; i++) {
+        let index = Service.randomLib(1, GpsData.length - 1);
+        casePointers.push({
+          id: parseInt(i) + 1,
+          name: randomName.generate(),
+          caseName: "路面抛洒",
+          address: GpsData[index].address,
+          adname: GpsData[index].adname,
+          adcode: GpsData[index].adcode,
+          lnglat: GpsData[index].location.split(","),
+          upDate: Util.getNow(),
+          photo: photos[Service.randomLib(0, 3)]
+        });
+      }
+
+      console.log(randomCase + ".......");
+      self.casePointers = casePointers;
+      self.massMarker.setData(casePointers);
+    },
+
     //构建自定义信息窗体
     createInfoWindow(content, data) {
       let self = this;
@@ -242,7 +260,7 @@ export default {
             photo: data.photo,
             id: data.id,
             name: data.name,
-            title: "乱扔垃圾 - " + data.address,
+            title: "路面抛洒 - " + data.address,
             address: data.address,
             adname: data.adname,
             adcode: data.adcode,
@@ -282,6 +300,7 @@ export default {
         type: "success"
       });
     }
+
 
   },
   destroyed() {

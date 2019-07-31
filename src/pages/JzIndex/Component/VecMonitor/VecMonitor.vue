@@ -32,13 +32,26 @@
     <infoWindow ref="infoWindow" :data="infoWd.data">
       <template slot="footer">
         <div class="vec-info-control">
-          <el-button size="mini" @click="showDetail">详情</el-button>
+          <el-button size="mini" type="info" @click="showDetail">详情</el-button>
+          <el-button size="mini" type="info" @click="showVideo">视频</el-button>
+          <el-button size="mini" type="info" @click="limitSpeed">限速</el-button>
+          <el-button size="mini" type="info" @click="limitHandle">限举</el-button>
+          <el-button size="mini" type="info" @click="limitAcc">锁车</el-button>
           <!-- <el-button size="mini" @click="showHisTrail">轨迹</el-button> -->
         </div>
       </template>
     </infoWindow>
-    <vecDetail :vecInfo="infoWd" v-on:showHisTrail="showHisTrail" v-on:vecDetailClose="vecDetailClose" />
+    <vecDetail
+      :vecInfo="infoWd"
+      v-on:showHisTrail="showHisTrail"
+      v-on:vecDetailClose="vecDetailClose"
+    />
     <vecHisTrail :vecInfo="infoWd.data" :vecHisShow="vecHisShow" v-on:vecHisClose="vecHisClose" />
+    <vecVideo
+      :vecInfo="infoWd.data"
+      v-on:vecVideoClose="vecVideoClose"
+      :vecVideoShow="vecVideoShow"
+    />
     <Conner />
   </div>
 </template>
@@ -53,10 +66,11 @@ import vecGroup from "./vecGroup.vue";
 import vecTab from "./vecTab.vue";
 import vecDetail from "./vecDetail.vue";
 import vecHisTrail from "./vecHisTrail.vue";
+import vecVideo from "./vecVideo.vue";
 
 export default {
   name: "AirMonitor",
-  components: { vecGroup, vecTab, vecDetail, vecHisTrail },
+  components: { vecGroup, vecTab, vecDetail, vecHisTrail, vecVideo },
   data() {
     let self = this;
     return {
@@ -104,7 +118,8 @@ export default {
         show: false,
         data: { name: "123" }
       },
-      vecHisShow: false
+      vecHisShow: false,
+      vecVideoShow: false
     };
   },
   mounted() {
@@ -223,15 +238,87 @@ export default {
       console.log("detail");
       this.infoWd.show = true;
     },
+
+    showVideo() {
+      console.log("video");
+      this.vecVideoShow = true;
+    },
+
     vecDetailClose(b) {
       this.infoWd.show = b;
     },
+
     showHisTrail(b) {
       console.log("showHisTrail");
       this.vecHisShow = b;
     },
+
     vecHisClose(b) {
       this.vecHisShow = b;
+    },
+
+    vecVideoClose(b) {
+      this.vecVideoShow = b;
+    },
+
+    limitSpeed() {
+      this.$confirm("您是否要对该车辆下发限速指令?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "限速成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消限速"
+          });
+        });
+    },
+    
+    limitHandle() {
+      this.$confirm("您是否要对该车辆下发限举指令?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "限举成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消限举"
+          });
+        });
+    },
+
+    limitAcc() {
+      this.$confirm("您是否要对该车辆下发锁车指令?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "锁车成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消锁车"
+          });
+        });
     }
   },
 

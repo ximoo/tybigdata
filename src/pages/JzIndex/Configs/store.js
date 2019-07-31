@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        "version": "3.4.19.0722",
+        "version": "3.4.19.0731",
         "isFirst": !localStorage.$platformData,
         "initStep": 0,
         "platformData": localStorage.$platformData ? JSON.parse(localStorage.$platformData) : {
@@ -495,11 +495,25 @@ export default new Vuex.Store({
             "iconClass": null,
             "children": [{
                 "id": 31,
-                "title": "出土统计",
+                "title": "计量系统",
                 "pid": 3,
                 "url": "###",
                 "iconClass": null,
                 "children": [{
+                    "id": 313,
+                    "title": "区域出土统计",
+                    "pid": 31,
+                    "url": "/Reports/AreaSite",
+                    "iconClass": null,
+                    "children": null
+                },{
+                    "id": 314,
+                    "title": "区域消纳统计",
+                    "pid": 31,
+                    "url": "/Reports/AreaUnload",
+                    "iconClass": null,
+                    "children": null
+                },{
                     "id": 311,
                     "title": "每日出土工地",
                     "pid": 31,
@@ -539,6 +553,13 @@ export default new Vuex.Store({
                     "title": "里程统计",
                     "pid": 32,
                     "url": "/Reports/Mileages",
+                    "iconClass": null,
+                    "children": null
+                }, {
+                    "id": 324,
+                    "title": "车辆状态统计",
+                    "pid": 32,
+                    "url": "/Reports/VehStatusStat",
                     "iconClass": null,
                     "children": null
                 }]

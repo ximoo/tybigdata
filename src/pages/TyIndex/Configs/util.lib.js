@@ -24,17 +24,10 @@ export default {
     },
 
     getDate(time) {
+        let date = new Date(time)
         //获取当前年
-        var year = time.getFullYear();
-
-        //获取当前月
-        var month = time.getMonth() + 1;
-
-        //获取当前日
-        var date = time.getDate();
-        var h = time.getHours(); //获取当前小时数(0-23)
-        var m = time.getMinutes(); //获取当前分钟数(0-59)
-        var s = time.getSeconds();
+        var h = date.getHours(); //获取当前小时数(0-23)
+        var m = date.getMinutes(); //获取当前分钟数(0-59)
 
         //获取当前时间
         var nowDate = this.conver(h) + ':' + this.conver(m);

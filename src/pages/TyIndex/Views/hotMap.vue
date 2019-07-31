@@ -20,6 +20,13 @@
       :amap-manager="amapManager"
       style="height:100%;position: relative;width:100%"
     >
+      <ul class="hot-type-list">
+        <li v-for="item,index in dateType" :key="index" @click="handleType(item.value)">
+          <i class="el-icon-document" />
+          {{item.label}}
+        </li>
+      </ul>
+
       <div class="hot-slider">
         <i class="el-icon-loading" v-show="loadShow" />
         <el-slider
@@ -27,7 +34,7 @@
           :show-tooltip="false"
           :marks="hotMarks"
           @change="changeData"
-          :step="25"
+          :step="100/24"
           show-stops
         ></el-slider>
       </div>
@@ -45,6 +52,9 @@ let tempPOI = [],
   heatmap = null,
   dataId,
   indexId = 0;
+
+
+  
 
 export default {
   name: "bigData",
@@ -72,6 +82,7 @@ export default {
       caseId: null,
       manMarker: [],
       massMarker: null,
+
       events: {
         init(o) {
           var toolBar = new AMap.ControlBar({
@@ -113,41 +124,109 @@ export default {
             });
             self.changeTime();
             // self.getData(0);
-            self.changeId();
+            // self.changeId();
           });
         }
-      }
+      },
+
+      dateSelect: "",
+
+      dateType: [
+        {
+          id: 0,
+          label: "总人数",
+          value: 0
+        },
+        {
+          id: 1,
+          label: "非网上购物偏好人数",
+          value: 1
+        },
+        {
+          id: 2,
+          label: "工作人数",
+          value: 2
+        },
+        {
+          id: 3,
+          label: "居住人数",
+          value: 3
+        },
+        {
+          id: 4,
+          label: "老年人数",
+          value: 4
+        },
+        {
+          id: 5,
+          label: "男性人数",
+          value: 5
+        },
+        {
+          id: 6,
+          label: "女性人数",
+          value: 6
+        },
+        {
+          id: 7,
+          label: "其他人数",
+          value: 7
+        },
+        {
+          id: 8,
+          label: "青年人数",
+          value: 8
+        },
+        {
+          id: 9,
+          label: "网上购物偏好人数",
+          value: 9
+        },
+        {
+          id: 10,
+          label: "消费等级低的人数",
+          value: 10
+        },
+        {
+          id: 11,
+          label: "消费等级高的人数",
+          value: 11
+        },
+        {
+          id: 12,
+          label: "消费等级中的人数",
+          value: 12
+        },
+        {
+          id: 13,
+          label: "中年人数",
+          value: 13
+        }
+      ]
+
     };
   },
   methods: {
     changeId() {
       let self = this;
       dataId = setInterval(() => {
-        self.getData(indexId);
-        self.hotDate = indexId * 25;
+        self.changeData(indexId);
+        console.log(self.dateSelect);
       }, 5000);
     },
 
-    getData(index) {
+    getData(date, type) {
       let self = this;
-      let jsonUrl = [
-        "/api/hot1.json",
-        "/api/hot2.json",
-        "/api/hot3.json",
-        "/api/hot4.json",
-        "/api/hot5.json"
-      ];
+      let jsonUrl = "";
       tempPOI = [];
       hotData = [];
       self.loadShow = true;
-      self.$http.get(jsonUrl[index]).then(res => {
+      indexId = indexId + 1;
+      if (indexId == 24) indexId = 0;
+      self.$http.get(jsonUrl + "?date=" + date + "&type=" + type).then(res => {
         tempPOI = res.data;
 
         for (var i in tempPOI) {
-          // console.log(tempPOI[i]);
-          let tempCount = 1.5;
-          if (indexId > 0) tempCount = 2;
-
           hotData.push({
             lng: tempPOI[i].location.split(",")[0],
             lat: tempPOI[i].location.split(",")[1],
@@ -155,69 +234,116 @@ export default {
           });
         }
 
-        //设置数据集：该数据为北京部分“公园”数据
+        //设置数据集：该数据为北京部分“公园”数
+        据;
         heatmap.setDataSet({
           data: hotData,
           max: 7500
         });
 
-        indexId = indexId + 1;
-        if (indexId == 5) indexId = 0;
         self.loadShow = false;
       });
     },
 
     changeTime() {
+      let self = this;
       let NowTime = Util.getNow();
       let DateNowTime = new Date(NowTime).getTime();
-      let hourTime = 3600000;
+      let HourTime = 3600000;
       let timeLine = [];
-      for (var i = 0; i < 5; i++) {
-        timeLine.push(Util.getDate(new Date(DateNowTime - hourTime * i)));
+
+      let year = new Date().getFullYear();
+      let month = new Date().getMonth() + 1;
+      let day = new Date().getDate();
+
+      let nowTodayTime = new Date(
+        year + "-" + month + "-" + day + " 00:00:00"
+      ).getTime();
+      if (!self.dateSelect) self.dateSelect = nowTodayTime;
+
+      console.log(nowTodayTime);
+
+      for (var i = 0; i <= 24; i++) {
+        timeLine.push(Util.getDate(nowTodayTime + i * HourTime));
       }
-      timeLine = timeLine.reverse();
 
-      let hotMarks = {};
+      let hotMarks = {},
+        split = 100 / 24;
 
-      for (var i = 0; i < 5; i++) {
-        hotMarks[i * 25] = timeLine[i];
+      for (var i = 0; i <= 24; i++) {
+        hotMarks[i * split] = timeLine[i];
       }
 
       this.hotMarks = hotMarks;
-      console.log(this.hotMarks);
+    },
+
+    handleType(type) {
+      let self = this;
+      self.dataType = type;
+      console.log(type);
+
+      self.getData(self.dateSelect, self.dataType);
     },
 
     changeData(step) {
-      let _index = step / 25;
-      this.getData(_index);
-      console.log(_index);
+      let self = this;
+      let _index = (step * 24) / 100;
+      let HourTime = 3600000;
+      let year = new Date().getFullYear();
+      let month = new Date().getMonth() + 1;
+      let day = new Date().getDate();
+      let nowTodayTime = new Date(
+        year + "-" + month + "-" + day + " 00:00:00"
+      ).getTime();
+      self.dateSelect = nowTodayTime + _index * HourTime;
+      self.getData(self.dateSelect, self.dataType);
     }
+
   }
 };
 </script>
 <style lang="less" scoped>
 .hot-slider {
   position: fixed;
-  width: 50%;
-  left: 50%;
-  bottom: 60px;
-  margin-left: -25%;
+  width: 85%;
+  left: 1.5%;
+  bottom: 25px;
   z-index: 3000;
   background-color: rgba(0, 0, 0, 0.55);
   padding: 20px 60px;
   border-radius: 15px;
 
   i {
-    float: left;
-    margin-right: 15px;
-    margin-top: 7px;
+    position: absolute;
+    left: 20px;
+    top: 26px;
     color: #fff;
     font-size: 24px;
   }
 
   .el-slider {
     float: right;
-    width: 95%;
+    width: 99%;
+  }
+}
+
+.hot-type-list {
+  position: fixed;
+  right: 35px;
+  top: 35px;
+  z-index: 100;
+
+  li {
+    margin: 5px;
+    width: 200px;
+    height: 32px;
+    line-height: 32px;
+    padding: 0 10px;
+    cursor: pointer;
+    color: aqua;
+    background: url("../../../stastic/img/bigData/case_list.png") left center
+      no-repeat;
+    background-size: cover;
   }
 }
 </style>

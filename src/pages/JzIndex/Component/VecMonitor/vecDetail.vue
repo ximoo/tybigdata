@@ -1,7 +1,7 @@
 <template>
   <reDialog
     v-dialogDrag
-    :title="vecInfo.data.name + '详情'"
+    :title="vecInfo.data.name + '的详情'"
     :visible="vecInfo.show"
     :modal="false"
     :modal-append-to-body="true"
@@ -63,27 +63,88 @@
             </el-table-column>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="车辆报警"></el-tab-pane>
+        <el-tab-pane label="车辆报警">
+          <el-table :data="AlermTable" style="width: 100%">
+            <el-table-column prop="id" align="center" label="报警次数"></el-table-column>
+            <el-table-column prop="type" align="center" label="报警类型"></el-table-column>
+            <el-table-column prop="date" align="center" width="160" label="报警时间"></el-table-column>
+            <el-table-column width="80" align="center" label="操作">
+              <template slot-scope="scope">
+                <el-button @click="showPostCard" type="primary" plain size="mini">处理</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
         <el-tab-pane label="车辆详情"></el-tab-pane>
         <el-tab-pane label="企业信息"></el-tab-pane>
         <el-tab-pane label="审批路线"></el-tab-pane>
-        <el-tab-pane label="设备控制"></el-tab-pane>
       </el-tabs>
     </div>
+
+    <reDialog
+      v-dialogDrag
+      :title="vecInfo.data.name + '的处理'"
+      :visible="postCardList.show"
+      :modal="false"
+      :modal-append-to-body="false"
+      :append-to-body="true"
+      width="440px"
+      class="group-tree-dialog"
+      @close="closeAlermDialog"
+    >
+      <el-form ref="form" :model="formModel" label-width="80px" class="case-post-form">
+        <el-form-item label="* 收件人:">
+          <el-select v-model="postMan.select" size="mini" placeholder="请选择收件人">
+            <el-option
+              v-for="item in postMan.options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="发送内容:">
+          <el-input type="textarea" :rows="2" placeholder="请输入内容"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="success" size="small" @click="tipOK">发 送</el-button>
+        </el-form-item>
+      </el-form>
+    </reDialog>
   </reDialog>
 </template>
 <script>
 import Util from "../../Configs/util.lib";
 import randomIze from "../../Configs/service.lib";
+let randomName = require("chinese-random-name");
+
 let stateId;
 export default {
   name: "vecDetail",
   props: ["vecInfo"],
+  components: {},
   data() {
     return {
       nowTime: Util.getNow(),
       stateData: [],
-      TrailTable: []
+      TrailTable: [],
+      AlermTable: [
+        {
+          id: 1,
+          type: "超速报警",
+          date: "2019-07-24  14:30:29"
+        }
+      ],
+      postCardList: {
+        title: "超速驾驶",
+        icon: "ivu-icon-logo-dropbox",
+        show: false
+      },
+      postMan: {
+        select: null,
+        options: [{ label: "" }]
+      },
+      formModel: null
     };
   },
   mounted() {
@@ -206,8 +267,37 @@ export default {
     showHisTrail() {
       this.$emit("showHisTrail", true);
     },
+
     closeDialog() {
       this.$emit("vecDetailClose", false);
+    },
+
+    showPostCard() {
+      let Generates = [];
+
+      for (var i = 1; i <= 20; i++) {
+        let label = randomName.generate();
+        Generates.push({
+          label: label,
+          value: i
+        });
+      }
+
+      this.postMan.options = Generates;
+      this.postCardList.show = true;
+    },
+
+    closeAlermDialog() {
+      this.postCardList.show = false;
+    },
+
+    tipOK() {
+      console.log("tipOK");
+      this.postCardList.show = false;
+      this.$message({
+        message: "消息发送成功！",
+        type: "success"
+      });
     }
   },
   computed: {

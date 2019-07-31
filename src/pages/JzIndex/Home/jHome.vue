@@ -76,7 +76,7 @@ export default {
       this.$router.push(url);
     },
     toDemo() {
-      window.open("admin.html", "_blank");
+      window.open("http://jz.comlbs.com/Login/Index", "_blank");
     }
   },
   computed: {

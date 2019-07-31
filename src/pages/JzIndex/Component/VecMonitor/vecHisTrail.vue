@@ -54,7 +54,7 @@
             ></el-button>
           </li>
 
-          <li style="width:50%;">
+          <li style="width:40%;">
             <el-slider v-model="TrailPathData" @change="TrailMoveIdx"></el-slider>
           </li>
 
@@ -85,8 +85,12 @@ import Axios from "axios";
 import API from "../../Configs/api";
 let amapManager = new VueAMap.AMapManager();
 import dashOption from "./vecSpeeddash.service";
+import Service from "../../Configs/service.lib";
 
-let trailPath;
+let trailPath,
+  marker,
+  finalWeight = 0,
+  speedData = 0;
 
 var hour, minute, second; //时 分 秒
 hour = minute = second = 0; //初始化
@@ -143,7 +147,7 @@ export default {
           self.initPage(o);
         }
       },
-      dashOption: dashOption(0),
+      dashOption: dashOption(finalWeight, speedData),
       trailStopTime: null
     };
   },
@@ -215,8 +219,8 @@ export default {
       let TrailPathData;
 
       var driving = new AMap.TruckDriving({
-        policy: 2,
-        size: 3
+        policy: 1,
+        size: 4
       });
 
       driving.search(
@@ -228,38 +232,58 @@ export default {
             lnglat: [112.990436554, 28.1947068961]
           },
           {
+            lnglat: [112.8796076775, 28.1203913751]
+          },
+          {
             lnglat: [112.8794413805, 28.1213470728]
           }
         ],
         function(status, result) {
           // 未出错时，result即是对应的路线规划方案
-          console.log(result);
+          // console.log(result);
           if (result.info === "OK") {
             let stepPath = result.routes[0].steps;
             let polyLine = [],
-              polyLines = [];
+              speedLines = [];
 
             for (var i in stepPath) {
               polyLine = polyLine.concat(stepPath[i].path);
             }
 
+   
+            for (var i in polyLine) {
+              speedLines = speedLines.concat(Service.randomLib(10, 90));
+            }
+            speedLines[speedLines.length - 1] = 0;
+
             localStorage.$polyline = JSON.stringify(polyLine);
             TrailPathData = polyLine.length;
-            console.log(TrailPathData);
+            console.log(speedLines);
 
             self.pathSimplifierIns.setData([{ name: "轨迹0", path: polyLine }]);
             // self.TrailPathData = TrailPathData;
             //创建一个巡航器
             self.navg = self.pathSimplifierIns.createPathNavigator(
               0, //关联第1条轨迹
-              { speed: 60 }
+              { speed: 600 }
             );
             let flag = 0;
             self.navg.on("move", function() {
               self.mapObj.setCenter(self.navg.getPosition());
+              speedData = speedLines[self.navg.getCursor().idx];
+              let position = self.navg.getPosition();
 
-              if (self.navg.getCursor().idx == 6)
-                console.log(self.navg.getCursor());
+              if (speedData > 85) {
+                self.addCase(position);
+                speedData = 80;
+                self.trailStopTime = "超速！开始限速！";
+              }
+              if (speedData <= 20) {
+                self.trailStopTime = "运输过程";
+              }
+
+              self.handlePlaySpeed(self.playSpeed, speedData);
+              self.dashOption = dashOption(finalWeight, speedData);
 
               if (
                 self.navg.getCursor().idx == 6 &&
@@ -268,6 +292,7 @@ export default {
                 flag == 0
               ) {
                 flag = 1;
+                self.dashOption = dashOption(finalWeight, 0);
                 intId = setInterval(function() {
                   self.TimerId();
                 }, 50);
@@ -276,15 +301,25 @@ export default {
                 self.btnState.pause = false;
               }
 
-              if (self.navg.getCursor().idx == 296) {
+              if (self.navg.getCursor().idx == 298) {
+                self.playSpeed = 1;
+                self.handlePlaySpeed(4, speedLines[298]);
+                self.navg.pause();
+                self.mapObj.setZoom(18);
+                setTimeout(function() {
+                  self.navg.resume();
+                }, 1000);
+              }
+
+              if (self.navg.getCursor().idx == self.navg.getPathEndIdx()) {
                 flag = 0;
                 self.playSpeed = 1;
                 self.handlePlaySpeed(1);
                 self.navg.pause();
                 self.mapObj.setZoom(18);
                 setTimeout(function() {
-                  self.navg.resume();
-                }, 1000);
+                  self.simEnd();
+                }, 5000);
               }
 
               self.pathSimplifierIns.renderLater(1000);
@@ -324,10 +359,10 @@ export default {
       this.btnState.pause = true;
     },
 
-    handlePlaySpeed(e) {
-      console.log(e);
+    handlePlaySpeed(e, orgSpeed = 600) {
+      console.log(orgSpeed);
       let self = this;
-      let orgSpeed = 600;
+      if (e == 4) e = 28;
       self.navg.setSpeed(orgSpeed * e);
     },
 
@@ -405,12 +440,6 @@ export default {
 
       o.setFitView(polygon);
     },
-    //重置函数
-    ResetId() {
-      clearInterval(intId);
-      millisecond = hour = minute = second = 0;
-      this.trailStopTime = "";
-    },
     TimerId() {
       let self = this;
       //开始函数
@@ -424,18 +453,20 @@ export default {
         minute = minute + 1;
       }
       let randomMinute = Math.round(Math.random() * 59);
-      if (minute == 0 && second == 5) {
+      if (minute == 2 && second == randomMinute) {
         // self.TrailResum();
         self.pathSimplifierIns.setFitView(0);
-        self.playSpeed = 2;
-        self.handlePlaySpeed(2);
+        self.playSpeed = 4;
+        self.handlePlaySpeed(4);
         self.navg.pause();
-        self.ResetId();
+        clearInterval(intId);
+        millisecond = hour = minute = second = 0;
+        self.trailStopTime = "开始运输";
         setTimeout(function() {
           self.navg.resume();
         }, 1000);
       } else {
-        self.trailStopTime = "停留：" + minute + ":" + second;
+        self.trailStopTime = "洗车停留：" + minute + "’" + second + "”";
       }
     },
 
@@ -459,22 +490,70 @@ export default {
 
       self.trailStopTime = "开始装土";
       let idx = 0;
-      let finalWeight = 0;
+      finalWeight = 0;
       let weightId = setInterval(function() {
         idx = idx + 1;
         finalWeight = finalWeight + indexWeight[idx];
-        if (finalWeight >= 19) finalWeight = 19;
+        if (finalWeight >= 20) finalWeight = 20;
 
-        self.dashOption = dashOption(finalWeight);
+        self.dashOption = dashOption(finalWeight, 0);
         console.log(idx + "============" + finalWeight);
         if (idx == 6) {
           setTimeout(function() {
-            self.dashOption = dashOption(20);
+            self.dashOption = dashOption(20, 0);
             self.TrailResum();
-          }, 5000);
+          }, 3500);
           clearInterval(weightId);
+          self.trailStopTime = "装土完毕";
         }
-      }, 5000);
+      }, 3500);
+    },
+    simEnd() {
+      let self = this;
+      let randomWeight = function() {
+        return Math.floor(Math.random() * 6) + 1;
+      };
+      let indexWeight = [
+        randomWeight(),
+        randomWeight(),
+        randomWeight(),
+        randomWeight(),
+        randomWeight(),
+        randomWeight(),
+        randomWeight(),
+        randomWeight()
+      ];
+
+      console.log(indexWeight);
+
+      self.trailStopTime = "开始卸土";
+      let idx = 0;
+      let weightId = setInterval(function() {
+        idx = idx + 1;
+        finalWeight = finalWeight - indexWeight[idx];
+        if (finalWeight <= 0) finalWeight = 0;
+
+        self.dashOption = dashOption(finalWeight, 0);
+        console.log(idx + "============" + finalWeight);
+        if (idx == 6) {
+          setTimeout(function() {
+            self.dashOption = dashOption(0, 0);
+          }, 3500);
+          clearInterval(weightId);
+          self.trailStopTime = "卸土完毕";
+        }
+      }, 3500);
+    },
+
+    addCase(position) {
+      let self = this;
+
+      marker = new AMap.Marker({
+        icon: require("../../../../stastic/img/icon/icon-stop.png"),
+        position: position,
+        offset: new AMap.Pixel(-6, -6)
+      });
+      marker.setMap(self.mapObj);
     }
   },
   computed: {
@@ -522,15 +601,15 @@ export default {
   position: absolute;
   right: 35px;
   bottom: 0;
-  width: 150px;
+  width: 250px;
   height: 150px;
   z-index: 10;
 }
 
 .vec-temp-timer {
   position: absolute;
-  right: 25px;
-  top: 45px;
+  left: 25px;
+  bottom: 95px;
   z-index: 10;
   font-size: 24px;
   font-weight: bold;

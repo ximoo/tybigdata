@@ -111,6 +111,15 @@ const routes = [{
     }, {
       path: '/Message/ReceiveMessage',
       component: iframeModule
+    },{
+      path:'/Reports/AreaSite',
+      component: iframeModule
+    },{
+      path:'/Reports/AreaUnload',
+      component: iframeModule
+    },{
+      path:'/Reports/VehStatusStat',
+      component: iframeModule
     }]
   },
   {

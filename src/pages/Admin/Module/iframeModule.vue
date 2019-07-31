@@ -11,10 +11,11 @@ export default {
     };
   },
   mounted() {
-    this.iframeUrl = hostDomain + this.$route.path;
+      this.iframeUrl = hostDomain + this.$route.path;
   },
   watch: {
     $route(n) {
+      console.log(n)
       this.iframeUrl = hostDomain + n.path;
     }
   }

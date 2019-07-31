@@ -2,7 +2,7 @@
   <div class="item" style="width:240px;height:calc(40% - 6px)">
     <h3>各区上报状况</h3>
     <ul class="case-stastic-list">
-      <li v-for="item,index in caseStastic" :key="index">
+      <li v-for="item,index in caseStastic" :key="index" style="cursor:pointer;" @click=" toCaseList">
         <div class="label">{{item.name}}</div>
         <div class="number">{{item.caseNumber}}</div>
       </li>
@@ -20,6 +20,11 @@ export default {
   data() {
     return {
     };
+  },
+  methods:{
+    toCaseList(){
+      window.open('/admin.html#/Event/Index', '_blank')
+    }
   }
 };
 </script>
