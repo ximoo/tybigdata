@@ -10,17 +10,20 @@
       >
         <el-button type="primary" slot="reference" icon="el-icon-user-solid" size="mini" circle></el-button>
       </el-popover>
-      <span>超级管理员 - 城管委 {{version}}</span>
-      <span class="fr"></span>
+      <span>超级管理员 - 城管委</span>
+      <span class="fr" style="margin-right:15px;">当前版本:{{version}}</span>
     </div>
   </div>
 </template>
 <script>
 export default {
   name: "pFooter",
-  computed:{
-    version(){
-      return this.$store.state.version
+  mounted() {
+    console.log("当前版本:" + this.$store.state.version);
+  },
+  computed: {
+    version() {
+      return this.$store.state.version;
     }
   }
 };

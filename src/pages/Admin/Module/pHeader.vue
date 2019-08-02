@@ -85,10 +85,8 @@ export default {
     handleMenu() {
       let self = this;
       let platformAdminNav = self.platformAdminNav;
-      console.log(platformAdminNav);
     },
     handleSelect(url) {
-      console.log(url);
       if (url == "###") return false;
       this.$router.push({ path: url });
     }

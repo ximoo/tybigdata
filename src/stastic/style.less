@@ -24,6 +24,27 @@ a {
 }
 
 /*====layout========*/
+
+
+
+.el-popover__title {
+    color: #fff !important;
+    font-size: 13px !important;
+    font-weight: 700;
+}
+
+.el-popover {
+    background: #545c64 !important;
+    font-size: 12px !important;
+    color: #fff !important;
+
+    .popper__arrow::after {
+        border-top-color: #545c64 !important;
+    }
+}
+
+
+
 .ex-header {
     height: 40px;
     overflow: hidden;
@@ -54,21 +75,6 @@ a {
 
 }
 
-.el-popover__title {
-    color: #fff !important;
-    font-size: 13px !important;
-    font-weight: 700;
-}
-
-.el-popover {
-    background: #545c64 !important;
-    font-size: 12px !important;
-    color: #fff !important;
-
-    .popper__arrow::after {
-        border-top-color: #545c64 !important;
-    }
-}
 
 .ex-function {
     position: absolute;
@@ -188,7 +194,7 @@ a {
 
 .ex-pages {
     width: 100vw;
-    height: calc(~"100vh - 78px");
+    height: calc(~"100vh - 72px");
     overflow: auto;
     position: relative;
 
@@ -253,7 +259,7 @@ a {
 
     .ex-table-content {
         margin: 15px;
-        height: calc(~"100% - 119px");
+        height: calc(~"100% - 169px");
 
         .ex-pagination {
             text-align: right;
@@ -276,6 +282,11 @@ a {
         .el-table th {
             padding: 5px 0 !important;
         }
+
+
+
+
+
     }
 
 }
@@ -283,9 +294,22 @@ a {
 
 
 /*=============Table================*/
+
+
+.el-popper[x-placement^="bottom"] {
+    background-color: #fff !important;
+    margin-top: 0 !important;
+    padding: 5px !important;
+}
+
 .el-table--small th,
 .el-table--small td {
     padding: 3px 0 !important;
+}
+
+.el-table th,
+.el-table td {
+    padding: 6px 0 !important;
 }
 
 .el-table {

@@ -8,12 +8,19 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        version: localStorage.$version ? localStorage.$version :  mainStore.state.version,
+        version: localStorage.$version ? localStorage.$version : mainStore.state.version,
         platformAdminNav: localStorage.$platformAdminNav ? JSON.parse(localStorage.$platformAdminNav) : mainStore.state.platformAdminNav,
-        platformData: localStorage.$platformData ? JSON.parse(localStorage.$platformData) : null
-
+        platformData: localStorage.$platformData ? JSON.parse(localStorage.$platformData) : null,
+        simData: localStorage.$simdata ? JSON.parse(localStorage.$simdata) : null,
     },
     mutations: {
+        "storeNav": (state, data) => {
+            state.platformAdminNav = data
+            localStorage.$platformAdminNav = JSON.stringify(data)
+
+
+
+        }
 
     },
     getters: {
