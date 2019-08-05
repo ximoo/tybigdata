@@ -20,7 +20,13 @@
       :amap-manager="amapManager"
       style="height:100%;position: relative;width:100%"
     >
-      <ul class="hot-type-list">
+      <div class="loadingAll" v-show="loadShowAll">
+        <p>
+          <i class="el-icon-loading" />
+          正在加载数据....
+        </p>
+      </div>
+      <ul class="hot-type-list" v-if="showType">
         <li v-for="item,index in dateType" :key="index" @click="handleType(item.value)">
           <i class="el-icon-document" />
           {{item.label}}
@@ -34,7 +40,7 @@
           :show-tooltip="false"
           :marks="hotMarks"
           @change="changeData"
-          :step="100/24"
+          :step="100/12"
           show-stops
         ></el-slider>
       </div>
@@ -51,10 +57,10 @@ let tempPOI = [],
   hotData = [],
   heatmap = null,
   dataId,
-  indexId = 0;
+  preId,
+  indexId = 1;
 
-
-  
+let localTemp = { max: 0, cMax: 0, times: [] };
 
 export default {
   name: "bigData",
@@ -82,7 +88,7 @@ export default {
       caseId: null,
       manMarker: [],
       massMarker: null,
-
+      loadShowAll: true,
       events: {
         init(o) {
           var toolBar = new AMap.ControlBar({
@@ -122,10 +128,18 @@ export default {
               radius: 35, //给定半径
               opacity: [0, 0.8]
             });
-            self.changeTime();
-            // self.getData(0);
-            // self.changeId();
           });
+
+          self.changeTime();
+          console.log("changeTime");
+
+          preId = setInterval(() => {
+            self.preGetData();
+          }, 1000);
+
+          self.preGetData();
+          console.log("getData");
+          // self.changeId();
         }
       },
 
@@ -202,46 +216,89 @@ export default {
           label: "中年人数",
           value: 13
         }
-      ]
-
+      ],
+      showType: false
     };
   },
+
   methods: {
     changeId() {
       let self = this;
       dataId = setInterval(() => {
         self.changeData(indexId);
-        console.log(self.dateSelect);
       }, 5000);
     },
 
-    getData(date, type) {
+    preGetData() {
       let self = this;
-      let jsonUrl = "";
+      self.loadShow = true;
+      tempPOI = [];
+      let jsonUrl = "/api/hotmap/hot" + indexId + ".json";
+
+      self.$http
+        .get(jsonUrl)
+        .then(res => {
+          tempPOI = res.data;
+          let total = 0;
+          for (var i in tempPOI) {
+            let singlePoi = parseInt(tempPOI[i].counter);
+            total = total + singlePoi;
+            if (singlePoi >= localTemp.cMax) localTemp.cMax = singlePoi;
+          }
+
+          let times = total / localTemp.max;
+          console.log("max:" + localTemp.max + "/total:" + total);
+          console.log(times);
+          localTemp.times.push(times);
+          if (total >= localTemp.max) {
+            localTemp.max = total;
+          }
+          console.log(localTemp);
+          indexId = indexId + 1;
+          if (indexId == 14) {
+            clearInterval(preId);
+            indexId = 1;
+            self.changeId();
+            return false;
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    getData(date = 0, type = 0) {
+      let self = this;
       tempPOI = [];
       hotData = [];
       self.loadShow = true;
-      indexId = indexId + 1;
-      if (indexId == 24) indexId = 0;
+      let jsonUrl = "/api/hotmap/hot" + indexId + ".json";
       self.$http.get(jsonUrl + "?date=" + date + "&type=" + type).then(res => {
+        self.loadShowAll = false;
         tempPOI = res.data;
-
+        let tempCounter = localTemp.times[indexId - 1];
+        if (tempCounter == Infinity) tempCounter = 1;
+        console.log(tempCounter);
         for (var i in tempPOI) {
           hotData.push({
             lng: tempPOI[i].location.split(",")[0],
             lat: tempPOI[i].location.split(",")[1],
-            count: tempPOI[i].counter * tempCount
+            count: Math.round(tempPOI[i].counter / tempCounter)
           });
         }
 
-        //设置数据集：该数据为北京部分“公园”数
-        据;
+        //设置数据集：该数据为北京部分“公园”数据;
         heatmap.setDataSet({
           data: hotData,
-          max: 7500
+          max: localTemp.cMax
         });
 
         self.loadShow = false;
+
+        indexId = indexId + 1;
+        if (indexId == 14) {
+          indexId = 1;
+        }
       });
     },
 
@@ -249,7 +306,7 @@ export default {
       let self = this;
       let NowTime = Util.getNow();
       let DateNowTime = new Date(NowTime).getTime();
-      let HourTime = 3600000;
+      let HourTime = 1800000;
       let timeLine = [];
 
       let year = new Date().getFullYear();
@@ -263,14 +320,14 @@ export default {
 
       console.log(nowTodayTime);
 
-      for (var i = 0; i <= 24; i++) {
+      for (var i = 0; i <= 12; i++) {
         timeLine.push(Util.getDate(nowTodayTime + i * HourTime));
       }
 
       let hotMarks = {},
-        split = 100 / 24;
+        split = 100 / 12;
 
-      for (var i = 0; i <= 24; i++) {
+      for (var i = 0; i <= 12; i++) {
         hotMarks[i * split] = timeLine[i];
       }
 
@@ -286,29 +343,54 @@ export default {
     },
 
     changeData(step) {
+      console.log(step);
       let self = this;
-      let _index = (step * 24) / 100;
-      let HourTime = 3600000;
+      let _index = ((step + 1) * 12) / 100;
+      let HourTime = 1800000;
       let year = new Date().getFullYear();
       let month = new Date().getMonth() + 1;
       let day = new Date().getDate();
       let nowTodayTime = new Date(
         year + "-" + month + "-" + day + " 00:00:00"
       ).getTime();
+      self.hotDate = Math.round(((step - 1) * 100) / 12);
       self.dateSelect = nowTodayTime + _index * HourTime;
       self.getData(self.dateSelect, self.dataType);
     }
-
   }
 };
 </script>
 <style lang="less" scoped>
+.loadingAll {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  color: #fff;
+  font-size: 32px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2000;
+  background-color: rgba(0, 0, 0, 0.65);
+
+  p {
+    width: 320px;
+    height: 320px;
+    line-height: 160px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -160px;
+    margin-left: -160px;
+  }
+}
+
 .hot-slider {
   position: fixed;
   width: 85%;
   left: 1.5%;
   bottom: 25px;
-  z-index: 3000;
+  z-index: 1000;
   background-color: rgba(0, 0, 0, 0.55);
   padding: 20px 60px;
   border-radius: 15px;

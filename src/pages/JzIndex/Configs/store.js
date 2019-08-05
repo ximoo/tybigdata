@@ -7,7 +7,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        "version": "3.4.19.0731",
+        "version": "3.4.19.0805",
         "isFirst": !localStorage.$platformData,
         "initStep": 0,
         "platformData": localStorage.$platformData ? JSON.parse(localStorage.$platformData) : {
@@ -287,6 +287,51 @@ export default new Vuex.Store({
                     "url": "/assets/vechile",
                     "iconClass": null,
                     "children": null
+                }, {
+                    "id": 12,
+                    "title": "工地管理",
+                    "value": "12",
+                    "label": "工地管理",
+                    "pid": 1,
+                    "url": "/assets/site",
+                    "iconClass": null,
+                    "children": null
+                }, {
+                    "id": 13,
+                    "title": "园区管理",
+                    "value": "13",
+                    "label": "园区管理",
+                    "pid": 1,
+                    "url": "/assets/landfill",
+                    "iconClass": null,
+                    "children": null
+                }, {
+                    "id": 14,
+                    "title": "车辆设备管理",
+                    "value": "14",
+                    "label": "车辆设备管理",
+                    "pid": 1,
+                    "url": "/assets/landfill",
+                    "iconClass": null,
+                    "children": null
+                }, {
+                    "id": 15,
+                    "title": "地磅设备管理",
+                    "value": "15",
+                    "label": "地磅设备管理",
+                    "pid": 1,
+                    "url": "/assets/landfill",
+                    "iconClass": null,
+                    "children": null
+                }, {
+                    "id": 16,
+                    "title": "扬尘噪音设备管理",
+                    "value": "16",
+                    "label": "扬尘噪音设备管理",
+                    "pid": 1,
+                    "url": "/assets/landfill",
+                    "iconClass": null,
+                    "children": null
                 }]
             },
             {
@@ -304,6 +349,33 @@ export default new Vuex.Store({
                     "label": "菜单设置",
                     "pid": 2,
                     "url": "/system/menu",
+                    "iconClass": null,
+                    "children": null
+                }, {
+                    "id": 22,
+                    "title": "基础显示设置",
+                    "value": "22",
+                    "label": "基础显示设置",
+                    "pid": 2,
+                    "url": "/system/base_view",
+                    "iconClass": null,
+                    "children": null
+                }, {
+                    "id": 23,
+                    "title": "基础数据设置",
+                    "value": "23",
+                    "label": "菜单设置",
+                    "pid": 2,
+                    "url": "/system/base_data",
+                    "iconClass": null,
+                    "children": null
+                }, {
+                    "id": 24,
+                    "title": "大数据概览设置",
+                    "value": "23",
+                    "label": "大数据概览设置",
+                    "pid": 2,
+                    "url": "/system/big_data",
                     "iconClass": null,
                     "children": null
                 }]

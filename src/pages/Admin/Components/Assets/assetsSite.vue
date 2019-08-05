@@ -1,15 +1,57 @@
 <template>
   <div class="ex-pages">
     <!-- 侧边导航栏 -->
-    <SideMenu v-on:handleMenu="handleMenu" />
-
+    <div class="ex-menu-side" :class="{'hide-menu' : hideMenu}">
+      <h2>
+        <i class="el-icon-set-up" />
+        资产管理
+        <el-tooltip
+          class="hide-menu"
+          effect="dark"
+          content="缩进菜单"
+          placement="right"
+          v-if="!hideMenu"
+        >
+          <i class="el-icon-s-fold" @click="handleMenu" />
+        </el-tooltip>
+        <el-tooltip class="hide-menu" effect="dark" content="展开菜单" placement="right" v-else>
+          <i class="el-icon-s-unfold" @click="handleMenu" />
+        </el-tooltip>
+      </h2>
+      <el-menu @select="handleSelect" :default-active="activeIndex">
+        <el-menu-item index="/assets/vechile">
+          <el-tooltip effect="dark" content="车辆管理" placement="right" v-show="hideMenu">
+            <i class="el-icon-setting hide-menu-icon" />
+          </el-tooltip>
+          <span v-show="!hideMenu">
+            <i class="el-icon-setting" /> 车辆管理
+          </span>
+        </el-menu-item>
+        <el-menu-item index="/assets/site">
+          <el-tooltip effect="dark" content="工地管理" placement="right" v-show="hideMenu">
+            <i class="el-icon-setting hide-menu-icon" />
+          </el-tooltip>
+          <span v-show="!hideMenu">
+            <i class="el-icon-setting" /> 工地管理
+          </span>
+        </el-menu-item>
+        <el-menu-item index="/assets/landfill">
+          <el-tooltip effect="dark" content="园区管理" placement="right" v-show="hideMenu">
+            <i class="el-icon-setting hide-menu-icon" />
+          </el-tooltip>
+          <span v-show="!hideMenu">
+            <i class="el-icon-setting" /> 园区管理
+          </span>
+        </el-menu-item>
+      </el-menu>
+    </div>
     <div class="ex-pages-content" :class="{'hide-menu':hideMenu}">
       <el-breadcrumb separator-class="el-icon-arrow-right" style="margin:15px;">
         <el-breadcrumb-item :to="{ path: '/' }">
           <i class="el-icon-s-home" /> 首页
         </el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/assets/vechile' }">资产管理</el-breadcrumb-item>
-        <el-breadcrumb-item>车辆管理</el-breadcrumb-item>
+        <el-breadcrumb-item>工地管理</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="ex-table-content">
         <!-- 报表查询 -->
@@ -18,18 +60,10 @@
             <el-form-item>
               <strong>请选择查询条件：</strong>
             </el-form-item>
-            <el-form-item label="菜单名称">
-              <el-input v-model="queryData.title" placeholder="请输入您要查询的菜单名称"></el-input>
+            <el-form-item label="工地名称">
+              <el-input v-model="queryData.title" placeholder="请输入您要查询的工地名称"></el-input>
             </el-form-item>
-            <el-form-item label="是否收藏">
-              <el-radio v-model="queryData.fav" :label="true">是</el-radio>
-              <el-radio v-model="queryData.fav" :label="false">否</el-radio>
-            </el-form-item>
-            <el-form-item label="是否跳转">
-              <el-radio v-model="queryData.blank" :label="true">是</el-radio>
-              <el-radio v-model="queryData.blank" :label="false">否</el-radio>
-            </el-form-item>
-            <el-form-item label="是否嵌套">
+            <el-form-item label="是否黑工地">
               <el-radio v-model="queryData.iframe" :label="true">是</el-radio>
               <el-radio v-model="queryData.iframe" :label="false">否</el-radio>
             </el-form-item>
@@ -64,7 +98,7 @@
 
         <!-- 报表表格 -->
         <el-table
-          :data="vechileInfo"
+          :data="siteInfo"
           ref="tableDom"
           row-key="id"
           stripe
@@ -77,28 +111,67 @@
           :tree-props="{children: 'children'}"
         >
           <el-table-column type="selection" width="40" align="center"></el-table-column>
-          <el-table-column prop="label" label="车牌号" width="160" sortable>
+          <el-table-column prop="name" label="工地名称" width="160" sortable>
             <template slot-scope="scope">
-              <el-input v-model="scope.row.label" size="mini" v-if="scope.row.label"></el-input>
-              <span v-else>{{scope.row.label}}</span>
+              <el-input v-model="scope.row.name" size="mini" v-if="scope.row.edit"></el-input>
+              <span v-else>{{scope.row.name}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="adname" label="所属区域" width="120" sortable>
-            <template slot-scope="scope">{{scope.row.adname?scope.row.adname:"---"}}</template>
+          <el-table-column prop="district" label="所属区域" width="120" sortable>
+            <template slot-scope="scope">{{scope.row.district?scope.row.district:"---"}}</template>
           </el-table-column>
-          <el-table-column prop="address" label="当前地址" sortable>
+          <el-table-column prop="address" label="工地地址" sortable>
             <template slot-scope="scope">
               <el-input v-model="scope.row.address" size="mini" v-if="scope.row.edit"></el-input>
               <span v-else>{{scope.row.address}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="state" label="当前状态" width="120" sortable>
+          <el-table-column prop="state" label="当前状态" width="120" align="center" sortable>
             <template slot-scope="scope">{{scope.row.state?scope.row.state:"---"}}</template>
           </el-table-column>
-          <el-table-column prop="mileage" label="总里程" width="120" sortable>
-            <template slot-scope="scope">{{scope.row.mileage?scope.row.mileage:"---"}}</template>
+          <el-table-column prop="mileage" label="工地范围" width="120" align="center">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                plain
+                type="success"
+                icon="el-icon-delete"
+                @click="handleDelete(scope.$index, scope.row)"
+              >画工地</el-button>
+            </template>
           </el-table-column>
-          <el-table-column prop="blank" width="80" align="center" label="是否跳转">
+          <el-table-column prop="mileage" label="洗车槽" width="120" align="center">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                plain
+                type="info"
+                icon="el-icon-delete"
+                @click="handleDelete(scope.$index, scope.row)"
+              >画洗车槽</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column prop="mileage" label="门禁" width="120" align="center">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                plain
+                type="info"
+                icon="el-icon-delete"
+                @click="handleDelete(scope.$index, scope.row)"
+              >画门禁</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column prop="blank" width="90" align="center" label="环境监测">
+            <template slot-scope="scope">
+              <el-switch
+                v-model="scope.row.blank"
+                @change="handleBlank(scope.row.blank)"
+                :disabled="!scope.row.edit"
+              ></el-switch>
+            </template>
+          </el-table-column>
+          <el-table-column prop="blank" width="90" align="center" label="黑工地">
             <template slot-scope="scope">
               <el-switch
                 v-model="scope.row.blank"
@@ -125,6 +198,7 @@
                 icon="el-icon-edit"
                 v-if="scope.row.edit"
               >保存</el-button>
+
               <el-button
                 size="mini"
                 plain
@@ -150,15 +224,12 @@
   </div>
 </template>
 <script>
-import SideMenu from "../Public/SideMenu";
-
 export default {
   name: "assetsVechile",
-  components: { SideMenu },
   data() {
     return {
       hideMenu: true,
-      activeIndex: "/assets/vechile",
+      activeIndex: "/assets/site",
       currentTable: [],
       queryData: {
         title: "",
@@ -169,9 +240,12 @@ export default {
       tableSize: 20
     };
   },
+
+  mounted() {},
+
   methods: {
-    handleMenu(e) {
-      this.hideMenu = e;
+    handleMenu() {
+      this.hideMenu = !this.hideMenu;
     },
     hanldePage() {},
     handleAdd(index, row) {},
@@ -207,12 +281,16 @@ export default {
   },
   computed: {
     tableTotal() {
-      return this.$store.state.simData.vechileInfo.length;
+      console.log(this.$store.state.simData.site.length);
+      return this.$store.state.simData.site.length;
     },
-    vechileInfo() {
+    siteInfo() {
       let simData = this.$store.state.simData;
-      console.log(simData.vechileInfo.slice(0, 20));
-      return simData.vechileInfo.slice(0, 20);
+      let siteData = this.$store.state.platformData.module.sitemonitor.module
+        .fences.site;
+      simData.site = siteData;
+      localStorage.$simdata = JSON.stringify(simData);
+      return simData.site.slice(0, 20);
     }
   }
 };

@@ -24,8 +24,6 @@
               <i class="ex-icon-manage_fill" />
             </el-tooltip>
           </el-popover>
-
-          
         </div>
         <div v-else>
           <i class="el-icon-loading" />
@@ -69,6 +67,7 @@ export default {
       if (this.adminPass === "admin") {
         this.wordPass = false;
         store.commit("adminPass");
+        window.open("admin.html", "_blank");
       }
     },
     //模块切换
