@@ -33,7 +33,7 @@ const routes = [{
     title: '首页',
     children: [{
       path: '/index',
-      component: setupMenu,
+      component: setupBaseData,
       meta: {
         menuID: 21,
         pid: 2

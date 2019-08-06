@@ -258,8 +258,10 @@ a {
     }
 
     .ex-table-content {
-        margin: 15px;
-        height: calc(~"100% - 169px");
+        padding: 15px;
+        height: calc(~"100% - 69px");
+        overflow-y: auto;
+        overflow-x: hidden;
 
         .ex-pagination {
             text-align: right;
@@ -315,8 +317,9 @@ a {
 .el-table {
     border: 1px solid #cacbe2 !important;
     box-shadow: 0 3px 3px rgba(0, 0, 0, .05);
+    height: calc(~"100% - 100px") !important;
     overflow: initial !important;
-
+   
 
 }
 

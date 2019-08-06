@@ -32,7 +32,6 @@
           {{item.label}}
         </li>
       </ul>
-
       <div class="hot-slider">
         <i class="el-icon-loading" v-show="loadShow" />
         <el-slider
@@ -64,7 +63,9 @@ let localTemp = { max: 0, cMax: 0, times: [] };
 
 export default {
   name: "bigData",
+
   components: {},
+
   data() {
     let self = this;
     return {
@@ -222,6 +223,7 @@ export default {
   },
 
   methods: {
+
     changeId() {
       let self = this;
       dataId = setInterval(() => {
@@ -306,7 +308,7 @@ export default {
       let self = this;
       let NowTime = Util.getNow();
       let DateNowTime = new Date(NowTime).getTime();
-      let HourTime = 1800000;
+      let HourTime = 3600000;
       let timeLine = [];
 
       let year = new Date().getFullYear();
@@ -314,7 +316,7 @@ export default {
       let day = new Date().getDate();
 
       let nowTodayTime = new Date(
-        year + "-" + month + "-" + day + " 00:00:00"
+        year + "-" + month + "-" + day + " 06:00:00"
       ).getTime();
       if (!self.dateSelect) self.dateSelect = nowTodayTime;
 
@@ -346,12 +348,12 @@ export default {
       console.log(step);
       let self = this;
       let _index = ((step + 1) * 12) / 100;
-      let HourTime = 1800000;
+      let HourTime = 3600000;
       let year = new Date().getFullYear();
       let month = new Date().getMonth() + 1;
       let day = new Date().getDate();
       let nowTodayTime = new Date(
-        year + "-" + month + "-" + day + " 00:00:00"
+        year + "-" + month + "-" + day + " 06:00:00"
       ).getTime();
       self.hotDate = Math.round(((step - 1) * 100) / 12);
       self.dateSelect = nowTodayTime + _index * HourTime;
