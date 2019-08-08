@@ -12,10 +12,11 @@
       </el-breadcrumb>
       <div class="ex-table-content">
         <el-row :gutter="20">
-          <el-col :span="6">
+          <el-col :span="8">
             <el-card class="box-card" :class="{'box-card-edit':platformState.edit}">
               <template slot="header" class="clearfix">
                 <span>平台设置:</span>
+
                 <el-button
                   style="float: right; padding: 3px 0"
                   type="text"
@@ -27,7 +28,7 @@
                   style="float: right; padding: 3px 0;color:#11c711;font-weight:bold;"
                   type="text"
                   icon="el-icon-success"
-                  @click="platformState.edit = false"
+                  @click="handleStateSave"
                   v-else
                 >保存</el-button>
               </template>
@@ -41,32 +42,67 @@
                     v-model="platformState.city"
                     style="width:140px;"
                     v-if="platformState.edit"
+                    @blur="getDistricts(platformState.city)"
                   />
                   <el-tooltip effect="dark" content="定位当前城市" v-if="platformState.edit">
                     <el-button type="info" icon="el-icon-location" @click="getCity"></el-button>
                   </el-tooltip>
                   <span v-else>{{platformState.city}}</span>
                 </el-form-item>
-                <el-form-item label=" 显示城市名：" style="width:100%">
+                <el-form-item style="width:100%">
+                  <div
+                    style="width:120px;float:left; text-align:right;padding: 0 12px 0 0;box-sizing: border-box;"
+                  >行政区：</div>
+                  <div v-if="platformState.edit" style="width:calc(100% - 120px);float:left;">
+                    <el-checkbox-group v-model="platformState.districtsSelect">
+                      <el-checkbox
+                        :label="item.name"
+                        v-for="item,index in platformState.districts"
+                        :key="index"
+                      />
+                    </el-checkbox-group>
+                  </div>
+                  <div v-else style="width:calc(100% - 120px);float:left;">
+                    <span
+                      v-for="item ,index in platformState.districtsSelect"
+                      :key="index"
+                      style="margin:0 5px;"
+                    >
+                      <i class="el-icon-check" />
+                      {{item}}
+                    </span>
+                    <span
+                      v-if="platformState.districtsSelect && platformState.districtsSelect.length <=0"
+                    >所有行政区</span>
+                  </div>
+                </el-form-item>
+                <el-form-item label=" 显示城市名：">
                   <el-switch v-model="platformState.showCity" :disabled="!platformState.edit" />
                 </el-form-item>
-                <el-form-item label=" 显示天气：" style="width:100%">
+                <el-form-item label=" 显示天气：">
                   <el-switch v-model="platformState.showWeather" :disabled="!platformState.edit" />
+                </el-form-item>
+                <el-form-item label="配置文件：" style="width:100%" v-if="!platformState.edit">
+                  <el-upload
+                    ref="upload"
+                    action="###"
+                    accept="application/json, text/json, .json"
+                    :on-change="beforeFileUpload"
+                    :auto-upload="false"
+                    :show-file-list="false"
+                    size="mini"
+                  >
+                    <el-button type="info" icon="el-icon-sold-out" size="mini">导入平台设置配置</el-button>
+                  </el-upload>
                 </el-form-item>
               </el-form>
             </el-card>
           </el-col>
           <!-- baseData -->
-          <el-col :span="6">
+          <el-col :span="8">
             <el-card class="box-card" :class="{'box-card-edit':baseData.edit}">
               <template slot="header" class="clearfix">
-                <el-input
-                  size="small"
-                  v-model="baseData.name"
-                  v-if="baseData.edit"
-                  style="width:180px;"
-                />
-                <span v-else>{{baseData.name}}</span>
+                <span>基础数据</span>
                 <el-button
                   style="float: right; padding: 3px 0"
                   type="text"
@@ -77,7 +113,7 @@
                 <el-button
                   style="float: right; padding: 3px 0;color:#11c711;font-weight:bold;"
                   type="text"
-                  @click="baseData.edit = false"
+                  @click="handleBaseDataSave"
                   icon="el-icon-success"
                   v-else
                 >保存</el-button>
@@ -86,46 +122,83 @@
                 <el-form-item label=" 车辆总数：">
                   <el-input-number v-model="baseData.vechile" v-if="baseData.edit" />
                   <el-tooltip effect="dark" content="随机数" v-if="baseData.edit">
-                    <el-button type="info" icon="el-icon-magic-stick" @click="getRandom"></el-button>
+                    <el-button type="info" icon="el-icon-magic-stick" @click="getRandom('vechile')"></el-button>
                   </el-tooltip>
-
                   <span v-else>{{baseData.vechile}}</span> 辆
                 </el-form-item>
                 <el-form-item label=" 工地总数：">
                   <el-input-number v-model="baseData.site" v-if="baseData.edit" />
                   <el-tooltip effect="dark" content="随机数" v-if="baseData.edit">
-                    <el-button type="info" icon="el-icon-magic-stick" @click="getRandom"></el-button>
+                    <el-button type="info" icon="el-icon-magic-stick" @click="getRandom('site')"></el-button>
                   </el-tooltip>
                   <span v-else>{{baseData.site}}</span> 个
                 </el-form-item>
                 <el-form-item label=" 消纳点总数：">
                   <el-input-number v-model="baseData.landfill" v-if="baseData.edit" />
                   <el-tooltip effect="dark" content="随机数" v-if="baseData.edit">
-                    <el-button type="info" icon="el-icon-magic-stick" @click="getRandom"></el-button>
+                    <el-button
+                      type="info"
+                      icon="el-icon-magic-stick"
+                      @click="getRandom('landfill')"
+                    ></el-button>
                   </el-tooltip>
                   <span v-else>{{baseData.landfill}}</span> 个
                 </el-form-item>
                 <el-form-item label=" 企业总数：">
                   <el-input-number v-model="baseData.company" v-if="baseData.edit" />
                   <el-tooltip effect="dark" content="随机数" v-if="baseData.edit">
-                    <el-button type="info" icon="el-icon-magic-stick" @click="getRandom"></el-button>
+                    <el-button type="info" icon="el-icon-magic-stick" @click="getRandom('company')"></el-button>
                   </el-tooltip>
                   <span v-else>{{baseData.company}}</span> 个
+                </el-form-item>
+
+                <el-form-item label="配置文件：" style="width:100%" v-if="!baseData.edit">
+                  <el-upload
+                    ref="upload"
+                    action="###"
+                    accept="application/json, text/json, .json"
+                    :on-change="beforeFileUpload"
+                    :auto-upload="false"
+                    :show-file-list="false"
+                    size="mini"
+                  >
+                    <el-button type="info" icon="el-icon-sold-out" size="mini">导入基础数据配置</el-button>
+                  </el-upload>
+                </el-form-item>
+
+                <el-form-item label="模拟数据：" style="width:100%;" v-if="baseData.edit">
+                  <label>
+                    GPS种子：
+                    <el-select v-model="baseData.gpsSeed" style="width:140px;">
+                      <el-option v-for="item in gpsSeed" :key="item" :label="item" :value="item"></el-option>
+                    </el-select>
+                  </label>
+                  <el-button
+                    size="small"
+                    type="info"
+                    @click="simVechileInfo"
+                    v-show="simStep.vechile == 0"
+                  >模拟车牌号</el-button>
+
+                  <el-button size="small" type="warning" v-show="simStep.vechile == 1">
+                    正在模拟车牌号.......
+                    <i class="el-icon-loading" />
+                  </el-button>
+                  <el-button size="small" type="success" v-show="simStep.vechile == 2">
+                    车牌号模拟完毕，开始模拟地理位置信息.......
+                    <i class="el-icon-loading" />
+                  </el-button>
+
+                  <el-button size="small" type="info">模拟企业数据</el-button>
                 </el-form-item>
               </el-form>
             </el-card>
           </el-col>
           <!-- operatData -->
-          <el-col :span="6">
+          <el-col :span="8">
             <el-card class="box-card" :class="{'box-card-edit':operatData.edit}">
               <template slot="header" class="clearfix">
-                <el-input
-                  size="small"
-                  v-model="operatData.name"
-                  v-if="operatData.edit"
-                  style="width:180px;"
-                />
-                <span v-else>{{operatData.name}}</span>
+                <span>运营数据</span>
                 <el-button
                   style="float: right; padding: 3px 0"
                   type="text"
@@ -136,7 +209,7 @@
                 <el-button
                   style="float: right; padding: 3px 0;color:#11c711;font-weight:bold;"
                   type="text"
-                  @click="operatData.edit = false"
+                  @click="handleOperatDataSave"
                   icon="el-icon-success"
                   v-else
                 >保存</el-button>
@@ -148,91 +221,88 @@
                     :max="100"
                     v-model="operatData.vechile"
                     v-if="operatData.edit"
+                    @change="countVecData"
                   />
                   <span v-else>{{operatData.vechile}}</span> %
                 </el-form-item>
                 <el-form-item label="车辆离线：">
-                  <el-input-number
-                    :min="0"
-                    :max="100"
-                    v-model="operatData.vechile"
+                  <el-input
+                    style="width:100px;"
+                    v-model="operatData.vecOffline"
                     v-if="operatData.edit"
+                    readonly
                   />
-                  <span v-else>
-                    <strong style="color:#11c711">{{operatData.vechile}}</strong>
-                  </span> %
+                  <span v-else>{{operatData.vecOffline}}</span> %
                 </el-form-item>
                 <el-form-item label="车辆设备损坏：">
                   <el-input-number
                     :min="0"
-                    :max="100"
-                    v-model="operatData.vechile"
+                    :max="operatData.vecOffline"
+                    v-model="operatData.vecDamage"
                     v-if="operatData.edit"
                   />
-                  <span v-else>
-                    <strong style="color:#f30">{{operatData.vechile}}</strong>
-                  </span> %
+                  <span v-else>{{operatData.vecDamage}}</span> %
                 </el-form-item>
-                <el-form-item label=" 工地开工率：">
+                <el-form-item label=" 核准工地率：">
                   <el-input-number
                     :min="0"
                     :max="100"
                     v-model="operatData.site"
                     v-if="operatData.edit"
+                    @change="countSiteData"
                   />
                   <span v-else>{{operatData.site}}</span> %
                 </el-form-item>
-                <el-form-item label=" 消纳点开工率：">
+                <el-form-item label=" 可疑工地率：">
+                  <el-input
+                    readonly
+                    v-model="operatData.siteDubious"
+                    v-if="operatData.edit"
+                    style="width:100px"
+                  />
+                  <span v-else>{{operatData.siteDubious}}</span> %
+                </el-form-item>
+                <el-form-item label=" 工地开工率：">
+                  <el-input-number
+                    :min="0"
+                    :max="100"
+                    v-model="operatData.siteOnline"
+                    v-if="operatData.edit"
+                    @change="countSiteStateData"
+                  />
+                  <span v-else>{{operatData.siteOnline}}</span> %
+                </el-form-item>
+                <el-form-item label=" 核准消纳点率：">
                   <el-input-number
                     :min="0"
                     :max="100"
                     v-model="operatData.landfill"
                     v-if="operatData.edit"
+                    @change="countLandFillData"
                   />
                   <span v-else>{{operatData.landfill}}</span> %
                 </el-form-item>
-              </el-form>
-            </el-card>
-          </el-col>
-          <!-- produceData -->
-          <el-col :span="6">
-            <el-card class="box-card" :class="{'box-card-edit':produceData.edit}">
-              <template slot="header" class="clearfix">
-                <el-input
-                  size="small"
-                  v-model="produceData.name"
-                  v-if="produceData.edit"
-                  style="width:180px;"
-                />
-                <span v-else>{{produceData.name}}</span>
-                <el-button
-                  style="float: right; padding: 3px 0"
-                  type="text"
-                  @click="produceData.edit = true"
-                  v-if="!produceData.edit"
-                  icon="el-icon-edit"
-                >编辑</el-button>
-                <el-button
-                  style="float: right; padding: 3px 0;color:#11c711;font-weight:bold;"
-                  type="text"
-                  @click="produceData.edit = false"
-                  icon="el-icon-success"
-                  v-else
-                >保存</el-button>
-              </template>
-              <el-form inline size="mini">
-                <el-form-item v-for="item , index in produceData.data" style="width:100%;">
-                  <el-input v-model="item.label" v-if="produceData.edit" style="width:80px;" />
-                  <el-input-number
-                    :min="0"
-                    :max="100"
-                    v-model="item.value"
-                    style="width:120px;"
-                    v-if="produceData.edit"
+                <el-form-item label=" 可疑消纳点率：">
+                  <el-input
+                    readonly
+                    v-model="operatData.landfillDubious"
+                    v-if="operatData.edit"
+                    style="width:100px"
                   />
-                  <el-input v-model="item.unit" v-if="produceData.edit" style="width:60px;" />
-                  <el-button icon="el-icon-delete" type="danger" circle v-if="produceData.edit" />
-                  <span v-else>{{item.label}} ： {{item.value}} {{item.unit}}</span>
+                  <span v-else>{{operatData.landfillDubious}}</span> %
+                </el-form-item>
+                <el-form-item label="配置文件：" style="width:100%" v-if="!operatData.edit">
+                  <el-upload
+                    ref="upload"
+                    action="###"
+                    accept="application/json, text/json, .json"
+                    :on-change="beforeFileUpload"
+                    :auto-upload="false"
+                    :show-file-list="false"
+                    size="mini"
+                  >
+                    <el-button type="info" icon="el-icon-sold-out" size="mini">导入运营数据配置</el-button>
+                  </el-upload>
                 </el-form-item>
               </el-form>
             </el-card>
@@ -336,7 +406,10 @@
   </div>
 </template>
 <script>
-import SideMenu from "../Public/SideMenu";
+import SideMenu from "../Public/SideMenu.vue";
+import baseDatalib from "./setup_basedata_lib";
+import API from "../../../JzIndex/Configs/api";
+import Axios from "axios";
 
 export default {
   name: "setupBaseData",
@@ -347,57 +420,9 @@ export default {
     let self = this;
     return {
       hideMenu: true,
-      platformState: {
-        name: "城市固废资源利用云平台",
-        city: "武汉市",
-        adcode: "420000",
-        center: "114.374025,30.874155",
-        districts: [],
-        showCity: true,
-        showWeather: true,
-        edit: false
-      },
-      baseData: {
-        name: "基础数据",
-        vechile: 0,
-        site: 0,
-        landfill: 0,
-        company: 0,
-        edit: false
-      },
-      operatData: {
-        name: "运营数据",
-        vechile: 100,
-        site: 100,
-        landfill: 100,
-        edit: false
-      },
-      produceData: {
-        name: "生产数据",
-        data: [
-          {
-            label: "选项1",
-            value: 0,
-            unit: "单位"
-          },
-          {
-            label: "选项2",
-            value: 0,
-            unit: "单位"
-          },
-          {
-            label: "选项3",
-            value: 0,
-            unit: "单位"
-          },
-          {
-            label: "选项4",
-            value: 0,
-            unit: "单位"
-          }
-        ],
-        edit: false
-      },
+      platformState: {},
+      baseData: {},
+      operatData: {},
       alermSetup: [
         {
           type: "车辆监控",
@@ -423,7 +448,7 @@ export default {
               remarks: ""
             }
           ],
-          selected: true
+          selected: false
         },
         {
           type: "驾驶行为",
@@ -521,7 +546,7 @@ export default {
               remarks: ""
             }
           ],
-          selected: false
+          selected: true
         },
         {
           type: "渣土运输违规",
@@ -558,26 +583,87 @@ export default {
           selected: false
         }
       ],
-      alermModule: []
+      gpsSeed: ["车站", "加油站", "ATM", "酒店", "医院", "银行"],
+      simStep: {
+        vechile: 0
+      }
     };
   },
-  mounted() {},
+  mounted() {
+    this.platformState = baseDatalib.getPlatformState();
+    this.baseData = baseDatalib.getPlatformBaseData();
+    this.operatData = baseDatalib.getPlatformOperatData();
+  },
   methods: {
+    //菜单跳转
     handleMenu(e) {
       console.log(e);
       this.hideMenu = e;
     },
 
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
-      } else {
-        this.$refs.multipleTable.clearSelection();
+    //保存平台信息
+    handleStateSave() {
+      this.platformState.edit = false;
+      baseDatalib.setPlatformState(this.platformState);
+    },
+
+    //保存基础数据
+    handleBaseDataSave() {
+      this.baseData.edit = false;
+      baseDatalib.setPlatformBaseData(this.baseData);
+    },
+
+    //保存运营数据
+    handleOperatDataSave() {
+      this.operatData.edit = false;
+      baseDatalib.setPlatformOperatData(this.operatData);
+    },
+
+    countVecData(v) {
+      console.log(v);
+      this.operatData.vecOffline = 100 - v;
+      this.operatData.vecDamage = baseDatalib.randomNumber(
+        0,
+        this.operatData.vecOffline
+      );
+    },
+
+    countSiteData(v) {
+      console.log(v);
+      this.operatData.siteDubious = 100 - v;
+      this.operatData.siteOnline = baseDatalib.randomNumber(0, 100);
+      this.operatData.siteOffline = 100 - this.operatData.siteOnline;
+    },
+
+    countSiteStateData(v) {
+      this.operatData.siteOffline = 100 - this.operatData.siteOnline;
+    },
+
+    countLandFillData(v) {
+      this.operatData.landfillDubious = 100 - v;
+    },
+
+    //模拟车辆数据
+    simVechileInfo() {
+      this.simStep.vechile = 1;
+      let vechileNumber, simGps;
+      let simVechile = baseDatalib.simVechile(
+        this.baseData.vechile,
+        this.platformState.city
+      );
+      if (simVechile.status) {
+        vechileNumber = simVechile.vechileNumber;
+        setTimeout(() => {
+          this.simStep.vechile = 2;
+          let simGps = baseDatalib.simGps(
+            this.baseData.gpsSeed,
+            this.platformState.adcode
+          );
+        }, 3000);
       }
     },
 
+    //checkbox选择
     handleSelection(e) {
       console.log(e);
       e.checkAll = !e.checkAll;
@@ -595,8 +681,65 @@ export default {
       }
     },
 
-    getCity() {},
-    getRandom() {}
+    //定位城市
+    getCity() {
+      let self = this;
+      Axios.get(API.GET_CITY)
+        .then(res => {
+          if (res.data.status === "1") {
+            self.platformState.city = res.data.city;
+            self.platformState.adcode = res.data.adcode;
+            self.platformState.regions = res.data;
+            console.log(self.platformState);
+            self.getDistricts();
+          } else {
+            alert("没有定位成功");
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    //获取城市行政区
+    getDistricts(city) {
+      let self = this;
+      if (!city) {
+        city = self.platformState.city;
+      }
+      Axios.get(
+        API.GET_AREACODE + "&extensions=all&subdistrict=1&keywords=" + city
+      )
+        .then(res => {
+          if (res.data.status === "1") {
+            console.log(res.data);
+            self.platformState.center = res.data.districts[0].center;
+
+            let districts = res.data.districts[0].districts;
+            let districtsSelect = [];
+            self.platformState.districts = districts;
+
+            for (var i in districts) {
+              districtsSelect.push(districts[i].name);
+            }
+
+            self.platformState.districtsSelect = districtsSelect;
+          } else {
+            alert("没有定位成功");
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+
+    //随机数
+    getRandom(key) {
+      let self = this;
+      let RandomNumber = baseDatalib.randomNumber(0, 10000);
+      self.baseData[key] = RandomNumber;
+    },
+
+    beforeFileUpload() {}
   },
   computed: {
     platformAdminNav() {
@@ -607,7 +750,7 @@ export default {
 </script>
 <style lang="less">
 .box-card {
-  min-height: 320px;
+  min-height: 460px;
   margin-bottom: 15px;
   box-shadow: none !important;
 
@@ -622,6 +765,13 @@ export default {
     display: block;
     width: calc(50% - 10px);
     float: left;
+  }
+
+  ul,
+  li {
+    list-style: none;
+    padding: 0 !important;
+    margin: 10px 0 !important;
   }
 
   .el-table {

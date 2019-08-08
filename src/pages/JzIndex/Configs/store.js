@@ -507,17 +507,10 @@ export default new Vuex.Store({
         },
         "getCity": (state) => {
             axios.get(API.GET_CITY).then((res) => {
-
                 if (res.data.status === '1') {
                     state.platformData.state.city = res.data.city
                     state.platformData.state.adcode = res.data.adcode
                     state.platformData.state.regions = res.data
-
-
-
-
-
-
                 } else {
                     alert("没有定位成功")
                 }

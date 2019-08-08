@@ -1,11 +1,6 @@
 export default function simData(city, type) {
     this.city = city;
     this.type = type;
-
-
-
-
-    
     this.simTruckGps = function (regionName) {
         let count = 0;
         let sb = "";
