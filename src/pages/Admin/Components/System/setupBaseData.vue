@@ -151,6 +151,7 @@
                   </el-tooltip>
                   <span v-else>{{baseData.company}}</span> 个
                 </el-form-item>
+                
 
                 <el-form-item label="配置文件：" style="width:100%" v-if="!baseData.edit">
                   <el-upload

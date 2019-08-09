@@ -1,5 +1,5 @@
 <template>
-  <div class="item" style="height:230px">
+  <div class="item">
     <h3>案件投诉</h3>
     <el-row type="flex" justify="space-around" class="ex-produce-data">
       <el-col :span="9">

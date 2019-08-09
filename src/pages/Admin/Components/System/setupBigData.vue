@@ -12,45 +12,91 @@
       </el-breadcrumb>
       <div class="ex-table-content">
         <el-row :gutter="20">
-          <!-- produceData -->
+          <!-- baseData -->
           <el-col :span="6">
-            <el-card class="box-card" :class="{'box-card-edit':produceData.edit}">
+            <el-card class="box-card" :class="{'box-card-edit':bigData.baseData.edit}">
               <template slot="header" class="clearfix">
                 <el-input
                   size="small"
-                  v-model="produceData.name"
-                  v-if="produceData.edit"
+                  v-model="bigData.baseData.name"
+                  v-if="bigData.baseData.edit"
                   style="width:180px;"
                 />
-                <span v-else>{{produceData.name}}</span>
+                <span v-else>{{bigData.baseData.name}}</span>
                 <el-button
                   style="float: right; padding: 3px 0"
                   type="text"
-                  @click="produceData.edit = true"
-                  v-if="!produceData.edit"
+                  @click="bigData.baseData.edit = true"
+                  v-if="!bigData.baseData.edit"
                   icon="el-icon-edit"
                 >编辑</el-button>
                 <el-button
                   style="float: right; padding: 3px 0;color:#11c711;font-weight:bold;"
                   type="text"
-                  @click="produceData.edit = false"
+                  @click="saveBaseData"
                   icon="el-icon-success"
                   v-else
                 >保存</el-button>
               </template>
               <el-form inline size="mini">
-                <el-form-item v-for="item , index in produceData.data" style="width:100%;">
-                  <el-input v-model="item.label" v-if="produceData.edit" style="width:80px;" />
-                  <el-input-number
-                    :min="0"
-                    :max="100"
-                    v-model="item.value"
-                    style="width:120px;"
-                    v-if="produceData.edit"
-                  />
-                  <el-input v-model="item.unit" v-if="produceData.edit" style="width:60px;" />
-                  <el-button icon="el-icon-delete" type="danger" circle v-if="produceData.edit" />
-                  <span v-else>{{item.label}} ： {{item.value}} {{item.unit}}</span>
+                <el-form-item
+                  v-for="item,index in platformBaseData"
+                  style="width:calc(50% - 15px);"
+                >
+                  <el-checkbox v-model="item.checked" style="margin-right: 5px;"></el-checkbox>
+                  <el-input v-model="item.label" v-if="bigData.baseData.edit" style="width:80px;" />
+                  <span v-if="!bigData.baseData.edit">{{item.label}} ： {{item.value}} {{item.unit}}</span>
+                  <span v-else>{{item.value}} {{item.unit}}</span>
+                </el-form-item>
+              </el-form>
+            </el-card>
+          </el-col>
+          <!-- opratData -->
+          <el-col :span="6">
+            <el-card class="box-card" :class="{'box-card-edit':bigData.opratData.edit}">
+              <template slot="header" class="clearfix">
+                <el-input
+                  size="small"
+                  v-model="bigData.opratData.name"
+                  v-if="bigData.opratData.edit"
+                  style="width:180px;"
+                />
+                <span v-else>{{bigData.opratData.name}}</span>
+                <el-button
+                  style="float: right; padding: 3px 0"
+                  type="text"
+                  @click="bigData.opratData.edit = true"
+                  v-if="!bigData.opratData.edit"
+                  icon="el-icon-edit"
+                >编辑</el-button>
+                <el-button
+                  style="float: right; padding: 3px 0;color:#11c711;font-weight:bold;"
+                  type="text"
+                  @click="saveOpratData"
+                  icon="el-icon-success"
+                  v-else
+                >保存</el-button>
+              </template>
+              <el-form inline size="mini">
+                <el-form-item style="width:100%">
+                  <el-checkbox v-model="bigData.opratData.module" label="车辆在线情况"></el-checkbox>
+                </el-form-item>
+                <el-form-item
+                  v-for="item,index in bigData.opratData.data.vechile"
+                  style="width:calc(33% - 15px);"
+                >
+                  <el-checkbox
+                    v-model="item.checked"
+                    :label="item.label"
+                    style="margin-right: 5px;"
+                    v-if="!bigData.opratData.edit"
+                  ></el-checkbox>
+                  <el-checkbox
+                    v-model="item.checked"
+                    style="margin-right: 5px;"
+                    v-if="bigData.opratData.edit"
+                  ></el-checkbox>
+                  <el-input v-model="item.label" v-if="bigData.opratData.edit" style="width:80px;" />
                 </el-form-item>
               </el-form>
             </el-card>
@@ -64,7 +110,7 @@
 import SideMenu from "../Public/SideMenu";
 
 export default {
-  name: "setupBaseData",
+  name: "setupBigData",
   components: {
     SideMenu
   },
@@ -72,44 +118,287 @@ export default {
     let self = this;
     return {
       hideMenu: true,
-      produceData: {
-        name: "生产数据",
-        data: [
-          {
-            label: "选项1",
-            value: 0,
-            unit: "单位"
-          },
-          {
-            label: "选项2",
-            value: 0,
-            unit: "单位"
-          },
-          {
-            label: "选项3",
-            value: 0,
-            unit: "单位"
-          },
-          {
-            label: "选项4",
-            value: 0,
-            unit: "单位"
-          }
-        ],
-        edit: false
+      bigData: {
+        baseData: {
+          name: "基础监控数据",
+          edit: false,
+          data: []
+        },
+        opratData: {
+          name: "运营数据",
+          edit: false,
+          data: []
+        }
       }
     };
   },
-  mounted() {},
+  mounted() {
+    localStorage.$platformBigData = JSON.stringify(this.bigData);
+    console.log(this.platformBaseData);
+  },
   methods: {
+    /*
+    removeBaseData(index) {
+      let self = this;
+      console.log(self.bigData.baseData.data.length);
+      if (self.bigData.baseData.data.length - 1 > 0)
+        self.bigData.baseData.data.splice(index, 1);
+      else self.bigData.baseData.data[0].value = 0;
+    },
+    addBaseData() {
+      let self = this;
+      let templateData = {
+        id: 1,
+        label: "车辆总数",
+        unit: "辆",
+        value: "0"
+      };
+      if (
+        self.bigData.baseData.data.length - 1 > 0 &&
+        self.bigData.baseData.data.length < 6
+      ) {
+        self.bigData.baseData.data.push(templateData);
+      }
+    },
+    */
+    //保存基础监控数据
+    saveBaseData() {
+      this.bigData.baseData.edit = false;
+      let self = this,
+        countBaseData = [],
+        platformBigData = self.platformBigData;
+      for (var i in self.platformBaseData) {
+        if (self.platformBaseData[i].checked) {
+          countBaseData.push(self.platformBaseData[i]);
+        }
+        platformBigData.baseData.data = countBaseData;
+      }
+      localStorage.$platformBigData = JSON.stringify(platformBigData);
+    },
+
+    saveOpratData() {
+      this.bigData.opratData.edit = false;
+      let self = this,
+        countBaseData = [],
+        platformBigData = self.platformBigData;
+      for (var i in self.platformOperatData) {
+        if (self.platformOperatData.vechile[i].checked) {
+          countBaseData.push(self.platformBaseData.vechile[i]);
+        }
+        platformBigData.opratData.data = countBaseData;
+      }
+      localStorage.$platformBigData = JSON.stringify(platformBigData);
+    },
+
     handleMenu(e) {
-      console.log(e);
       this.hideMenu = e;
     }
   },
   computed: {
-    platformAdminNav() {
-      return this.$store.state.platformAdminNav;
+    baseData() {
+      let platformBaseData = this.platformBaseData,
+        platformBigData = this.platformBigData;
+      let baseData = platformBigData.baseData;
+      return baseData;
+    },
+
+    platformBaseData() {
+      let self = this;
+      let platformBaseData = localStorage.$platformBaseData
+        ? JSON.parse(localStorage.$platformBaseData)
+        : {};
+
+      let baseData = [],
+        opratData = {
+          vechile: [],
+          transport: []
+        };
+      for (var key in platformBaseData) {
+        switch (key) {
+          case "vechile":
+            let vecTotal = platformBaseData[key],
+              vecOnline = Math.round(
+                (platformBaseData[key] * self.platformOperatData.vechile) / 100
+              ),
+              vecOffline = Math.round(
+                (platformBaseData[key] * self.platformOperatData.vecOffline) /
+                  100
+              ),
+              vecDamage = Math.round(
+                (platformBaseData[key] * self.platformOperatData.vecDamage) /
+                  100
+              );
+
+            baseData.push(
+              {
+                id: 11,
+                label: "车辆总数",
+                unit: "辆",
+                value: vecTotal,
+                checked: true
+              },
+              {
+                id: 12,
+                label: "在线车辆",
+                unit: "辆",
+                value: vecOnline,
+                checked: true
+              },
+              {
+                id: 13,
+                label: "离线车辆",
+                unit: "辆",
+                value: vecOffline,
+                checked: true
+              },
+              {
+                id: 14,
+                label: "设备损坏",
+                unit: "辆",
+                value: vecDamage,
+                checked: false
+              }
+            );
+            opratData.vechile.push(
+              {
+                id: 11,
+                label: "在线车辆",
+                value: vecOnline,
+                checked: true
+              },
+              {
+                id: 12,
+                label: "离线车辆",
+                value: vecOffline,
+                checked: true
+              },
+              {
+                id: 13,
+                label: "设备损坏",
+                value: vecDamage,
+                checked: true
+              }
+            );
+            break;
+          case "site":
+            baseData.push(
+              {
+                id: 21,
+                label: "核准工地",
+                unit: "个",
+                value: Math.round(
+                  (platformBaseData[key] * self.platformOperatData.site) / 100
+                ),
+                checked: true
+              },
+              {
+                id: 22,
+                label: "可疑工地",
+                unit: "个",
+                value: Math.round(
+                  (platformBaseData[key] *
+                    self.platformOperatData.siteDubious) /
+                    100
+                ),
+                checked: false
+              },
+              {
+                id: 23,
+                label: "开工工地",
+                unit: "个",
+                value: Math.round(
+                  (platformBaseData[key] *
+                    self.platformOperatData.siteOnline *
+                    self.platformOperatData.site) /
+                    10000
+                ),
+                checked: true
+              },
+              {
+                id: 24,
+                label: "停工工地",
+                unit: "个",
+                value: Math.round(
+                  (platformBaseData[key] *
+                    self.platformOperatData.siteOffline *
+                    self.platformOperatData.site) /
+                    10000
+                ),
+                checked: false
+              }
+            );
+            opratData.transport.push(
+              {
+                id: 11,
+                label: "在线车辆",
+                checked: true
+              },
+              {
+                id: 12,
+                label: "离线车辆",
+                checked: true
+              },
+              {
+                id: 13,
+                label: "设备损坏",
+                checked: true
+              }
+            );
+            break;
+          case "landfill":
+            baseData.push(
+              {
+                id: 31,
+                label: "核准消纳点",
+                unit: "个",
+                value: Math.round(
+                  (platformBaseData[key] * self.platformOperatData.landfill) /
+                    100
+                ),
+                checked: true
+              },
+              {
+                id: 32,
+                label: "可疑消纳点",
+                unit: "个",
+                value: Math.round(
+                  (platformBaseData[key] *
+                    self.platformOperatData.landfillDubious) /
+                    100
+                ),
+                checked: false
+              }
+            );
+            break;
+          case "company":
+            baseData.push({
+              id: 31,
+              label: "资质企业总数",
+              unit: "个",
+              value: platformBaseData[key],
+              checked: true
+            });
+            break;
+        }
+      }
+      self.bigData.baseData.data = baseData;
+      self.bigData.opratData.data = opratData;
+      return baseData;
+    },
+
+    platformOperatData() {
+      let platformOperatData = localStorage.$platformOperatData
+        ? JSON.parse(localStorage.$platformOperatData)
+        : {};
+
+      return platformOperatData;
+    },
+
+    platformBigData() {
+      let platformBigData = localStorage.$platformBigData
+        ? JSON.parse(localStorage.$platformBigData)
+        : {};
+      return platformBigData;
     }
   }
 };

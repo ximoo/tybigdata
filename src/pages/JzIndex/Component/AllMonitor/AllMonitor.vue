@@ -44,7 +44,7 @@ export default {
       animateEnable: true,
       features: ["bg", "point", "road", "building"],
       // center: [store.state.platformData.state.city],
-      pitch: 65,
+      pitch: 35,
       rotation: 15,
       buildingAnimation: true, //楼块出现是否带动画
       expandZoomRange: true,
@@ -91,6 +91,11 @@ export default {
     });
   },
   methods: {
+
+    
+
+
+
     addPointer() {
       let self = this;
       self.mass3DTruck.setData(self.truckMarkerGps);

@@ -1,9 +1,9 @@
 <template>
-  <div class="item" style="height:276px; margin-top:2px;">
+  <div class="item">
     <h3>基础监控数据</h3>
     <ul class="ex-base-data-box">
-      <li v-for="item , index in BaseData" :key="index">
-        <p>{{item.number}}</p>
+      <li :style="baseDataWidth" v-for="item , index in BaseData" :key="index">
+        <p>{{item.value}}</p>
         <h4>{{item.label}}({{item.unit}})</h4>
       </li>
     </ul>
@@ -14,15 +14,25 @@
 export default {
   name: "BaseData",
   data() {
-    return {};
+    return {
+      baseDataNum: 0,
+      baseDataWidth: "100%"
+    };
   },
   computed: {
     allmonitor() {
       let allmonitor = JSON.parse(localStorage.$platformData).module.allmonitor;
       return allmonitor;
     },
+
     BaseData() {
-      return this.allmonitor.module.basedata.data;
+      let baseData = localStorage.$platformBigData
+        ? JSON.parse(localStorage.$platformBigData).baseData.data
+        : [];
+      this.baseDataNum = baseData.length < 3 ? baseData.length : 3;
+      this.baseDataWidth = "width:calc(" + 100 / +this.baseDataNum + "% - 4px)";
+      console.log(this.baseDataWidth);
+      return baseData;
     }
   }
 };
@@ -30,12 +40,10 @@ export default {
 <style lang="less">
 .ex-base-data-box {
   min-width: 240px;
-  height: 240px;
   display: flex;
   flex-wrap: wrap;
 
   li {
-    min-width: calc(~"100% / 3 - 4px");
     text-align: center;
     margin: 10px 2px;
     text-align: center;
@@ -46,10 +54,9 @@ export default {
       color: #abc4ff;
       width: 100%;
       line-height: 100px;
-      max-height: 100px;
       background: url("../../../../stastic/img/bigData_jz/base_data_bg.png")
         center no-repeat;
-      background-size: contain;
+      background-size: cover;
     }
 
     h4 {

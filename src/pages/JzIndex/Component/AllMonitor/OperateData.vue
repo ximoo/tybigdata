@@ -1,11 +1,11 @@
 <template>
-  <div class="item" style="height:calc(100% - 520px);">
+  <div class="item">
     <h3>运营数据</h3>
     <div class="ex-operatedata-charts">
-      <Echarts :options="pieOption" autoresize />
+      <Echarts :options="chartsOption" autoresize />
     </div>
 
-    <ul class="status-stastic-box">
+    <!-- <ul class="status-stastic-box">
       <li　v-for="item , index in actBarData" :key="index">       
         <ol class="status-stastic">
           <li>
@@ -18,82 +18,120 @@
           </li>
         </ol>
         <h5>{{item.label}}<br/>({{item.unit}})</h5></li>
-    </ul>
+    </ul>-->
 
-    <Conner/>
+    <Conner />
   </div>
 </template>
 <script>
 import getOption from "./operatedata.service";
-import randomIze from "../../Configs/service.lib"
+import randomIze from "../../Configs/service.lib";
 
-let activeBarId,activePieId
+let activeBarId, activePieId;
 
 export default {
   name: "OperateData",
   data() {
+    let self = this;
     return {
-      pieOption: getOption(),
-      actBarData:[]
+      actBarData: []
     };
   },
-  mounted(){
-    let self = this
-    self.$nextTick(()=>{
-        clearInterval(activeBarId)
-        clearInterval(activePieId)
-        self.BarData()
-        self.activePieData()
-        activeBarId = setInterval(()=>{self.activeBarData()},this.allmonitor.module.operatedata.data[1].timer*1000)
-        activePieId = setInterval(()=>{self.activePieData()},this.allmonitor.module.operatedata.data[0].timer*1000)
-     })
+  mounted() {
+    let self = this;
+    self.$nextTick(() => {
+      clearInterval(activeBarId);
+      clearInterval(activePieId);
+      self.BarData();
+      // self.activePieData();
+      activeBarId = setInterval(() => {
+        // self.activeBarData();
+      }, this.allmonitor.module.operatedata.data[1].timer * 1000);
+      activePieId = setInterval(() => {
+        // self.activePieData();
+      }, this.allmonitor.module.operatedata.data[0].timer * 1000);
+    });
   },
-  methods:{
+  methods: {
     //饼状图动态值
-    activePieData(){
-      let activePieData = this.srcPieData
-      let actPieData = []
-      for(var i in activePieData){
-            activePieData[i]["now"] = randomIze.randomLib(0,activePieData[i].number);
-            actPieData.push({
-                 value: activePieData[i].now,
-                 name: activePieData[i].label
-          })
-        }
+    activePieData() {
+      let activePieData = this.srcPieData;
+      let actPieData = [];
+      for (var i in activePieData) {
+        activePieData[i]["now"] = randomIze.randomLib(
+          0,
+          activePieData[i].value
+        );
+        actPieData.push({
+          value: activePieData[i].now,
+          name: activePieData[i].label
+        });
+      }
       // console.log(actPieData)
       // this.actPieData = activePieData
-      this.pieOption = getOption(actPieData)
+      this.pieOption = getOption(actPieData);
     },
     //柱状图初始值
-    BarData(){
-       let activeOprateData2 = this.srcBarData 
-         for(var i in activeOprateData2){
-            activeOprateData2[i]["today"] = randomIze.randomLib(0,activeOprateData2[i].number  * randomIze.nowTimer()/ 24 ) ;
-            activeOprateData2[i]["yestoday"] = randomIze.randomLib(activeOprateData2[i].number  * randomIze.nowTimer() / 24 , activeOprateData2[i].number);
-           }
-        this.actBarData = activeOprateData2
-        this.$store.commit("cntTreData",activeOprateData2)
+    BarData() {
+      let activeOprateData2 = this.srcBarData;
+      for (var i in activeOprateData2) {
+        activeOprateData2[i]["today"] = randomIze.randomLib(
+          0,
+          (activeOprateData2[i].number * randomIze.nowTimer()) / 24
+        );
+        activeOprateData2[i]["yestoday"] = randomIze.randomLib(
+          (activeOprateData2[i].number * randomIze.nowTimer()) / 24,
+          activeOprateData2[i].number
+        );
+      }
+      this.actBarData = activeOprateData2;
+      this.$store.commit("cntTreData", activeOprateData2);
     },
     //柱状图动态值
-    activeBarData(){
-       let activeOprateData2 = this.actBarData 
-         for(var i in activeOprateData2){
-            activeOprateData2[i]["today"] = activeOprateData2[i]["today"]+  randomIze.randomLib(0,activeOprateData2[i].number/ 100);
-           }
-       this.actBarData = activeOprateData2
-       this.$store.commit("cntTreData",activeOprateData2)
+    activeBarData() {
+      let activeOprateData2 = this.actBarData;
+      for (var i in activeOprateData2) {
+        activeOprateData2[i]["today"] =
+          activeOprateData2[i]["today"] +
+          randomIze.randomLib(0, activeOprateData2[i].number / 100);
+      }
+      this.actBarData = activeOprateData2;
+      this.$store.commit("cntTreData", activeOprateData2);
     }
   },
   computed: {
+    platformBigData() {
+      let platformBigData = localStorage.$platformBigData
+        ? JSON.parse(localStorage.$platformBigData)
+        : {};
+
+      return platformBigData;
+    },
+    chartsOption() {
+      let vechileData = this.platformBigData.opratData.data.vechile;
+      let vechileBaseData = this.platformBigData.baseData;
+
+      console.log();
+
+      let chartsData = [];
+      for (var i in vechileData) {
+        chartsData.push({
+          name: vechileData[i].label,
+          value: vechileData[i].value
+        });
+      }
+
+      return getOption(chartsData);
+    },
     allmonitor() {
       let allmonitor = JSON.parse(localStorage.$platformData).module.allmonitor;
       return allmonitor;
     },
-    srcPieData(){
-      return this.allmonitor.module.operatedata.data[0].list
+    srcPieData() {
+      return this.platformBigData.opratData;
     },
-    srcBarData(){
-      return this.allmonitor.module.operatedata.data[1].list
+    srcBarData() {
+      return this.allmonitor.module.operatedata.data[1].list;
     }
   }
 };

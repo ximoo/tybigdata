@@ -1,4 +1,5 @@
-export default function getData(pieData) {
+export default function getData(data) {
+  console.log(data)
   return {
     color: ['rgba(25,144,255,1)', 'rgba(255,122,86,1)', 'rgba(34,203,255,1)', 'rgba(119,97,246,1)'],
     tooltip: {
@@ -10,7 +11,7 @@ export default function getData(pieData) {
       radius: ['45%', '60%'],
       center: ['50%', '50%'],
       avoidLabelOverlap: true,
-      data:pieData,
+      data:data,
       itemStyle: {
         borderColor: '#1990ff',
         borderWidth: 0,

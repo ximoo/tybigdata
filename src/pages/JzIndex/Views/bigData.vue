@@ -47,7 +47,7 @@ export default {
   name: "bigData",
   data() {
     return {
-      fullMain: false
+      fullMain: true
     };
   },
   components: {
