@@ -1,5 +1,5 @@
 import Vue from 'vue';
 import Element from 'element-ui';
-import './theme-blue.scss';
+import './theme-blue/theme-blue.scss';
 
 Vue.use(Element);

@@ -25,11 +25,13 @@
   </div>
 </template>
 <script>
+import { mapState, mapGetters } from "vuex";
+
 export default {
   name: "SideMenu",
   data() {
     return {
-      hideMenu: true,
+      hideMenu: false,
       activeIndex: ""
     };
   },
@@ -40,14 +42,10 @@ export default {
       this.$emit("handleMenu", this.hideMenu);
     },
     handleSelect(key, keyPath) {
-      console.log(key);
       this.$router.push({ path: key });
     }
   },
   computed: {
-    platformAdminNav() {
-      return this.$store.state.platformAdminNav;
-    },
     currentNavChildren() {
       return this.currentNav.children;
     },
@@ -68,7 +66,10 @@ export default {
     currentPid() {
       console.log(this.$route);
       return this.$route.meta.pid;
-    }
+    },
+    ...mapState({
+      platformAdminNav: state => state.platData.platformAdminNav //后台管理菜单
+    })
   }
 };
 </script>

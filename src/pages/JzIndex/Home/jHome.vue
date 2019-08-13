@@ -1,10 +1,10 @@
 <template>
   <div class="ex-pages-bigdata">
     <fullScreen />
-    <div v-if="!isFirst">
+    <div>
       <Tile />
       <div class="ex-screen" style="left:40px">
-        <div class="ex-message" v-if="setupBtn">
+        <div class="ex-message">
           <el-popover placement="bottom" trigger="click" v-model="wordPass">
             <el-input placeholder="请输入管理员密码:admin" size="mini" v-model="adminPass">
               <el-button slot="append" icon="el-icon-success" @click="handleSetup">确定</el-button>
@@ -25,13 +25,13 @@
             </el-tooltip>
           </el-popover>
         </div>
-        <div v-else>
+        <!-- <div>
           <i class="el-icon-loading" />
-        </div>
+        </div> -->
       </div>
       <router-view />
     </div>
-    <initDataModule v-else />
+    <!-- <initDataModule v-else />-->
     <!-- <adminPass /> -->
   </div>
 </template>
@@ -39,6 +39,8 @@
 import Tile from "../Component/Tile.vue";
 import initDataModule from "../Modules/initDataModule.vue";
 import store from "../Configs/store";
+
+import { mapState } from "vuex";
 
 export default {
   name: "jHome",
@@ -48,7 +50,7 @@ export default {
   },
   data() {
     return {
-      isFile: false,
+      isFile: true,
       cfgFile: null,
       noIpt: false,
       setupBtn: false,
@@ -57,9 +59,7 @@ export default {
     };
   },
   mounted() {
-    store.commit("init_data");
-    window.document.title =
-      store.state.platformData.state.city + store.state.platformData.state.name;
+    // store.commit("init_data");
   },
   methods: {
     //管理员设置
@@ -82,7 +82,9 @@ export default {
     isFirst() {
       this.setupBtn = !store.state.isFirst;
       return store.state.isFirst;
-    }
+    },
+    ...mapState({
+    })
   }
 };
 </script>

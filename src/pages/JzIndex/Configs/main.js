@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import router from './router';
 import App from '~/App.vue';
-import Store from './store'
+import Store from '~/common/store'
 import ECharts from 'vue-echarts'
 import axios from 'axios'
 import VueAMap from 'vue-amap';
@@ -57,7 +57,13 @@ import '~/stastic/bigdata_jz.less';
 
 
 
-
+router.afterEach((to) => {
+  console.log(to.meta.title)
+  let title = to.meta.title,
+    platCity = ""
+  if (Store.state.platData.showCity) platCity = Store.state.platData.platformCity
+  window.document.title = title + " | " + platCity + Store.state.platData.platformName
+})
 
 
 

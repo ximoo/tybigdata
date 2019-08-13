@@ -1,0 +1,335 @@
+{
+    "version": "3.4.19.0813",
+    "state": {
+        "name": "城市固废资源利用云平台",
+        "city": "武汉市",
+        "showCity": true,
+        "showWeather": true,
+        "adcode": "420100",
+        "center": "114.298572,30.584355",
+        "districtsSelect": ["黄陂区", "新洲区"],
+        "districts": [{
+            "citycode": "027",
+            "adcode": "420116",
+            "name": "黄陂区",
+            "center": "114.374025,30.874155",
+            "level": "district",
+            "districts": []
+        }, {
+            "citycode": "027",
+            "adcode": "420117",
+            "name": "新洲区",
+            "center": "114.802108,30.842149",
+            "level": "district",
+            "districts": []
+        }, {
+            "citycode": "027",
+            "adcode": "420102",
+            "name": "江岸区",
+            "center": "114.30304,30.594911",
+            "level": "district",
+            "districts": []
+        }, {
+            "citycode": "027",
+            "adcode": "420113",
+            "name": "汉南区",
+            "center": "114.08124,30.309637",
+            "level": "district",
+            "districts": []
+        }, {
+            "citycode": "027",
+            "adcode": "420114",
+            "name": "蔡甸区",
+            "center": "114.029341,30.582186",
+            "level": "district",
+            "districts": []
+        }, {
+            "citycode": "027",
+            "adcode": "420103",
+            "name": "江汉区",
+            "center": "114.283109,30.578771",
+            "level": "district",
+            "districts": []
+        }, {
+            "citycode": "027",
+            "adcode": "420107",
+            "name": "青山区",
+            "center": "114.39707,30.634215",
+            "level": "district",
+            "districts": []
+        }, {
+            "citycode": "027",
+            "adcode": "420115",
+            "name": "江夏区",
+            "center": "114.313961,30.349045",
+            "level": "district",
+            "districts": []
+        }, {
+            "citycode": "027",
+            "adcode": "420106",
+            "name": "武昌区",
+            "center": "114.307344,30.546536",
+            "level": "district",
+            "districts": []
+        }, {
+            "citycode": "027",
+            "adcode": "420111",
+            "name": "洪山区",
+            "center": "114.400718,30.504259",
+            "level": "district",
+            "districts": []
+        }, {
+            "citycode": "027",
+            "adcode": "420112",
+            "name": "东西湖区",
+            "center": "114.142483,30.622467",
+            "level": "district",
+            "districts": []
+        }, {
+            "citycode": "027",
+            "adcode": "420104",
+            "name": "硚口区",
+            "center": "114.264568,30.57061",
+            "level": "district",
+            "districts": []
+        }, {
+            "citycode": "027",
+            "adcode": "420105",
+            "name": "汉阳区",
+            "center": "114.265807,30.549326",
+            "level": "district",
+            "districts": []
+        }]
+    },
+    "alerms": {
+        "name": "车辆报警类型",
+        "number": 10,
+        "timer": 5,
+        "list": [{
+            "label": "超速驾驶",
+            "level": 1,
+            "enable": true
+        }, {
+            "label": "超载驾驶",
+            "level": 2,
+            "enable": true
+        }, {
+            "label": "道路抛洒",
+            "level": 3,
+            "enable": true
+        }]
+    },
+    "basedata": {
+        "name": "基础数据：",
+        "tip": "演示平台的基本资产单位数据，平台将根据这些数据模拟生成动态数据，填入的数量为最大数量。",
+        "data": {
+            "vechile": 0,
+            "site": 0,
+            "landfill": 0,
+            "company": 0,
+            "gpsSeed": "车站"
+        }
+    },
+    "opratdata": {
+        "name": "基础运营数据",
+        "tip": "演示平台的基本资产单位数据，平台将根据这些数据模拟生成动态数据，填入的数量为最大数量。",
+        "data": {
+            "vechile": 100,
+            "vecOffline": 0,
+            "vecDamage": 0,
+            "site": 100,
+            "siteOnline": 100,
+            "siteOffline": 0,
+            "siteDubious": 0,
+            "landfill": 100,
+            "landfillDubious": 0
+        }
+    },
+
+
+    "module": {
+        "allmonitor": {
+            "name": "全局监管",
+            "enable": true,
+            "module": {
+                "basedata": {
+                    "name": "基础监控数据：",
+                    "tip": "由上一步基础数据得到左上角基本监控数据展示，您可以在这里修改展示字段名称，数量可通过返回上一步进行修改。也可以对展示项进行删减，建议最少留3项。",
+                    "timer": 1800,
+                    "data": [{
+                        "id": 11,
+                        "label": "车辆总数",
+                        "unit": "辆",
+                        "number": 600,
+                        "required": true
+                    }, {
+                        "id": 12,
+                        "label": "在线车辆",
+                        "unit": "辆",
+                        "number": 300,
+                        "required": true
+                    }, {
+                        "id": 21,
+                        "label": "工地总数",
+                        "unit": "个",
+                        "number": 300,
+                        "required": true
+                    }, {
+                        "id": 22,
+                        "label": "开工工地",
+                        "unit": "个",
+                        "number": 30,
+                        "required": true
+                    }, {
+                        "id": 31,
+                        "label": "消纳点总数",
+                        "unit": "个",
+                        "number": 10,
+                        "required": true
+                    }, {
+                        "id": 32,
+                        "label": "运营消纳点",
+                        "unit": "个",
+                        "number": 30,
+                        "required": true
+                    }]
+                },
+                "operatedata": {
+                    "name": "运营数据:",
+                    "data": [{
+                        "name": "-饼状图:",
+                        "tip": "由上一步基础数据得到饼图运营数据，默认为车辆数据。也可以对展示项进行添加删减，不限项数，但要注意不要重复,数量为随机最大数",
+                        "timer": 1800,
+                        "list": [{
+                            "id": 12,
+                            "label": "在线车辆",
+                            "unit": "辆",
+                            "number": 300,
+                            "required": true
+                        }, {
+                            "id": 13,
+                            "label": "停车车辆",
+                            "unit": "辆",
+                            "number": 710,
+                            "required": false
+                        }, {
+                            "id": 14,
+                            "label": "离线车辆",
+                            "unit": "辆",
+                            "number": 710,
+                            "required": false
+                        }, {
+                            "id": 15,
+                            "label": "设备损坏",
+                            "unit": "辆",
+                            "number": 710,
+                            "required": false
+                        }]
+                    }, {
+                        "name": "-柱状图:",
+                        "tip": "由上一步基础数据得到饼图运营数据，默认为出土/消纳运营数据。也可以对展示项进行添加删减，最多4个统计字段,数量为随机最大数",
+                        "timer": 1800,
+                        "list": [{
+                            "id": 23,
+                            "label": "出土量",
+                            "unit": "立方",
+                            "number": 710,
+                            "required": false
+                        }, {
+                            "id": 24,
+                            "label": "出土次数",
+                            "unit": "次",
+                            "number": 710,
+                            "required": false
+                        }, {
+                            "id": 33,
+                            "label": "消纳量",
+                            "unit": "立方",
+                            "number": 710,
+                            "required": false
+                        }, {
+                            "id": 34,
+                            "label": "消纳次数",
+                            "unit": "次",
+                            "number": 710,
+                            "required": false
+                        }]
+                    }]
+                },
+                "producedata": {
+                    "name": "生产数据:",
+                    "tip": "最多4个统计字段,默认为固废利用产出物统计。也可以酌情修改成其他统计数据。",
+                    "timer": 1800,
+                    "data": [{
+                        "id": 1,
+                        "label": "拆迁渣土",
+                        "unit": "吨",
+                        "number": 100
+                    }, {
+                        "id": 2,
+                        "label": "粗骨料",
+                        "unit": "吨",
+                        "number": 710
+                    }, {
+                        "id": 3,
+                        "label": "细骨料",
+                        "unit": "吨",
+                        "number": 710
+                    }, {
+                        "id": 4,
+                        "label": "钢筋",
+                        "unit": "吨",
+                        "number": 710
+                    }]
+                }
+            }
+        },
+        "airmonitor": {
+            "name": "环境监测",
+            "enable": true,
+            "module": {}
+        },
+        "sitemonitor": {
+            "name": "场站实时状况",
+            "enable": true,
+            "module": {
+                "fences": {
+                    "site": [{
+                        "name": "",
+                        "type": "site",
+                        "icon": "el-icon-office-building",
+                        "center": [],
+                        "path": "",
+                        "door": {
+                            "enable": true,
+                            "path": ""
+                        },
+                        "wash": {
+                            "enable": true,
+                            "path": ""
+                        }
+                    }],
+                    "landfill": [{
+                        "name": "",
+                        "type": "landfill",
+                        "icon": "el-icon-office-building",
+                        "center": [],
+                        "path": "",
+                        "door": {
+                            "enable": true,
+                            "path": ""
+                        },
+                        "wash": {
+                            "enable": true,
+                            "path": ""
+                        }
+                    }]
+                },
+                "airmonitor": {
+                    "enable": true,
+                    "type": []
+                }
+            }
+        }
+    }
+}

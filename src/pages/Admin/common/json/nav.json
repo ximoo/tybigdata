@@ -1,0 +1,84 @@
+[
+    {
+        "id": 1,
+        "title": "资产管理",
+        "value": "1",
+        "label": "资产管理",
+        "pid": null,
+        "url": "/assets/vechile",
+        "iconClass": null,
+        "component":"/Layout",
+        "children": [{
+            "id": 11,
+            "title": "车辆管理",
+            "value": "11",
+            "label": "车辆管理",
+            "pid": 1,
+            "url": "/assets/vechile",
+            "component":"/Assets/assetsVechile",
+            "iconClass": null,
+            "children": null
+        }, {
+            "id": 12,
+            "title": "工地管理",
+            "value": "12",
+            "label": "工地管理",
+            "pid": 1,
+            "url": "/assets/site",
+            "component":"/Assets/assetsSite",
+            "iconClass": null,
+            "children": null
+        }, {
+            "id": 13,
+            "title": "园区管理",
+            "value": "13",
+            "label": "园区管理",
+            "pid": 1,
+            "url": "/assets/landfill",
+            "component":"/Assets/assetsLandfill",
+            "iconClass": null,
+            "children": null
+        }, {
+            "id": 14,
+            "title": "车辆设备管理",
+            "value": "14",
+            "label": "车辆设备管理",
+            "pid": 1,
+            "url": "/assets/landfill",
+            "component":"/Assets/assetsVechile",
+            "iconClass": null,
+            "children": null
+        }]
+    },
+    {
+        "id": 2,
+        "title": "系统管理",
+        "value": "2",
+        "label": "系统管理",
+        "pid": null,
+        "url": "/system",
+        "iconClass": null,
+        "component":"/Layout",
+        "children": [{
+            "id": 23,
+            "title": "基础数据设置",
+            "value": "23",
+            "label": "菜单设置",
+            "pid": 2,
+            "url": "/system/setupBaseData",
+            "component":"/System/setupBaseData",
+            "iconClass": null,
+            "children": null
+        }, {
+            "id": 24,
+            "title": "大数据概览设置",
+            "value": "23",
+            "label": "大数据概览设置",
+            "pid": 2,
+            "url": "/system/setupBigData",
+            "component":"/System/setupBigData",
+            "iconClass": null,
+            "children": null
+        }]
+    }
+]

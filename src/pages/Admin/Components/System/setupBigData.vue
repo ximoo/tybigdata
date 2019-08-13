@@ -14,20 +14,20 @@
         <el-row :gutter="20">
           <!-- baseData -->
           <el-col :span="6">
-            <el-card class="box-card" :class="{'box-card-edit':bigData.baseData.edit}">
+            <el-card class="box-card" :class="{'box-card-edit':baseData.edit}">
               <template slot="header" class="clearfix">
                 <el-input
                   size="small"
-                  v-model="bigData.baseData.name"
-                  v-if="bigData.baseData.edit"
+                  v-model="baseData.name"
+                  v-if="baseData.edit"
                   style="width:180px;"
                 />
-                <span v-else>{{bigData.baseData.name}}</span>
+                <span v-else>{{baseData.name}}</span>
                 <el-button
                   style="float: right; padding: 3px 0"
                   type="text"
-                  @click="bigData.baseData.edit = true"
-                  v-if="!bigData.baseData.edit"
+                  @click="baseData.edit = true"
+                  v-if="!baseData.edit"
                   icon="el-icon-edit"
                 >编辑</el-button>
                 <el-button
@@ -40,12 +40,30 @@
               </template>
               <el-form inline size="mini">
                 <el-form-item
-                  v-for="item,index in platformBaseData"
+                  v-for="item,index in baseData.data"
+                  :key="index"
                   style="width:calc(50% - 15px);"
                 >
-                  <el-checkbox v-model="item.checked" style="margin-right: 5px;"></el-checkbox>
-                  <el-input v-model="item.label" v-if="bigData.baseData.edit" style="width:80px;" />
-                  <span v-if="!bigData.baseData.edit">{{item.label}} ： {{item.value}} {{item.unit}}</span>
+                  <i
+                    class="el-icon-circle-check"
+                    v-if="item.checked && !baseData.edit"
+                    style="color:#00cb0e"
+                  />
+                  <i
+                    class="el-icon-circle-close"
+                    v-if="!item.checked && !baseData.edit"
+                    style="color:#f30"
+                  />
+                  <el-checkbox
+                    v-model="item.checked"
+                    style="margin-right: 5px;"
+                    v-if="baseData.edit"
+                  ></el-checkbox>
+                  <el-input v-model="item.label" v-if="baseData.edit" style="width:80px;" />
+                  <span v-if="!baseData.edit">
+                    <strong>{{item.label}} ：</strong>
+                    {{item.value}} {{item.unit}}
+                  </span>
                   <span v-else>{{item.value}} {{item.unit}}</span>
                 </el-form-item>
               </el-form>
@@ -53,20 +71,20 @@
           </el-col>
           <!-- opratData -->
           <el-col :span="6">
-            <el-card class="box-card" :class="{'box-card-edit':bigData.opratData.edit}">
+            <el-card class="box-card" :class="{'box-card-edit':opratData.edit}">
               <template slot="header" class="clearfix">
                 <el-input
                   size="small"
-                  v-model="bigData.opratData.name"
-                  v-if="bigData.opratData.edit"
+                  v-model="opratData.name"
+                  v-if="opratData.edit"
                   style="width:180px;"
                 />
-                <span v-else>{{bigData.opratData.name}}</span>
+                <span v-else>{{opratData.name}}</span>
                 <el-button
                   style="float: right; padding: 3px 0"
                   type="text"
-                  @click="bigData.opratData.edit = true"
-                  v-if="!bigData.opratData.edit"
+                  @click="opratData.edit = true"
+                  v-if="!opratData.edit"
                   icon="el-icon-edit"
                 >编辑</el-button>
                 <el-button
@@ -79,24 +97,25 @@
               </template>
               <el-form inline size="mini">
                 <el-form-item style="width:100%">
-                  <el-checkbox v-model="bigData.opratData.module" label="车辆在线情况"></el-checkbox>
+                  <el-checkbox v-model="opratData.module" label="车辆在线情况"></el-checkbox>
                 </el-form-item>
                 <el-form-item
-                  v-for="item,index in bigData.opratData.data.vechile"
+                  v-for="item,index in opratData.data.vechile"
+                  :key="index"
                   style="width:calc(33% - 15px);"
                 >
                   <el-checkbox
                     v-model="item.checked"
                     :label="item.label"
                     style="margin-right: 5px;"
-                    v-if="!bigData.opratData.edit"
+                    v-if="!opratData.edit"
                   ></el-checkbox>
                   <el-checkbox
                     v-model="item.checked"
                     style="margin-right: 5px;"
-                    v-if="bigData.opratData.edit"
+                    v-if="opratData.edit"
                   ></el-checkbox>
-                  <el-input v-model="item.label" v-if="bigData.opratData.edit" style="width:80px;" />
+                  <el-input v-model="item.label" v-if="opratData.edit" style="width:80px;" />
                 </el-form-item>
               </el-form>
             </el-card>
@@ -118,24 +137,15 @@ export default {
     let self = this;
     return {
       hideMenu: true,
-      bigData: {
-        baseData: {
-          name: "基础监控数据",
-          edit: false,
-          data: []
-        },
-        opratData: {
-          name: "运营数据",
-          edit: false,
-          data: []
-        }
+      baseData: self.$store.getters.adminBaseData,
+      opratData: {
+        name: "运营数据",
+        edit: false,
+        data: []
       }
     };
   },
-  mounted() {
-    localStorage.$platformBigData = JSON.stringify(this.bigData);
-    console.log(this.platformBaseData);
-  },
+  mounted() {},
   methods: {
     /*
     removeBaseData(index) {
@@ -163,21 +173,17 @@ export default {
     */
     //保存基础监控数据
     saveBaseData() {
-      this.bigData.baseData.edit = false;
       let self = this,
-        countBaseData = [],
-        platformBigData = self.platformBigData;
-      for (var i in self.platformBaseData) {
-        if (self.platformBaseData[i].checked) {
-          countBaseData.push(self.platformBaseData[i]);
-        }
-        platformBigData.baseData.data = countBaseData;
-      }
-      localStorage.$platformBigData = JSON.stringify(platformBigData);
+        baseData = self.baseData,
+        platformBigData = self.$store.state.platformBigData;
+      console.log(platformBigData);
+      self.baseData.edit = false;
+      platformBigData.baseData.data = baseData.data;
+      localStorage.$platformBigData = JSON.stringify(platformBigData.baseData);
     },
 
     saveOpratData() {
-      this.bigData.opratData.edit = false;
+      this.opratData.edit = false;
       let self = this,
         countBaseData = [],
         platformBigData = self.platformBigData;
@@ -195,12 +201,7 @@ export default {
     }
   },
   computed: {
-    baseData() {
-      let platformBaseData = this.platformBaseData,
-        platformBigData = this.platformBigData;
-      let baseData = platformBigData.baseData;
-      return baseData;
-    },
+    /*
 
     platformBaseData() {
       let self = this;
@@ -381,8 +382,8 @@ export default {
             break;
         }
       }
-      self.bigData.baseData.data = baseData;
-      self.bigData.opratData.data = opratData;
+      self.baseData.data = baseData;
+      self.opratData.data = opratData;
       return baseData;
     },
 
@@ -400,8 +401,8 @@ export default {
         : {};
       return platformBigData;
     }
+
+    */
   }
 };
 </script>
-<style lang="less">
-</style>

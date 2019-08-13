@@ -25,8 +25,8 @@ export default {
 
     //设置平台信息
     setPlatformState(data) {
-        let platformState = JSON.stringify(data)
-        localStorage.$platformState = platformState
+        let platData = JSON.stringify(data)
+        localStorage.$platData = platData
         return true
     },
 
@@ -45,8 +45,8 @@ export default {
 
     //设置基础数据
     setPlatformBaseData(data) {
-        let platformBaseData = JSON.stringify(data)
-        localStorage.$platformBaseData = platformBaseData
+        let baseData = JSON.stringify(data)
+        localStorage.$baseData = baseData
         return true
     },
 

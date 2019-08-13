@@ -4,7 +4,7 @@
       <!-- 基础监控数据 -->
       <BaseData/>
       <!-- 运营数据 -->
-      <OperateData/>
+      <!-- <OperateData/> -->
       <!-- 生产数据 -->
       <ProduceData/>
     </div>

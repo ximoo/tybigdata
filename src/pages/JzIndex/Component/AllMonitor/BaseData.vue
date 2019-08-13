@@ -11,6 +11,13 @@
   </div>
 </template>
 <script>
+import Store from "../../../Admin/Configs/store";
+import lib from "../../../../common/lib";
+
+import {mapState} from "vuex"
+
+
+
 export default {
   name: "BaseData",
   data() {
@@ -26,14 +33,15 @@ export default {
     },
 
     BaseData() {
-      let baseData = localStorage.$platformBigData
-        ? JSON.parse(localStorage.$platformBigData).baseData.data
-        : [];
+      let baseData = Store.getters.adminBaseData;
+      console.log(baseData);
       this.baseDataNum = baseData.length < 3 ? baseData.length : 3;
       this.baseDataWidth = "width:calc(" + 100 / +this.baseDataNum + "% - 4px)";
-      console.log(this.baseDataWidth);
-      return baseData;
-    }
+      return lib.getChecked(baseData.data);
+    },
+    ...mapState('baseData',{
+
+    })
   }
 };
 </script>

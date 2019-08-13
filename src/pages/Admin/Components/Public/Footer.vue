@@ -16,15 +16,17 @@
   </div>
 </template>
 <script>
+import {mapState} from 'vuex'
+
 export default {
-  name: "pFooter",
-  mounted() {
-    console.log("当前版本:" + this.$store.state.version);
-  },
+  name: "Footer",
+
   computed: {
-    version() {
-      return this.$store.state.version;
-    }
+    ...mapState({
+      //获取版本号
+      version: state => state.platData.version
+    })
+
   }
 };
 </script>

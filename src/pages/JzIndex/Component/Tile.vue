@@ -1,13 +1,13 @@
 <template>
   <div class="ex-bigdata-tile">
-    <span v-if="platformState.showCity">{{platformState.city}}</span>
-    {{platformState.name}}
+    <span v-if="showCity">{{platformCity}}</span>
+    {{platformName}}
     <div class="ex-bigdata-tile-flip">
-      <span v-if="platformState.showCity">{{platformState.city}}</span>
-      {{platformState.name}}
+      <span v-if="showCity">{{platformCity}}</span>
+      {{platformName}}
     </div>
     <div class="ex-bigdata-timer">{{currentTime}}</div>
-    <ul class="weather" v-if="weatherList && platformState.showWeather">
+    <ul class="weather" v-if="weatherList && showWeather">
       <li v-for="item,index in weatherList" :key="index">
         <!-- <div class="top"></div> -->
         <div class="center">
@@ -19,15 +19,14 @@
         <div class="bottom">{{item.daytemp + '℃/'+ item.nighttemp + '℃'}}</div>
       </li>
     </ul>
-    <div class="weather" v-if="!weatherList && platformState.showWeather">
+    <div class="weather" v-if="!weatherList && showWeather">
       <i class="el-icon-loading"></i>
     </div>
   </div>
 </template>
 
 <script>
-import store from "../Configs/store";
-
+import { mapState } from "vuex";
 
 export default {
   data() {
@@ -37,12 +36,13 @@ export default {
     };
   },
   mounted() {
-    setTimeout(() => {
-      this.weatherData();
-    }, 3000);
-    let timer = setInterval(() => {
-      this.currentTime = this.getCurrentTime();
-    }, 1000);
+    let self = this;
+    self.$nextTick(() => {
+      self.weatherData();
+      let timer = setInterval(res => {
+        self.currentTime = self.getCurrentTime();
+      }, 1000);
+    });
   },
   methods: {
     getCurrentTime() {
@@ -78,6 +78,7 @@ export default {
     weatherData() {
       let self = this;
       let weatherList = new Array();
+      console.log(self.showWeather);
       const weekStr = new Array(
         "周日",
         "周一",
@@ -88,7 +89,7 @@ export default {
         "周六",
         "周日"
       );
-      if (self.platformState.showWeather) {
+      if (self.showWeather) {
         self.$http
           .get(
             "https://restapi.amap.com/v3/weather/weatherInfo?city=" +
@@ -96,6 +97,7 @@ export default {
               "&extensions=all&key=0a2c31bc6770455f08b0fcdc1674831c"
           )
           .then(function(res) {
+            console.log(res);
             if (res.data.status == "1") {
               let list = res.data.forecasts[0].casts;
               for (var i in list) {
@@ -328,22 +330,15 @@ export default {
     }
   },
   computed: {
-    platformState() {
-      let platformState = localStorage.$platformState
-        ? JSON.parse(localStorage.$platformState)
-        : {};
-      return platformState;
-    },
-
-    platformName() {
-      return (
-        store.state.platformData.state.city +
-        store.state.platformData.state.name
-      );
-    },
-    adcode() {
-      return store.state.platformData.state.adcode;
-    }
+    ...mapState({
+      platformName: state => state.platData.platformName,
+      platformCity: state => state.platData.platformCity,
+      adcode: state => state.platData.adcode,
+      showCity: state => state.platData.showCity,
+      showWeather: state => state.platData.showWeather,
+      platformDistricts: state => state.platData.platformDistricts,
+      platformDistrictsSelect: state => state.platData.platformDistrictsSelect
+    })
   }
 };
 </script>

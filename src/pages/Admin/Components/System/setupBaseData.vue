@@ -7,7 +7,7 @@
         <el-breadcrumb-item :to="{ path: '/' }">
           <i class="el-icon-s-home" /> 首页
         </el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/system/menu' }">系统设置</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/system/setupBaseData' }">系统设置</el-breadcrumb-item>
         <el-breadcrumb-item>基础数据设置</el-breadcrumb-item>
       </el-breadcrumb>
       <div class="ex-table-content">
@@ -16,12 +16,11 @@
             <el-card class="box-card" :class="{'box-card-edit':platformState.edit}">
               <template slot="header" class="clearfix">
                 <span>平台设置:</span>
-
                 <el-button
                   style="float: right; padding: 3px 0"
                   type="text"
                   icon="el-icon-edit"
-                  @click="platformState.edit = true"
+                  @click="EditPlatData"
                   v-if="!platformState.edit"
                 >编辑</el-button>
                 <el-button
@@ -34,8 +33,8 @@
               </template>
               <el-form inline size="mini" label-width="120px" label-position="right">
                 <el-form-item label=" 平台名称：" style="width:100%">
-                  <el-input v-model="platformState.name" v-if="platformState.edit" />
-                  <span v-else>{{platformState.name}}</span>
+                  <el-input v-model="platData.name" v-if="platData.edit" />
+                  <span v-else>{{platData.name}}</span>
                 </el-form-item>
                 <el-form-item label=" 城市名称：" style="width:100%">
                   <el-input
@@ -100,9 +99,9 @@
           </el-col>
           <!-- baseData -->
           <el-col :span="8">
-            <el-card class="box-card" :class="{'box-card-edit':baseData.edit}">
+            <el-card class="box-card" :class="{'box-card-edit':platformBaseData.edit}">
               <template slot="header" class="clearfix">
-                <span>基础数据</span>
+                <span>{{platformBaseData.name}}</span>
                 <el-button
                   style="float: right; padding: 3px 0"
                   type="text"
@@ -120,39 +119,41 @@
               </template>
               <el-form inline size="mini" label-width="100px" label-position="left">
                 <el-form-item label=" 车辆总数：">
-                  <el-input-number v-model="baseData.vechile" v-if="baseData.edit" />
-                  <el-tooltip effect="dark" content="随机数" v-if="baseData.edit">
+                  <el-input-number v-model="platformBaseData.vechile" v-if="platformBaseData.edit" />
+                  <el-tooltip effect="dark" content="随机数" v-if="platformBaseData.edit">
                     <el-button type="info" icon="el-icon-magic-stick" @click="getRandom('vechile')"></el-button>
                   </el-tooltip>
-                  <span v-else>{{baseData.vechile}}</span> 辆
+                  <span v-else>{{platformBaseData.vechile}}</span> 辆
                 </el-form-item>
                 <el-form-item label=" 工地总数：">
-                  <el-input-number v-model="baseData.site" v-if="baseData.edit" />
-                  <el-tooltip effect="dark" content="随机数" v-if="baseData.edit">
+                  <el-input-number v-model="baseData.site" v-if="platformBaseData.edit" />
+                  <el-tooltip effect="dark" content="随机数" v-if="platformBaseData.edit">
                     <el-button type="info" icon="el-icon-magic-stick" @click="getRandom('site')"></el-button>
                   </el-tooltip>
-                  <span v-else>{{baseData.site}}</span> 个
+                  <span v-else>{{platformBaseData.site}}</span> 个
                 </el-form-item>
                 <el-form-item label=" 消纳点总数：">
-                  <el-input-number v-model="baseData.landfill" v-if="baseData.edit" />
-                  <el-tooltip effect="dark" content="随机数" v-if="baseData.edit">
+                  <el-input-number
+                    v-model="platformBaseData.landfill"
+                    v-if="platformBaseData.edit"
+                  />
+                  <el-tooltip effect="dark" content="随机数" v-if="platformBaseData.edit">
                     <el-button
                       type="info"
                       icon="el-icon-magic-stick"
                       @click="getRandom('landfill')"
                     ></el-button>
                   </el-tooltip>
-                  <span v-else>{{baseData.landfill}}</span> 个
+                  <span v-else>{{platformBaseData.landfill}}</span> 个
                 </el-form-item>
                 <el-form-item label=" 企业总数：">
-                  <el-input-number v-model="baseData.company" v-if="baseData.edit" />
-                  <el-tooltip effect="dark" content="随机数" v-if="baseData.edit">
+                  <el-input-number v-model="platformBaseData.company" v-if="platformBaseData.edit" />
+                  <el-tooltip effect="dark" content="随机数" v-if="platformBaseData.edit">
                     <el-button type="info" icon="el-icon-magic-stick" @click="getRandom('company')"></el-button>
                   </el-tooltip>
-                  <span v-else>{{baseData.company}}</span> 个
+                  <span v-else>{{platformBaseData.company}}</span> 个
                 </el-form-item>
-                
-
+                <el-form-item style="width:100%;font-size:12px;">{{platformBaseData.tip}}</el-form-item>
                 <el-form-item label="配置文件：" style="width:100%" v-if="!baseData.edit">
                   <el-upload
                     ref="upload"
@@ -170,8 +171,8 @@
                 <el-form-item label="模拟数据：" style="width:100%;" v-if="baseData.edit">
                   <label>
                     GPS种子：
-                    <el-select v-model="baseData.gpsSeed" style="width:140px;">
-                      <el-option v-for="item in gpsSeed" :key="item" :label="item" :value="item"></el-option>
+                    <el-select v-model="platformBaseData.gpsSeed" style="width:140px;">
+                      <el-option v-for="item in gpsSeeds" :key="item" :label="item" :value="item"></el-option>
                     </el-select>
                   </label>
                   <el-button
@@ -412,6 +413,8 @@ import baseDatalib from "./setup_basedata_lib";
 import API from "../../../JzIndex/Configs/api";
 import Axios from "axios";
 
+import { mapState } from "vuex";
+
 export default {
   name: "setupBaseData",
   components: {
@@ -420,9 +423,9 @@ export default {
   data() {
     let self = this;
     return {
-      hideMenu: true,
+      hideMenu: false,
       platformState: {},
-      baseData: {},
+      platformBaseData: {},
       operatData: {},
       alermSetup: [
         {
@@ -584,16 +587,16 @@ export default {
           selected: false
         }
       ],
-      gpsSeed: ["车站", "加油站", "ATM", "酒店", "医院", "银行"],
+      gpsSeeds: ["车站", "加油站", "ATM", "酒店", "医院", "银行"],
       simStep: {
         vechile: 0
       }
     };
   },
   mounted() {
-    this.platformState = baseDatalib.getPlatformState();
-    this.baseData = baseDatalib.getPlatformBaseData();
-    this.operatData = baseDatalib.getPlatformOperatData();
+    // this.platformState = baseDatalib.getPlatformState();
+    // this.baseData = baseDatalib.getPlatformBaseData();
+    // this.operatData = baseDatalib.getPlatformOperatData();
   },
   methods: {
     //菜单跳转
@@ -610,8 +613,8 @@ export default {
 
     //保存基础数据
     handleBaseDataSave() {
-      this.baseData.edit = false;
-      baseDatalib.setPlatformBaseData(this.baseData);
+      this.platformBaseData.edit = false;
+      baseDatalib.setPlatformBaseData(this.platformBaseData);
     },
 
     //保存运营数据
@@ -691,7 +694,6 @@ export default {
             self.platformState.city = res.data.city;
             self.platformState.adcode = res.data.adcode;
             self.platformState.regions = res.data;
-            console.log(self.platformState);
             self.getDistricts();
           } else {
             alert("没有定位成功");
@@ -701,6 +703,7 @@ export default {
           console.log(error);
         });
     },
+
     //获取城市行政区
     getDistricts(city) {
       let self = this;
@@ -737,79 +740,65 @@ export default {
     getRandom(key) {
       let self = this;
       let RandomNumber = baseDatalib.randomNumber(0, 10000);
-      self.baseData[key] = RandomNumber;
+      self.platformBaseData[key] = RandomNumber;
     },
 
-    beforeFileUpload() {}
+    beforeFileUpload() {},
+
+    EditPlatData() {
+      this.platData.edit = !this.platData.edit;
+      console.log(this.platData);
+    }
   },
   computed: {
-    platformAdminNav() {
-      return this.$store.state.platformAdminNav;
-    }
+    platData() {
+      let self = this;
+      let platData = new Object();
+      platData["edit"] = false;
+      platData["name"] = self.platformName;
+      platData["adcode"] = self.adcode;
+      platData["city"] = self.platformCity;
+      platData["showCity"] = self.showCity;
+      platData["showWeather"] = self.showWeather;
+      platData["districts"] = self.platformDistricts;
+      platData["districtsSelect"] = self.platformDistrictsSelect;
+      self.platformState = platData;
+      return platData;
+    },
+    baseData() {
+      let self = this;
+      let baseData = new Object();
+      baseData["edit"] = false;
+      baseData["name"] = self.baseDataName;
+      baseData["vechile"] = self.baseVechile;
+      baseData["site"] = self.baseSite;
+      baseData["landfill"] = self.baseLandfill;
+      baseData["company"] = self.baseCompany;
+      baseData["gpsSeed"] = self.baseGpsSeed;
+      baseData["tip"] = self.baseTip;
+      self.platformBaseData = baseData;
+      return baseData;
+    },
+    ...mapState("platData", {
+      platformName: state => state.platformName,
+      platformCity: state => state.platformCity,
+      adcode: state => state.adcode,
+      showCity: state => state.showCity,
+      showWeather: state => state.showWeather,
+      platformDistricts: state => state.platformDistricts,
+      platformDistrictsSelect: state => state.platformDistrictsSelect
+    }),
+    ...mapState("baseData", {
+      baseDataName: state => state.baseDataName,
+      baseVechile: state => state.vechile,
+      baseSite: state => state.site,
+      baseLandfill: state => state.landfill,
+      baseCompany: state => state.company,
+      baseGpsSeed: state => state.gpsSeed,
+      baseTip: state => state.tip
+    })
   }
 };
 </script>
 <style lang="less">
-.box-card {
-  min-height: 460px;
-  margin-bottom: 15px;
-  box-shadow: none !important;
-
-  &.box-card-edit {
-    background-color: #f3fdf3;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1) !important;
-  }
-  .el-button--mini {
-    padding: 7px !important;
-  }
-  .el-form--inline .el-form-item {
-    display: block;
-    width: calc(50% - 10px);
-    float: left;
-  }
-
-  ul,
-  li {
-    list-style: none;
-    padding: 0 !important;
-    margin: 10px 0 !important;
-  }
-
-  .el-table {
-    border: none !important;
-    box-shadow: none !important;
-    height: auto !important;
-
-    th {
-      background-color: #e7e8ee !important;
-    }
-    .cell {
-      span.alerm {
-        border-radius: 5px;
-        padding: 4px 15px;
-        &.yellowAlerm {
-          color: #fff;
-          background-color: #fc0;
-        }
-        &.redAlerm {
-          color: #fff;
-          background-color: #f30;
-        }
-      }
-
-      ul {
-        margin: 0;
-        padding: 0;
-        display: inline-block;
-        list-style: none;
-      }
-      li {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        float: left;
-      }
-    }
-  }
-}
 </style>

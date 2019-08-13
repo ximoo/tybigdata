@@ -21,24 +21,44 @@ const routes = [{
   {
     path: '/index',
     component: jHome,
-    title: '首页',
+    meta: {
+      title: '大数据概览'
+    },
     children: [{
       path: '/index',
       component: bigData,
+      meta: {
+        title: '大数据概览'
+      },
       children: [{
         path: '/index',
+        meta: {
+          title: '大数据概览'
+        },
         component: siteModule
       }, {
         path: '/air',
+        meta: {
+          title: '环境污染'
+        },
         component: airModule
       }, {
         path: '/site',
+        meta: {
+          title: '场站管理'
+        },
         component: siteModule
       }, {
         path: '/cases',
+        meta: {
+          title: '案件管理'
+        },
         component: caseModule
       }, {
         path: '/vechile',
+        meta: {
+          title: '车辆监控'
+        },
         component: vecModule
       }]
     }]
