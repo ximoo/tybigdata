@@ -4,11 +4,16 @@ import platNav from "~/pages/Admin/common/json/nav.json"
 
 const platData = localStorage.$platData
 const platAdminNav = localStorage.$platAdminNav
+const platTabMenu = localStorage.$platTabMenu
+
+let version = localStorage.$version
+localStorage.$version = platJson.version
+
 
 const state = {
     /************先判断是否存在本地缓存，没有则取本地JSON文件进行初始化************/
     //版本号
-    version: platData ? JSON.parse(platData).version : platJson.version,
+    version: version ? version : platJson.version,
     //定位的城市
     platformCity: platData ? JSON.parse(platData).city : platJson.state.city,
     adcode: platData ? JSON.parse(platData).adcode : platJson.state.adcode,
@@ -24,10 +29,19 @@ const state = {
     platformDistrictsSelect: platData ? JSON.parse(platData).districtsSelect : platJson.state.districtsSelect,
     //后台菜单
     platformAdminNav: platAdminNav ? JSON.parse(platAdminNav) : platNav,
+
+    //菜单选项卡
+    platformTabMenu: platTabMenu ? JSON.parse(platTabMenu) : []
+
+
+
+
+
 }
 
 // getters
 const getters = {
+
 
 
 }

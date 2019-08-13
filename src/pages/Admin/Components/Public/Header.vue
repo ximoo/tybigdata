@@ -79,7 +79,7 @@ export default {
   },
   mounted() {
     this.handleMenu();
-    window.document.title = this.platformCity + this.platformName;
+    // window.document.title = this.platformCity + this.platformName;
   },
   methods: {
     toBigData() {

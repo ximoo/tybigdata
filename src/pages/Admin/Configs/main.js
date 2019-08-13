@@ -42,6 +42,7 @@ const routs = [{
         require(['../../Admin/Components/Index.vue'], resolve)
       },
       meta: {
+        title: '首页',
         keepAlive: true,
         menuID: null,
         pid: null
@@ -53,16 +54,22 @@ const routs = [{
 routs.push(unfound)
 router.addRoutes(routs)
 
+
+
+
+
+
 function RoutesFromMenu(menu) {
   let routes = []
   menu.forEach(item => {
     routes.push({
-      name:item.title,
+      name: item.title,
       path: item.url,
       component(resolve) {
         require([`../../Admin/Components${item.component}.vue`], resolve)
       },
       meta: {
+        title: item.title,
         keepAlive: true,
         menuID: item.id,
         pid: item.pid
@@ -70,12 +77,32 @@ function RoutesFromMenu(menu) {
       children: item.children ? RoutesFromMenu(item.children) : []
     })
   })
+  console.log(routes)
   return routes
 }
 //动态路由 end
 
 
+router.afterEach((to) => {
+  //替换浏览器title
+  let title = to.meta.title,
+    platCity = ""
+  if (Store.state.platData.showCity) platCity = Store.state.platData.platformCity
+  window.document.title = title + " | " + platCity + Store.state.platData.platformName
 
+  //选项卡数据
+
+  let platformTabMenu = Store.state.platData.platformTabMenu
+  platformTabMenu.push({
+    url:to.path,
+    meta:to.meta
+  })
+  localStorage.$platTabMenu = JSON.stringify(platformTabMenu)
+
+  console.log("platformTabMenu:" + platformTabMenu)
+
+
+})
 
 new Vue({
   el: '#WebApp',
