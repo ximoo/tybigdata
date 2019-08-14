@@ -3,7 +3,7 @@
 import Vue from 'vue';
 import router from './router';
 import App from '~/App.vue';
-import Store from "../../../common/store"
+import Store from "~/common/store"
 import '~/common/plugin/axios';
 
 // 自定义组件
@@ -14,9 +14,7 @@ import '../Components/components'
 
 // 自定义样式补充
 import '~/stastic/admin.less';
-
-
-console.log(Store.state)
+import lib from "../common/lib/layout.lib"
 
 
 //动态路由 start
@@ -58,7 +56,6 @@ router.addRoutes(routs)
 
 
 
-
 function RoutesFromMenu(menu) {
   let routes = []
   menu.forEach(item => {
@@ -77,7 +74,6 @@ function RoutesFromMenu(menu) {
       children: item.children ? RoutesFromMenu(item.children) : []
     })
   })
-  console.log(routes)
   return routes
 }
 //动态路由 end
@@ -86,22 +82,28 @@ function RoutesFromMenu(menu) {
 router.afterEach((to) => {
   //替换浏览器title
   let title = to.meta.title,
-    platCity = ""
+    platCity = "";
   if (Store.state.platData.showCity) platCity = Store.state.platData.platformCity
   window.document.title = title + " | " + platCity + Store.state.platData.platformName
 
+
   //选项卡数据
-
-  let platformTabMenu = Store.state.platData.platformTabMenu
+  let platformTabMenu = localStorage.$platTabMenu ? JSON.parse(localStorage.$platTabMenu) : [{
+    url: '/index',
+    name: '首页',
+    meta: {
+      title: '首页',
+      keepAlive: true,
+      menuID: null,
+      pid: null
+    }
+  }]
   platformTabMenu.push({
-    url:to.path,
-    meta:to.meta
+    url: to.path,
+    meta: to.meta
   })
-  localStorage.$platTabMenu = JSON.stringify(platformTabMenu)
-
-  console.log("platformTabMenu:" + platformTabMenu)
-
-
+  platformTabMenu = lib.distinct(platformTabMenu)
+  Store.state.platData.platformTabMenu = platformTabMenu
 })
 
 new Vue({

@@ -1,3 +1,5 @@
+import lib from "~/pages/Admin/common/lib/layout.lib"
+
 //平台基本数据设置及计算
 import platJson from "../../json/platData.json"
 import platNav from "~/pages/Admin/common/json/nav.json"
@@ -31,12 +33,16 @@ const state = {
     platformAdminNav: platAdminNav ? JSON.parse(platAdminNav) : platNav,
 
     //菜单选项卡
-    platformTabMenu: platTabMenu ? JSON.parse(platTabMenu) : []
-
-
-
-
-
+    platformTabMenu: platTabMenu ? JSON.parse(platTabMenu) : [{
+        url: '/index',
+        name: '首页',
+        meta: {
+            title: '首页',
+            keepAlive: true,
+            menuID: null,
+            pid: null
+        }
+    }]
 }
 
 // getters
@@ -55,7 +61,10 @@ const actions = {
 
 // mutations
 const mutations = {
-
+    "StoreTabMenu": (state, data) => {
+        state.platformTabMenu = data
+        localStorage.$platTabMenu = data
+    }
 
 
 
