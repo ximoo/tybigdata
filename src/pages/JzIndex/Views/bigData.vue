@@ -6,7 +6,7 @@
       <!-- 运营数据 -->
       <!-- <OperateData/> -->
       <!-- 生产数据 -->
-      <ProduceData/>
+      <!-- <ProduceData/> -->
     </div>
 
     <div class="ex-bigdata-main" :class="{full:fullMain}">
@@ -14,14 +14,14 @@
     <el-button @click="handleFull" icon="el-icon-d-arrow-right" type="info" size="mini" round class="full-main-btn right" v-else></el-button>
       <!-- 全局实时监控 -->
       <AllMonitor/>
-      <realTimeMonitor/>
+      <!-- <realTimeMonitor/> -->
       <!-- 运营趋势 -->
-      <TrendData/>
+      <!-- <TrendData/> -->
     </div>
 
     <!-- 可设置模块 -->
     <transition name="el-zoom-in-top">
-      <router-view/>
+      <!-- <router-view/> -->
     </transition>
   </div>
 </template>

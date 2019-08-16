@@ -1,6 +1,6 @@
 <template>
   <div class="item">
-    <h3>运营数据</h3>
+    <h3>{{oprateDataName}}</h3>
     <div class="ex-operatedata-charts">
       <Echarts :options="chartsOption" autoresize />
     </div>
@@ -28,6 +28,8 @@ import getOption from "./operatedata.service";
 import randomIze from "../../Configs/service.lib";
 
 let activeBarId, activePieId;
+
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "OperateData",
@@ -100,6 +102,7 @@ export default {
     }
   },
   computed: {
+    /*
     platformBigData() {
       let platformBigData = localStorage.$platformBigData
         ? JSON.parse(localStorage.$platformBigData)
@@ -132,7 +135,14 @@ export default {
     },
     srcBarData() {
       return this.allmonitor.module.operatedata.data[1].list;
-    }
+    },
+    */
+    ...mapState("baseData",{
+        oprateDataName:state => state.oprateDataName
+
+
+
+    })
   }
 };
 </script>

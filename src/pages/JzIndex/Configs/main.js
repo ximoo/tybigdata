@@ -38,7 +38,7 @@ Vue.component('v-chart', ECharts)
 
 VueAMap.initAMapApiLoader({
   key: '6f713c69faa95286904fa173059eae94',
-  plugin: ['AMap.PathSimplifier', 'AMap.SimpleMarker', 'Map3D', 'AMap.DistrictSearch', 'AMap.SimpleMarker', 'AMap.DistrictLayer', 'AMap.ControlBar', 'AMap.MouseTool', "AMap.PolyEditor", "AMap.MarkerClusterer", "AMap.InfoWindow", "AMap.Driving", "AMap.TruckDriving"],
+  plugin: ['AMap.PathSimplifier', 'AMap.SimpleMarker', 'Map3D', 'AMap.DistrictSearch', 'AMap.SimpleMarker', 'AMap.DistrictLayer', 'AMap.ControlBar', 'AMap.MouseTool', "AMap.PolyEditor", "AMap.MarkerClusterer", "AMap.InfoWindow", "AMap.Driving", "AMap.TruckDriving","AMap.MassMarks"],
   v: '1.4.15',
   uiVersion: '1.0.11' // 版本号
 });
@@ -58,7 +58,6 @@ import '~/stastic/bigdata_jz.less';
 
 
 router.afterEach((to) => {
-  console.log(to.meta.title)
   let title = to.meta.title,
     platCity = ""
   if (Store.state.platData.showCity) platCity = Store.state.platData.platformCity

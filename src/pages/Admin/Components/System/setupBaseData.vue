@@ -81,7 +81,7 @@
                 <el-form-item label=" 显示天气：">
                   <el-switch v-model="platformState.showWeather" :disabled="!platformState.edit" />
                 </el-form-item>
-                <el-form-item label="配置文件：" style="width:100%" v-if="!platformState.edit">
+                <!-- <el-form-item label="配置文件：" style="width:100%" v-if="!platformState.edit">
                   <el-upload
                     ref="upload"
                     action="###"
@@ -93,7 +93,7 @@
                   >
                     <el-button type="info" icon="el-icon-sold-out" size="mini">导入平台设置配置</el-button>
                   </el-upload>
-                </el-form-item>
+                </el-form-item>-->
               </el-form>
             </el-card>
           </el-col>
@@ -154,7 +154,7 @@
                   <span v-else>{{platformBaseData.company}}</span> 个
                 </el-form-item>
                 <el-form-item style="width:100%;font-size:12px;">{{platformBaseData.tip}}</el-form-item>
-                <el-form-item label="配置文件：" style="width:100%" v-if="!baseData.edit">
+                <!-- <el-form-item label="配置文件：" style="width:100%" v-if="!baseData.edit">
                   <el-upload
                     ref="upload"
                     action="###"
@@ -166,7 +166,7 @@
                   >
                     <el-button type="info" icon="el-icon-sold-out" size="mini">导入基础数据配置</el-button>
                   </el-upload>
-                </el-form-item>
+                </el-form-item>-->
 
                 <el-form-item label="模拟数据：" style="width:100%;" v-if="baseData.edit">
                   <label>
@@ -189,6 +189,15 @@
                   <el-button size="small" type="success" v-show="simStep.vechile == 2">
                     车牌号模拟完毕，开始模拟地理位置信息.......
                     <i class="el-icon-loading" />
+                  </el-button>
+                  <el-button
+                    size="small"
+                    type="success"
+                    @click="simVechileInfo"
+                    v-show="simStep.vechile == 3"
+                  >
+                    地理位置信息模拟完毕.......
+                    <i class="el-icon-checked" />
                   </el-button>
 
                   <el-button size="small" type="info">模拟企业数据</el-button>
@@ -649,22 +658,145 @@ export default {
 
     //模拟车辆数据
     simVechileInfo() {
-      this.simStep.vechile = 1;
+      let self = this;
+      self.simStep.vechile = 1;
+      let gpsSeeds = self.platformBaseData.gpsSeed;
+      let index = 0;
       let vechileNumber, simGps;
       let simVechile = baseDatalib.simVechile(
         this.baseData.vechile,
         this.platformState.city
       );
+
+      let platformDistricts = self.platformDistricts;
+      let platformDistrictsSelect = self.platformDistrictsSelect;
+      let Districts = [];
+
+      for (var i in platformDistricts) {
+        for (var x in platformDistrictsSelect)
+          if (platformDistricts[i].name == platformDistrictsSelect[x]) {
+            Districts.push(platformDistricts[i]);
+          }
+      }
+
       if (simVechile.status) {
         vechileNumber = simVechile.vechileNumber;
-        setTimeout(() => {
-          this.simStep.vechile = 2;
-          let simGps = baseDatalib.simGps(
-            this.baseData.gpsSeed,
-            this.platformState.adcode
-          );
-        }, 3000);
+        let poiArr = [];
+
+        var p = new Promise(function(resolve, reject) {
+          resolve("开始模拟车辆信息");
+        });
+
+        function runAsync1(index) {
+          var p = new Promise(function(resolve, reject) {
+            //做一些异步操作
+            let self = this;
+            let poiArray = [];
+            let getPoiUrl =
+              API.GET_POI +
+              "&keywords=" +
+              gpsSeeds +
+              "&extensions=all&citylimit=true&city=" +
+              Districts[index].adcode;
+
+            Axios.get(getPoiUrl)
+              .then(res => {
+                if ((res.data.status = "1")) {
+                  let pois = res.data.pois;
+                  for (var i in pois) {
+                    poiArray.push({
+                      address: pois[i].address,
+                      location: pois[i].location,
+                      adcode: pois[i].adcode,
+                      adname: pois[i].adname
+                    });
+
+                    if (i == pois.length - 1) {
+                      resolve(poiArray);
+                    }
+                  }
+                }
+              })
+              .catch(error => {
+                reject(error);
+              });
+          });
+          return p;
+        }
+
+        function runAsync2() {
+          let poiArray = [];
+          let poiNum = poiArr.length - 1;
+          console.log(poiNum);
+          var p = new Promise(function(resolve, reject) {
+            for (var it = 0; it < poiNum; it++) {
+              //做一些异步操作
+              let getPoiAroundUrl =
+                API.GET_AROUND +
+                "&keywords=" +
+                gpsSeeds +
+                "&extensions=all&radius=50000&citylimit=true" +
+                "&location=" +
+                poiArr[it].location;
+
+              Axios.get(getPoiAroundUrl)
+                .then(res => {
+                  console.log(res);
+                  let pois = res.data.pois;
+                  for (var i in pois) {
+                    poiArr.push({
+                      address: pois[i].address,
+                      location: pois[i].location,
+                      adcode: pois[i].adcode,
+                      adname: pois[i].adname
+                    });
+                  }
+                })
+                .catch(error => {
+                  reject(error);
+                });
+
+              setTimeout(() => {
+                if (it == poiNum) {
+                  resolve(poiArr);
+                }
+              }, 5000);
+            }
+          });
+          return p;
+        }
+
+        self.simStep.vechile = 2;
+
+        runAsync1(0)
+          .then(function(data) {
+            console.log(data);
+            poiArr = poiArr.concat(data);
+            return runAsync1(1);
+          })
+          .then(function(data) {
+            console.log(data);
+            poiArr = poiArr.concat(data);
+            return runAsync2();
+          })
+          .then(function(data) {
+            console.log(data);
+            localStorage.$GPSData = JSON.stringify(poiArr);
+            console.log(poiArr);
+            self.simStep.vechile = 3;
+          });
       }
+    },
+
+    //模拟地理位置信息
+    simGps(adcode) {
+      return new Promise(function(resolve, reject) {});
+    },
+
+    getAroundGps(location) {
+      console.log(location);
+
+      return new Promise(function(resolve, reject) {});
     },
 
     //checkbox选择
@@ -744,7 +876,6 @@ export default {
     },
 
     beforeFileUpload() {},
-
     EditPlatData() {
       this.platData.edit = !this.platData.edit;
       console.log(this.platData);
@@ -800,5 +931,3 @@ export default {
   }
 };
 </script>
-<style lang="less">
-</style>

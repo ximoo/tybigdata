@@ -70,7 +70,7 @@
             </el-card>
           </el-col>
           <!-- opratData -->
-          <el-col :span="6">
+          <!-- <el-col :span="6">
             <el-card class="box-card" :class="{'box-card-edit':opratData.edit}">
               <template slot="header" class="clearfix">
                 <el-input
@@ -119,7 +119,7 @@
                 </el-form-item>
               </el-form>
             </el-card>
-          </el-col>
+          </el-col>-->
         </el-row>
       </div>
     </div>
@@ -127,6 +127,7 @@
 </template>
 <script>
 import SideMenu from "../Public/SideMenu";
+import { mapState } from "vuex";
 
 export default {
   name: "setupBigData",
@@ -136,8 +137,13 @@ export default {
   data() {
     let self = this;
     return {
-      hideMenu: true,
-      baseData: self.$store.getters.adminBaseData,
+      hideMenu: false,
+      // baseData: self.$store.getters.adminBaseData,
+      baseData: {
+        name: "基础数据",
+        edit: false,
+        data: []
+      },
       opratData: {
         name: "运营数据",
         edit: false,
@@ -145,7 +151,13 @@ export default {
       }
     };
   },
-  mounted() {},
+  mounted() {
+    let self = this;
+    self.$nextTick(() => {
+      self.baseData = self.initBaseData;
+      console.log(self.baseData);
+    });
+  },
   methods: {
     /*
     removeBaseData(index) {
@@ -175,10 +187,10 @@ export default {
     saveBaseData() {
       let self = this,
         baseData = self.baseData,
-        platformBigData = self.$store.state.platformBigData;
+        platformBigData = self.platformBigData;
       console.log(platformBigData);
       self.baseData.edit = false;
-      platformBigData.baseData.data = baseData.data;
+      platformBigData.baseData = baseData;
       localStorage.$platformBigData = JSON.stringify(platformBigData.baseData);
     },
 
@@ -394,15 +406,35 @@ export default {
 
       return platformOperatData;
     },
-
+ */
     platformBigData() {
       let platformBigData = localStorage.$platformBigData
         ? JSON.parse(localStorage.$platformBigData)
         : {};
       return platformBigData;
-    }
+    },
 
-    */
+   
+    initBaseData() {
+      let self = this;
+      let bdData = [];
+      let baseData = new Object();
+      baseData["edit"] = false;
+      baseData["name"] = self.baseDataName;
+      baseData["data"] = [
+        {
+          label: "车辆总数",
+          checked: true,
+          value: self.vechile,
+          unit: "辆"
+        }
+      ];
+      return baseData;
+    },
+    ...mapState("baseData", {
+      baseDataName: state => state.baseDataName,
+      vechile: state => state.vechile
+    })
   }
 };
 </script>

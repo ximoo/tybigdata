@@ -1,4 +1,4 @@
-const AmapWebKey = '0a2c31bc6770455f08b0fcdc1674831c'
+const AmapWebKey = '0ef6825bdde97686378638eb43882ccb'
 
 export default {
 

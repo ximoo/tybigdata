@@ -114,6 +114,7 @@ export default {
         return tempArray
 
     },
+
     simVechile(number, city) { //模拟车辆数据
         let self = this
         let cardCallerloc = self.cardCallerloc(city)
@@ -136,76 +137,6 @@ export default {
         }
     },
 
-    //模拟地理位置信息
-    simGps(keywords = '车站', adcode) {
-        let self = this
-        let getPoiUrl = API.GET_POI + "&keywords=" + keywords + "&extensions=all&citylimit=true&city=" + adcode
-        Axios.get(getPoiUrl).then((res) => {
-            if (res.data.status = "1") {
-                let pois = res.data.pois
-                for (var i in pois) {
-                    self.poiArray.push({
-                        address: pois[i].address,
-                        location: pois[i].location,
-                        adcode: pois[i].adcode,
-                        adname: pois[i].adname
-                    })
-                    if (i == pois.length - 1) {
-                        console.log(i)
-                        setTimeout(function () {
-                            if (self.poiArray.length < self.vechileNumber.length * 10) {
-                                console.log(self.vechileNumber.length)
-                                self.getAroundGps(adcode, pois[i].location)
-                            }
-                        }, 1500)
-                    }
-                }
-            }
-        }).catch((error) => {
-            console.log(error)
-        })
-
-
-    },
-
-    getAroundGps(adcode, location) {
-        let self = this
-        for (var i in self.poiArray) {
-            let getPoiAroundUrl = API.GET_AROUND + "&extensions=all&radius=50000&citylimit=true&city=" + adcode + "&location=" + self.poiArray[i].location
-            Axios.get(getPoiAroundUrl).then((res) => {
-                // console.log(res)
-                let pois = res.data.pois
-                for (var i in pois) {
-                    self.poiArray.push({
-                        address: pois[i].address,
-                        location: pois[i].location,
-                        adcode: pois[i].adcode,
-                        adname: pois[i].adname
-                    })
-                    // 
-                    if (i == pois.length - 1) {
-                        console.log(i)
-                        setTimeout(function () {
-                            if (self.poiArray.length < self.vechileNumber.length) {
-                                console.log(self.vechileNumber.length)
-                                self.getAroundGps(adcode, res.data.pois[i].location)
-                            }
-                        }, 3000)
-                    }
-                }
-                console.log(self.poiArray)
-                localStorage.$GPSData = JSON.stringify(self.poiArray)
-                return {
-                    poiArray: self.poiArray,
-                    status: true
-                }
-            }).catch((error) => {
-                console.log(error)
-            })
-        }
-    },
-
-
-
+    
 
 }

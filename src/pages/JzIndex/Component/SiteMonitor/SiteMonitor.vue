@@ -43,6 +43,9 @@ let amapManager = new VueAMap.AMapManager();
 import mapEvent from "./sitemonitor.service";
 import SiteGroup from "./SiteGroup.vue";
 import SiteTab from "./SiteTab.vue";
+
+import { mapState } from "vuex";
+
 export default {
   name: "AirMonitor",
   components: { SiteGroup, SiteTab },
@@ -314,14 +317,18 @@ export default {
   },
   computed: {
     fences() {
-      let siteGeo = this.$store.state.platformData.module.sitemonitor.module.fences.site.concat(
-        this.$store.state.platformData.module.sitemonitor.module.fences.landfill
-      );
-      return siteGeo;
+      // let siteGeo = this.$store.state.platformData.module.sitemonitor.module.fences.site.concat(
+      //   this.$store.state.platformData.module.sitemonitor.module.fences.landfill
+      // );
+      // return siteGeo;
     },
     city() {
-      return this.$store.state.platformData.state.city;
-    }
+      return this.platformCity;
+    },
+    ...mapState("platData", {
+      platformCity: state => state.platformCity,
+      platformCenter:state => state.platformCenter
+    }),
   }
 };
 </script>

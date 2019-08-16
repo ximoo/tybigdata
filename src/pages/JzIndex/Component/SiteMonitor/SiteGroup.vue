@@ -21,6 +21,8 @@
   </reDialog>
 </template>
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "SiteGroup",
   props: ["groupShow", "siteData"],
@@ -40,7 +42,7 @@ export default {
   },
   computed: {
     districts() {
-      return this.$store.state.platformData.state.districts;
+      return this.platformDistricts;
     },
     disTree() {
       let self = this;
@@ -48,8 +50,8 @@ export default {
       let siteData = self.siteData;
       let disTree = [
         {
-          label: self.$store.state.platformData.state.city,
-          adcode: self.$store.state.platformData.state.adcode,
+          label: self.platformCity,
+          adcode: self.adcode,
           children: []
         }
       ];
@@ -83,7 +85,14 @@ export default {
         }
       }
       return disTree;
-    }
+    },
+    ...mapState("platData", {
+      platformCity: state => state.platformCity,
+      platformCenter: state => state.platformCenter,
+      adcode: state => state.adcode,
+      platformDistricts: state => state.platformDistricts,
+      platformDistrictsSelect: state => state.platformDistrictsSelect
+    })
   }
 };
 </script>

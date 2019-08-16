@@ -1,6 +1,6 @@
 <template>
   <div class="item">
-    <h3>基础监控数据</h3>
+    <h3>{{baseDataName}}</h3>
     <ul class="ex-base-data-box">
       <li :style="baseDataWidth" v-for="item , index in BaseData" :key="index">
         <p>{{item.value}}</p>
@@ -11,12 +11,8 @@
   </div>
 </template>
 <script>
-import Store from "../../../Admin/Configs/store";
 import lib from "../../../../common/lib";
-
-import {mapState} from "vuex"
-
-
+import { mapState,mapGetters } from "vuex";
 
 export default {
   name: "BaseData",
@@ -27,21 +23,17 @@ export default {
     };
   },
   computed: {
-    allmonitor() {
-      let allmonitor = JSON.parse(localStorage.$platformData).module.allmonitor;
-      return allmonitor;
-    },
-
     BaseData() {
-      let baseData = Store.getters.adminBaseData;
-      console.log(baseData);
-      this.baseDataNum = baseData.length < 3 ? baseData.length : 3;
-      this.baseDataWidth = "width:calc(" + 100 / +this.baseDataNum + "% - 4px)";
-      return lib.getChecked(baseData.data);
+      let self = this
+      let baseData = self.adminBaseData;
+      self.baseDataNum = baseData.length < 3 ? baseData.length : 3;
+      self.baseDataWidth = "width:calc(" + 100 / +self.baseDataNum + "% - 4px)";
+      return baseData;
     },
-    ...mapState('baseData',{
-
-    })
+    ...mapState("baseData", {
+      baseDataName: state => state.baseDataName
+    }),
+    ...mapGetters("baseData", ["adminBaseData"])
   }
 };
 </script>

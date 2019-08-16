@@ -78,7 +78,6 @@ export default {
     weatherData() {
       let self = this;
       let weatherList = new Array();
-      console.log(self.showWeather);
       const weekStr = new Array(
         "周日",
         "周一",
@@ -97,7 +96,6 @@ export default {
               "&extensions=all&key=0a2c31bc6770455f08b0fcdc1674831c"
           )
           .then(function(res) {
-            console.log(res);
             if (res.data.status == "1") {
               let list = res.data.forecasts[0].casts;
               for (var i in list) {
