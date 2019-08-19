@@ -209,18 +209,18 @@
           <el-col :span="8">
             <el-card class="box-card" :class="{'box-card-edit':operatData.edit}">
               <template slot="header" class="clearfix">
-                <span>运营数据</span>
+                <span>{{platformOprateData.name}}</span>
                 <el-button
                   style="float: right; padding: 3px 0"
                   type="text"
-                  @click="operatData.edit = true"
+                  @click="oprateData.edit = true"
                   icon="el-icon-edit"
-                  v-if="!operatData.edit"
+                  v-if="!oprateData.edit"
                 >编辑</el-button>
                 <el-button
                   style="float: right; padding: 3px 0;color:#11c711;font-weight:bold;"
                   type="text"
-                  @click="handleOperatDataSave"
+                  @click="handleOperateDataSave"
                   icon="el-icon-success"
                   v-else
                 >保存</el-button>
@@ -230,90 +230,77 @@
                   <el-input-number
                     :min="0"
                     :max="100"
-                    v-model="operatData.vechile"
-                    v-if="operatData.edit"
+                    v-model="oprateData.vechile"
+                    v-if="oprateData.edit"
                     @change="countVecData"
                   />
-                  <span v-else>{{operatData.vechile}}</span> %
+                  <span v-else>{{oprateData.vechile}}</span> %
                 </el-form-item>
                 <el-form-item label="车辆离线：">
                   <el-input
                     style="width:100px;"
-                    v-model="operatData.vecOffline"
-                    v-if="operatData.edit"
+                    v-model="oprateData.vecOffline"
+                    v-if="oprateData.edit"
                     readonly
                   />
-                  <span v-else>{{operatData.vecOffline}}</span> %
+                  <span v-else>{{oprateData.vecOffline}}</span> %
                 </el-form-item>
                 <el-form-item label="车辆设备损坏：">
                   <el-input-number
                     :min="0"
-                    :max="operatData.vecOffline"
-                    v-model="operatData.vecDamage"
-                    v-if="operatData.edit"
+                    :max="oprateData.vecOffline"
+                    v-model="oprateData.vecDamage"
+                    v-if="oprateData.edit"
                   />
-                  <span v-else>{{operatData.vecDamage}}</span> %
+                  <span v-else>{{oprateData.vecDamage}}</span> %
                 </el-form-item>
                 <el-form-item label=" 核准工地率：">
                   <el-input-number
                     :min="0"
                     :max="100"
-                    v-model="operatData.site"
-                    v-if="operatData.edit"
+                    v-model="oprateData.site"
+                    v-if="oprateData.edit"
                     @change="countSiteData"
                   />
-                  <span v-else>{{operatData.site}}</span> %
+                  <span v-else>{{oprateData.site}}</span> %
                 </el-form-item>
                 <el-form-item label=" 可疑工地率：">
                   <el-input
                     readonly
-                    v-model="operatData.siteDubious"
-                    v-if="operatData.edit"
+                    v-model="oprateData.siteDubious"
+                    v-if="oprateData.edit"
                     style="width:100px"
                   />
-                  <span v-else>{{operatData.siteDubious}}</span> %
+                  <span v-else>{{oprateData.siteDubious}}</span> %
                 </el-form-item>
                 <el-form-item label=" 工地开工率：">
                   <el-input-number
                     :min="0"
                     :max="100"
-                    v-model="operatData.siteOnline"
-                    v-if="operatData.edit"
+                    v-model="oprateData.siteOnline"
+                    v-if="oprateData.edit"
                     @change="countSiteStateData"
                   />
-                  <span v-else>{{operatData.siteOnline}}</span> %
+                  <span v-else>{{oprateData.siteOnline}}</span> %
                 </el-form-item>
                 <el-form-item label=" 核准消纳点率：">
                   <el-input-number
                     :min="0"
                     :max="100"
-                    v-model="operatData.landfill"
-                    v-if="operatData.edit"
+                    v-model="oprateData.landfill"
+                    v-if="oprateData.edit"
                     @change="countLandFillData"
                   />
-                  <span v-else>{{operatData.landfill}}</span> %
+                  <span v-else>{{oprateData.landfill}}</span> %
                 </el-form-item>
                 <el-form-item label=" 可疑消纳点率：">
                   <el-input
                     readonly
-                    v-model="operatData.landfillDubious"
-                    v-if="operatData.edit"
+                    v-model="oprateData.landfillDubious"
+                    v-if="oprateData.edit"
                     style="width:100px"
                   />
-                  <span v-else>{{operatData.landfillDubious}}</span> %
-                </el-form-item>
-                <el-form-item label="配置文件：" style="width:100%" v-if="!operatData.edit">
-                  <el-upload
-                    ref="upload"
-                    action="###"
-                    accept="application/json, text/json, .json"
-                    :on-change="beforeFileUpload"
-                    :auto-upload="false"
-                    :show-file-list="false"
-                    size="mini"
-                  >
-                    <el-button type="info" icon="el-icon-sold-out" size="mini">导入运营数据配置</el-button>
-                  </el-upload>
+                  <span v-else>{{oprateData.landfillDubious}}</span> %
                 </el-form-item>
               </el-form>
             </el-card>
@@ -435,6 +422,7 @@ export default {
       hideMenu: false,
       platformState: {},
       platformBaseData: {},
+      platformOprateData: {},
       operatData: {},
       alermSetup: [
         {
@@ -627,33 +615,32 @@ export default {
     },
 
     //保存运营数据
-    handleOperatDataSave() {
-      this.operatData.edit = false;
-      baseDatalib.setPlatformOperatData(this.operatData);
+    handleOperateDataSave() {
+      this.platformOprateData.edit = false;
+      baseDatalib.setPlatformOperateData(this.platformOprateData);
     },
 
     countVecData(v) {
-      console.log(v);
-      this.operatData.vecOffline = 100 - v;
-      this.operatData.vecDamage = baseDatalib.randomNumber(
+      this.platformOprateData.vecOffline = 100 - v;
+      this.platformOprateData.vecDamage = baseDatalib.randomNumber(
         0,
-        this.operatData.vecOffline
+        this.platformOprateData.vecOffline
       );
     },
 
     countSiteData(v) {
       console.log(v);
-      this.operatData.siteDubious = 100 - v;
-      this.operatData.siteOnline = baseDatalib.randomNumber(0, 100);
-      this.operatData.siteOffline = 100 - this.operatData.siteOnline;
+      this.platformOprateData.siteDubious = 100 - v;
+      this.platformOprateData.siteOnline = baseDatalib.randomNumber(0, 100);
+      this.platformOprateData.siteOffline = 100 - this.platformOprateData.siteOnline;
     },
 
     countSiteStateData(v) {
-      this.operatData.siteOffline = 100 - this.operatData.siteOnline;
+      this.platformOprateData.siteOffline = 100 - this.platformOprateData.siteOnline;
     },
 
     countLandFillData(v) {
-      this.operatData.landfillDubious = 100 - v;
+      this.platformOprateData.landfillDubious = 100 - v;
     },
 
     //模拟车辆数据
@@ -795,7 +782,6 @@ export default {
 
     getAroundGps(location) {
       console.log(location);
-
       return new Promise(function(resolve, reject) {});
     },
 
@@ -910,6 +896,23 @@ export default {
       self.platformBaseData = baseData;
       return baseData;
     },
+    oprateData() {
+      let self = this;
+      let oprateData = new Object();
+      oprateData["edit"] = false;
+      oprateData["name"] = self.oprateDataName;
+      oprateData["vechile"] = self.oprateVechile;
+      oprateData["vecOffline"] = self.oprateVechileOffLine;
+      oprateData["vecDamage"] = self.oprateVechileDamage;
+      oprateData["site"] = self.oprateSite;
+      oprateData["siteOnline"] = self.oprateSiteOnline;
+      oprateData["siteOffline"] = self.oprateSiteOffline;
+      oprateData["siteDubious"] = self.oprateSiteDubious;
+      oprateData["landfill"] = self.oprateLandfill;
+      oprateData["landfillDubious"] = self.oprateLandfillDubious;
+      self.platformOprateData = oprateData;
+      return oprateData;
+    },
     ...mapState("platData", {
       platformName: state => state.platformName,
       platformCity: state => state.platformCity,
@@ -926,7 +929,17 @@ export default {
       baseLandfill: state => state.landfill,
       baseCompany: state => state.company,
       baseGpsSeed: state => state.gpsSeed,
-      baseTip: state => state.tip
+      baseTip: state => state.tip,
+      oprateDataName: state => state.oprateDataName,
+      oprateVechile: state => state.oprateVechile,
+      oprateVechileOffLine: state => state.oprateVechileOffLine,
+      oprateVechileDamage: state => state.oprateVechileDamage,
+      oprateSite: state => state.oprateSite,
+      oprateSiteOnline: state => state.oprateSiteOnline,
+      oprateSiteOffline: state => state.oprateSiteOffline,
+      oprateSiteDubious: state => state.oprateSiteDubious,
+      oprateLandfill: state => state.oprateLandfill,
+      oprateLandfillDubious: state => state.oprateLandfillDubious
     })
   }
 };

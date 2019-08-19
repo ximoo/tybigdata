@@ -1,11 +1,12 @@
 <template>
-  <div class="ex-bigdata-echarts-box"/>
+  <div class="ex-bigdata-echarts-box" />
 </template>
 
 <style>
 .ex-bigdata-echarts-box {
   width: 100%;
   height: 100%;
+  min-height: 240px;
 }
 </style>
 

@@ -6,12 +6,18 @@ export default function getData(data) {
       trigger: 'item',
       formatter: "{d}%"
     },
+    grid: {
+      top: "15%",
+      left: 10,
+      right: 10,
+      bottom: 10
+    },
     series: [{
       type: 'pie',
-      radius: ['45%', '60%'],
+      radius: ['45%', '70%'],
       center: ['50%', '50%'],
       avoidLabelOverlap: true,
-      data:data,
+      data: data,
       itemStyle: {
         borderColor: '#1990ff',
         borderWidth: 0,
@@ -24,7 +30,7 @@ export default function getData(data) {
           textStyle: {
             color: '#abc4ff'
           },
-          formatter: "{b}：\n\r{c}辆"
+          formatter: "{b}：\n\r{c}"
         }
       },
       labelLine: {

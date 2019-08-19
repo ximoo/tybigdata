@@ -1,6 +1,14 @@
+const platformBigData = localStorage.$platformBigData
+
 const state = {
-
-
+    platformBigData: platformBigData ? JSON.parse(platformBigData) : {
+        baseData: {
+            data: []
+        },
+        oprateData:{
+            data:[]
+        }
+    }
 }
 
 // getters

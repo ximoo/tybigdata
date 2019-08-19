@@ -1,25 +1,9 @@
 <template>
   <div class="item">
-    <h3>{{oprateDataName}}</h3>
+    <h3>{{platformBigData.oprateData.name}}</h3>
     <div class="ex-operatedata-charts">
-      <Echarts :options="chartsOption" autoresize />
+      <Echarts :options="chartsOption" />
     </div>
-
-    <!-- <ul class="status-stastic-box">
-      <li　v-for="item , index in actBarData" :key="index">       
-        <ol class="status-stastic">
-          <li>
-            <em>{{item.yestoday}}</em>
-            <div :style="{'height': (item.yestoday / item.number)*100+'%'}"></div>
-          </li>
-          <li>
-            <em>{{item.today}}</em>
-            <div :style="{'height': (item.today / item.number)*100+'%'}"></div>
-          </li>
-        </ol>
-        <h5>{{item.label}}<br/>({{item.unit}})</h5></li>
-    </ul>-->
-
     <Conner />
   </div>
 </template>
@@ -137,18 +121,36 @@ export default {
       return this.allmonitor.module.operatedata.data[1].list;
     },
     */
-    ...mapState("baseData",{
-        oprateDataName:state => state.oprateDataName
 
-
-
-    })
+    chartsOption() {
+      let self = this;
+      let chartsData = self.platformBigData.oprateData.data;
+      let tempData = [];
+      if (chartsData.length <= 0) chartsData = self.adminBaseData.slice(0, 4);
+      for (var i in chartsData) {
+        if (chartsData[i].checked) {
+          tempData.push({
+            name: chartsData[i].label,
+            value: chartsData[i].value,
+            unit: chartsData[i].unit
+          });
+        }
+      }
+      return getOption(tempData);
+    },
+    ...mapState("bigData", {
+      platformBigData: state => state.platformBigData
+    }),
+    ...mapState("baseData", {
+      oprateDataName: state => state.oprateDataName
+    }),
+    ...mapGetters("baseData", ["adminBaseData"])
   }
 };
 </script>
 <style lang="less">
 .ex-operatedata-charts {
-  height: 200px;
+  height: calc(~"100% - 36px");
 }
 .status-stastic-box {
   text-align: center;

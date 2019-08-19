@@ -19,6 +19,13 @@ module.exports = merge(webpackBaseConfig, {
           '^/api': '',
         },
       },
+      '/pm/': {
+        target: 'http://www.pm25.com',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/pm': '',
+        },
+      },
     },
   },
   plugins: [

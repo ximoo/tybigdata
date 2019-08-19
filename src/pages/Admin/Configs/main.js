@@ -4,8 +4,11 @@ import Vue from 'vue';
 import router from './router';
 import App from '~/App.vue';
 import Store from "~/common/store"
-import '~/common/plugin/axios';
+import ECharts from 'vue-echarts'
+import  axios from 'axios';
 
+
+Vue.component('v-chart', ECharts)
 // 自定义组件
 import '~/publicComponent/components';
 import '~/common/plugin/element';
@@ -15,6 +18,7 @@ import '../Components/components'
 // 自定义样式补充
 import '~/stastic/admin.less';
 import lib from "../common/lib/layout.lib"
+
 
 
 //动态路由 start

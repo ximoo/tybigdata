@@ -68,9 +68,9 @@ export default {
     },
 
     //设置运营数据
-    setPlatformOperatData(data) {
-        let platformOperatData = JSON.stringify(data)
-        localStorage.$platformOperatData = platformOperatData
+    setPlatformOperateData(data) {
+        let platformOprateData = JSON.stringify(data)
+        localStorage.$oprateData = platformOprateData
         return true
     },
 

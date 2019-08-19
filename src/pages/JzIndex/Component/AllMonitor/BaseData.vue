@@ -12,26 +12,35 @@
 </template>
 <script>
 import lib from "../../../../common/lib";
-import { mapState,mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "BaseData",
   data() {
     return {
+      baseDataName: "基础数据",
       baseDataNum: 0,
       baseDataWidth: "100%"
     };
   },
   computed: {
     BaseData() {
-      let self = this
-      let baseData = self.adminBaseData;
+      let self = this;
+      let tempData = self.platformBigData.baseData.data;
+      let baseData = [];
+      for (var i in tempData) {
+        if (tempData[i].checked) {
+          baseData.push(tempData[i]);
+        }
+      }
+      console.log(baseData);
+      self.baseDataName = self.platformBigData.baseData.name;
       self.baseDataNum = baseData.length < 3 ? baseData.length : 3;
       self.baseDataWidth = "width:calc(" + 100 / +self.baseDataNum + "% - 4px)";
       return baseData;
     },
-    ...mapState("baseData", {
-      baseDataName: state => state.baseDataName
+    ...mapState("bigData", {
+      platformBigData: state => state.platformBigData
     }),
     ...mapGetters("baseData", ["adminBaseData"])
   }
