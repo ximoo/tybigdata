@@ -1,130 +1,64 @@
 <template>
-  <div class="item">
-    <h3>{{platformBigData.oprateData.name}}</h3>
+  <div class="item" style="height:300px">
+    <h3>{{platformBigOprateData.name}}</h3>
     <div class="ex-operatedata-charts">
-      <Echarts :options="chartsOption" />
+      <Echarts :options="chartsOptions" />
     </div>
     <Conner />
   </div>
 </template>
 <script>
 import getOption from "./operatedata.service";
-import randomIze from "../../Configs/service.lib";
-
-let activeBarId, activePieId;
-
+import lib from "~/common/lib";
 import { mapState, mapGetters } from "vuex";
-
+let OperateDataId;
 export default {
   name: "OperateData",
   data() {
     let self = this;
     return {
-      actBarData: []
+      chartsOptions: null
     };
   },
   mounted() {
     let self = this;
     self.$nextTick(() => {
-      clearInterval(activeBarId);
-      clearInterval(activePieId);
-      self.BarData();
-      // self.activePieData();
-      activeBarId = setInterval(() => {
-        // self.activeBarData();
-      }, this.allmonitor.module.operatedata.data[1].timer * 1000);
-      activePieId = setInterval(() => {
-        // self.activePieData();
-      }, this.allmonitor.module.operatedata.data[0].timer * 1000);
+      self.chartsOptions = self.chartsOption;
+      clearInterval(OperateDataId);
+      OperateDataId = setInterval(() => {
+        self.changeData();
+      }, this.platformBigOprateData.timer * 1000);
     });
   },
   methods: {
-    //饼状图动态值
-    activePieData() {
-      let activePieData = this.srcPieData;
-      let actPieData = [];
-      for (var i in activePieData) {
-        activePieData[i]["now"] = randomIze.randomLib(
-          0,
-          activePieData[i].value
-        );
-        actPieData.push({
-          value: activePieData[i].now,
-          name: activePieData[i].label
-        });
+    changeData() {
+      let self = this;
+      let chartsData = self.platformBigOprateData.data;
+      let tempData = [];
+      if (chartsData.length <= 0) chartsData = self.adminBaseData.slice(0, 4);
+      for (var i in chartsData) {
+        if (chartsData[i].checked) {
+          tempData.push({
+            name: chartsData[i].label,
+            change: chartsData[i].change,
+            value: chartsData[i].value
+          });
+        }
       }
-      // console.log(actPieData)
-      // this.actPieData = activePieData
-      this.pieOption = getOption(actPieData);
-    },
-    //柱状图初始值
-    BarData() {
-      let activeOprateData2 = this.srcBarData;
-      for (var i in activeOprateData2) {
-        activeOprateData2[i]["today"] = randomIze.randomLib(
-          0,
-          (activeOprateData2[i].number * randomIze.nowTimer()) / 24
-        );
-        activeOprateData2[i]["yestoday"] = randomIze.randomLib(
-          (activeOprateData2[i].number * randomIze.nowTimer()) / 24,
-          activeOprateData2[i].number
-        );
+      for (var i in tempData) {
+        if (tempData[i].change)
+          tempData[i].value = lib.randomNumber(
+            Math.round((chartsData[i].max * 5) / 10),
+            chartsData[i].max
+          );
       }
-      this.actBarData = activeOprateData2;
-      this.$store.commit("cntTreData", activeOprateData2);
-    },
-    //柱状图动态值
-    activeBarData() {
-      let activeOprateData2 = this.actBarData;
-      for (var i in activeOprateData2) {
-        activeOprateData2[i]["today"] =
-          activeOprateData2[i]["today"] +
-          randomIze.randomLib(0, activeOprateData2[i].number / 100);
-      }
-      this.actBarData = activeOprateData2;
-      this.$store.commit("cntTreData", activeOprateData2);
+      self.chartsOptions = getOption(tempData);
     }
   },
   computed: {
-    /*
-    platformBigData() {
-      let platformBigData = localStorage.$platformBigData
-        ? JSON.parse(localStorage.$platformBigData)
-        : {};
-
-      return platformBigData;
-    },
-    chartsOption() {
-      let vechileData = this.platformBigData.opratData.data.vechile;
-      let vechileBaseData = this.platformBigData.baseData;
-
-      console.log();
-
-      let chartsData = [];
-      for (var i in vechileData) {
-        chartsData.push({
-          name: vechileData[i].label,
-          value: vechileData[i].value
-        });
-      }
-
-      return getOption(chartsData);
-    },
-    allmonitor() {
-      let allmonitor = JSON.parse(localStorage.$platformData).module.allmonitor;
-      return allmonitor;
-    },
-    srcPieData() {
-      return this.platformBigData.opratData;
-    },
-    srcBarData() {
-      return this.allmonitor.module.operatedata.data[1].list;
-    },
-    */
-
     chartsOption() {
       let self = this;
-      let chartsData = self.platformBigData.oprateData.data;
+      let chartsData = self.platformBigOprateData.data;
       let tempData = [];
       if (chartsData.length <= 0) chartsData = self.adminBaseData.slice(0, 4);
       for (var i in chartsData) {
@@ -138,12 +72,15 @@ export default {
       }
       return getOption(tempData);
     },
+
     ...mapState("bigData", {
-      platformBigData: state => state.platformBigData
+      platformBigOprateData: state => state.platformBigOprateData
     }),
+
     ...mapState("baseData", {
       oprateDataName: state => state.oprateDataName
     }),
+
     ...mapGetters("baseData", ["adminBaseData"])
   }
 };

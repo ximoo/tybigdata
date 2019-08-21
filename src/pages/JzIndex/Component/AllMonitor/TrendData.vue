@@ -2,85 +2,40 @@
   <div class="item" style="height:230px">
     <h3>今日运营趋势</h3>
     <Echarts :options="linesOption" autoresize class="ex-bigdata-charts" />
-    <Conner/>
+    <Conner />
   </div>
 </template>
 <script>
-import getOption from "./trenddata.service";
-import randomIze from "../../Configs/service.lib";
-
-let TrendId;
-
+import lib from "~/common/lib";
+import { mapState } from "vuex";
+let TrendDataId;
 export default {
   name: "TrendData",
   data() {
     return {
-      linesOption: null,
-      actData: null
+      linesOption: null
     };
   },
   mounted() {
     let self = this;
     self.$nextTick(() => {
-      clearInterval(TrendId);
+      clearInterval(TrendDataId);
       self.countTrendData();
-      TrendId = setInterval(function() {
-        self.activeTrendData();
-      }, this.allmonitor.module.operatedata.data[1].timer*1000);
+      TrendDataId = setInterval(function() {
+        self.countTrendData();
+      }, 1800000);
     });
   },
   methods: {
-    activeTrendData() {
-      let actData = this.actData;
-      let srcData = this.$store.state.platformData.module.allmonitor.module.operatedata.data[1].list;
-      console.log(srcData)
-      let srcSiteData,
-        srcLandData,
-        TimeSplit = 48;
-      //获取原始数值
-      for (var i in srcData) {
-        switch (srcData[i].id) {
-          case 23:
-            srcSiteData = srcData[i].today;
-            break;
-          case 33:
-            srcLandData = srcData[i].today;
-            break;
-        }
-      }
-      actData.yAxisData1[actData.yAxisData1.length - 1] =
-        actData.yAxisData1[actData.yAxisData1.length - 1] +
-        randomIze.randomLib(0, srcSiteData / (TimeSplit * 60));
-
-      actData.yAxisData2[actData.yAxisData2.length - 1] =
-        actData.yAxisData2[actData.yAxisData2.length - 1] +
-        randomIze.randomLib(0, srcLandData / (TimeSplit * 60));
-      this.actData = actData;
-      this.linesOption = getOption(this.actData);
-    },
     countTrendData() {
-      let srcData = this.$store.state.platformData.module.allmonitor.module.operatedata.data[1].list;
-      let srcSiteData,
-        srcLandData,
-        TimeSplit = 48;
+      let self = this;
+      let platformBigProduceData = self.platformBigProduceData.data;
       let xAxisData = [],
-        yAxisData1 = [],
-        yAxisData2 = [],
+        seriesData = [],
+        legendData = [],
+        TimeSplit = 48,
         xStart = -1,
         xHalf = "00";
-
-      //获取原始数值
-      for (var i in srcData) {
-        switch (srcData[i].id) {
-          case 23:
-            srcSiteData = srcData[i].today;
-            break;
-          case 33:
-            srcLandData = srcData[i].today;
-            break;
-        }
-      }
-      //时间刻度
       for (var i = 0; i <= TimeSplit; i++) {
         if (i % 2 != 0) xHalf = "30";
         if (i % 2 == 0) {
@@ -89,28 +44,94 @@ export default {
         }
         xAxisData.push(xStart + ":" + xHalf);
       }
-      for (var i = 0; i <= randomIze.nowTimer() * 2; i++) {
-        yAxisData1.push(randomIze.randomLib(0, srcSiteData / TimeSplit));
-        yAxisData2.push(randomIze.randomLib(0, srcLandData / TimeSplit));
+      for (var i in platformBigProduceData) {
+        if (platformBigProduceData[i].checked) {
+          let nowData = [];
+          for (var x = 0; x <= lib.nowTimer() * 2 + 1; x++) {
+            nowData.push(
+              lib.randomNumber(0, platformBigProduceData[i].now / TimeSplit)
+            );
+          }
+          seriesData.push({
+            type: "bar",
+            name: platformBigProduceData[i].label,
+            data: nowData,
+            itemStyle: {
+              barBorderRadius: [5, 5, 0, 0]
+            }
+          });
+          legendData.push(platformBigProduceData[i].label);
+        }
       }
+      let options = {
+        legend: {
+          data: legendData,
+          top: 10,
+          right: 20,
+          textStyle: {
+            color: "#1990ff",
+            fontWeight: 700
+          }
+        },
+        grid: {
+          left: 55,
+          top: 35,
+          right: 55,
+          bottom: "32%"
+        },
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "cross",
+            animation: false,
+            label: {
+              backgroundColor: "#505765"
+            }
+          }
+        },
+        xAxis: {
+          type: "category",
+          data: xAxisData,
 
-      this.actData = {
-        xAxisData: xAxisData,
-        yAxisData1: yAxisData1,
-        yAxisData2: yAxisData2
+          splitLine: {
+            show: false
+          },
+          nameTextStyle: {
+            color: "#298bff",
+            fontWeight: 700
+          },
+          axisLine: {
+            axisLine: {
+              onZero: false
+            },
+            lineStyle: {
+              color: "#298bff"
+            }
+          }
+        },
+        // Declare Y axis, which is a value axis.
+        yAxis: [
+          {
+            // name: '出土量',
+            splitLine: {
+              show: false
+            },
+            axisLine: {
+              lineStyle: {
+                color: "#298bff"
+              }
+            }
+          }
+        ],
+        series: seriesData
       };
-
-      this.linesOption = getOption(this.actData);
+      self.linesOption = options;
     }
   },
   computed: {
-    allmonitor() {
-      let allmonitor = JSON.parse(localStorage.$platformData).module.allmonitor;
-      return allmonitor;
-    },
-    srcTrendData() {
-      return this.allmonitor.module.operatedata.data[1].list;
-    }
+    ...mapState("bigData", {
+      platformBigProduceData: state => state.platformBigProduceData
+    })
   }
 };
 </script>

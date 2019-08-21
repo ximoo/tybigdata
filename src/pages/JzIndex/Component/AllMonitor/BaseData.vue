@@ -1,18 +1,20 @@
 <template>
-  <div class="item">
+  <div class="item" style="height:calc(100% - 628px); overflow:hidden;">
     <h3>{{baseDataName}}</h3>
     <ul class="ex-base-data-box">
-      <li :style="baseDataWidth" v-for="item , index in BaseData" :key="index">
+      <li :style="baseDataWidth" v-for="item , index in platFormBaseData" :key="index">
         <p>{{item.value}}</p>
-        <h4>{{item.label}}({{item.unit}})</h4>
+        <h4>{{item.label}} ({{item.unit}})</h4>
       </li>
     </ul>
     <Conner />
   </div>
 </template>
 <script>
-import lib from "../../../../common/lib";
+import lib from "~/common/lib";
 import { mapState, mapGetters } from "vuex";
+
+let baseDataId;
 
 export default {
   name: "BaseData",
@@ -20,28 +22,56 @@ export default {
     return {
       baseDataName: "基础数据",
       baseDataNum: 0,
-      baseDataWidth: "100%"
+      baseDataWidth: "100%",
+      platFormBaseData: []
     };
+  },
+  mounted() {
+    let self = this;
+    let timer = self.platformBigBaseData.timer;
+    self.platFormBaseData = self.BaseData;
+    //定时刷新需要变化的数值
+    clearInterval(baseDataId);
+    baseDataId = setInterval(function() {
+      self.changeData();
+    }, timer * 1000);
+  },
+  methods: {
+    changeData() {
+      let self = this;
+      let tempData = self.BaseData;
+      // console.log(storeData);
+      for (var i in tempData) {
+        if (tempData[i].change) {
+          tempData[i].value = lib.randomNumber(
+            Math.round((tempData[i].max * 9) / 10),
+            tempData[i].max
+          );
+        }
+      }
+      self.platFormBaseData = tempData;
+    }
   },
   computed: {
     BaseData() {
       let self = this;
-      let tempData = self.platformBigData.baseData.data;
+      let tempData = self.platformBigBaseData.data;
       let baseData = [];
       for (var i in tempData) {
         if (tempData[i].checked) {
           baseData.push(tempData[i]);
         }
       }
-      console.log(baseData);
-      self.baseDataName = self.platformBigData.baseData.name;
+      self.baseDataName = self.platformBigBaseData.name;
       self.baseDataNum = baseData.length < 3 ? baseData.length : 3;
       self.baseDataWidth = "width:calc(" + 100 / +self.baseDataNum + "% - 4px)";
       return baseData;
     },
+
     ...mapState("bigData", {
-      platformBigData: state => state.platformBigData
+      platformBigBaseData: state => state.platformBigBaseData
     }),
+
     ...mapGetters("baseData", ["adminBaseData"])
   }
 };

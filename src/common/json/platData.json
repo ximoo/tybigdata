@@ -1,5 +1,6 @@
 {
     "version": "3.4.19.0813",
+
     "state": {
         "name": "城市固废资源利用云平台",
         "city": "武汉市",
@@ -101,24 +102,145 @@
             "districts": []
         }]
     },
-    "alerms": {
-        "name": "车辆报警类型",
-        "number": 10,
-        "timer": 5,
+
+    "alermSetup":[{
+        "type": "车辆监控",
+        "indeterminate": true,
+        "checkAll": true,
+        "selected": false,
         "list": [{
-            "label": "超速驾驶",
+            "id": 1,
+            "checked": true,
+            "alerm": "超速驾驶",
             "level": 1,
-            "enable": true
+            "voice": false,
+            "icon": "ex-icon-copy",
+            "remarks": ""
         }, {
-            "label": "超载驾驶",
-            "level": 2,
-            "enable": true
-        }, {
-            "label": "道路抛洒",
-            "level": 3,
-            "enable": true
+            "id": 2,
+            "checked": false,
+            "alerm": "疲劳驾驶",
+            "level": 1,
+            "voice": false,
+            "icon": "",
+            "remarks": ""
         }]
-    },
+    }, {
+        "type": "驾驶行为",
+        "indeterminate": true,
+        "checkAll": true,
+        "selected": true,
+        "list": [{
+            "id": 1,
+            "checked": true,
+            "alerm": "疲劳驾驶",
+            "level": 1,
+            "voice": false,
+            "icon": "ex-new-icon-fatigue",
+            "remarks": ""
+        }, {
+            "id": 2,
+            "checked": true,
+            "alerm": "接打电话",
+            "level": 1,
+            "voice": false,
+            "icon": "ex-new-icon-phone",
+            "remarks": ""
+        }, {
+            "id": 3,
+            "checked": true,
+            "alerm": "分神驾驶",
+            "level": 1,
+            "voice": false,
+            "icon": "ex-new-icon-eyes",
+            "remarks": ""
+        }, {
+            "id": 4,
+            "checked": true,
+            "alerm": "驾驶员变更",
+            "level": 1,
+            "voice": false,
+            "icon": "ex-new-icon-driver",
+            "remarks": ""
+        }, {
+            "id": 5,
+            "checked": true,
+            "alerm": "抽烟驾驶",
+            "level": 1,
+            "voice": false,
+            "icon": "ex-new-icon-smoke",
+            "remarks": ""
+        }, {
+            "id": 6,
+            "checked": true,
+            "alerm": "驾驶员异常",
+            "level": 1,
+            "voice": false,
+            "icon": "ex-new-icon-wheel",
+            "remarks": ""
+        }, {
+            "id": 7,
+            "checked": true,
+            "alerm": "车距过近",
+            "level": 1,
+            "voice": false,
+            "icon": "ex-new-icon-equipment",
+            "remarks": ""
+        }, {
+            "id": 8,
+            "checked": true,
+            "alerm": "前向碰撞",
+            "level": 1,
+            "voice": false,
+            "icon": "ex-new-icon-collision",
+            "remarks": ""
+        }, {
+            "id": 9,
+            "checked": true,
+            "alerm": "车道偏离",
+            "level": 1,
+            "voice": false,
+            "icon": "ex-new-icon-deviate",
+            "remarks": ""
+        }, {
+            "id": 10,
+            "checked": true,
+            "alerm": "行人碰撞",
+            "level": 1,
+            "voice": false,
+            "icon": "ex-new-icon-deviate",
+            "remarks": ""
+        }]
+    }, {
+        "type": "渣土运输违规",
+        "indeterminate": true,
+        "checkAll": true,
+        "selected": false,
+        "list": [{
+            "id": 1,
+            "checked": true,
+            "alerm": "道路抛洒",
+            "level": 2,
+            "voice": false,
+            "icon": "",
+            "remarks": ""
+        }]
+    }, {
+        "type": "场站违规",
+        "indeterminate": true,
+        "checkAll": true,
+        "selected": false,
+        "list": [{
+            "id": 1,
+            "checked": true,
+            "alerm": "疲劳驾驶",
+            "level": 1,
+            "voice": false,
+            "icon": "",
+            "remarks": ""
+        }]
+    }],
+
     "basedata": {
         "name": "基础数据：",
         "tip": "演示平台的基本资产单位数据，平台将根据这些数据模拟生成动态数据，填入的数量为最大数量。",
@@ -127,9 +249,11 @@
             "site": 0,
             "landfill": 0,
             "company": 0,
+            "case": 0,
             "gpsSeed": "车站"
         }
     },
+
     "opratedata": {
         "name": "基础运营数据",
         "tip": "演示平台的基本资产单位数据，平台将根据这些数据模拟生成动态数据，填入的数量为最大数量。",
@@ -146,6 +270,48 @@
         }
     },
 
+    "produceData": {
+        "name": "自定义对比数据",
+        "timer": 30,
+        "edit": false,
+        "data": [{
+            "label": "选项1",
+            "checked": true,
+            "unit":"辆",
+            "last": 0,
+            "now": 0
+        }, {
+            "label": "选项2",
+            "checked": true,
+            "unit":"辆",
+            "last": 0,
+            "now": 0
+        }, {
+            "label": "选项3",
+            "checked": true,
+            "unit":"辆",
+            "last": 0,
+            "now": 0
+        }, {
+            "label": "选项4",
+            "checked": true,
+            "unit":"辆",
+            "last": 0,
+            "now": 0
+        }, {
+            "label": "选项5",
+            "checked": true,
+            "unit":"辆",
+            "last": 0,
+            "now": 0
+        }, {
+            "label": "选项6",
+            "checked": true,
+            "unit":"辆",
+            "last": 0,
+            "now": 0
+        }]
+    },
 
     "module": {
         "allmonitor": {

@@ -75,7 +75,6 @@ export default {
 
           //初始化地图，画边界
           self.initMap(amapManager, self.Districts);
-
           self.addVecMarker(self.mapGps);
 
           /* var p = new Promise(function(resolve, reject) {
@@ -89,6 +88,9 @@ export default {
               });*/
 
           // mapEvent.addSiteMarker(self.mapObj, self.siteGps, self);
+
+
+
         }
       }
     };
@@ -100,6 +102,7 @@ export default {
     });
   },
   methods: {
+    
     initMap(obj, districts) {
       let self = this;
       let holes = [];
@@ -208,18 +211,23 @@ export default {
       let self = this;
       self.mass3DTruck.setData(self.truckMarkerGps);
     }
+
   },
   computed: {
+
     city() {
       return this.platformCity;
     },
+
     center() {
       let centerArry = this.platformCenter.split(",");
       return [parseFloat(centerArry[0]), parseFloat(centerArry[1])];
     },
+
     mapGps() {
       return this.GPSData;
     },
+
     Districts() {
       let self = this;
       let platformDistricts = self.platformDistricts;
@@ -233,6 +241,11 @@ export default {
       }
       return Districts;
     },
+
+    ...mapState("platData", {
+      platformCity: state => state.platformCity,
+    }),
+
     ...mapState("platData", {
       platformCity: state => state.platformCity,
       platformCenter: state => state.platformCenter,
@@ -240,9 +253,11 @@ export default {
       platformDistricts: state => state.platformDistricts,
       platformDistrictsSelect: state => state.platformDistrictsSelect
     }),
+
     ...mapState("baseData", {
       GPSData: state => state.GPSData
     })
+
   }
 };
 </script>

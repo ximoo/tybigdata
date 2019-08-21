@@ -8,10 +8,6 @@ const oprateData = localStorage.$oprateData
 
 
 
-
-
-
-
 const state = {
     /************先判断是否存在本地缓存，没有则取本地JSON文件进行初始化************/
     //基础数据名称
@@ -24,6 +20,12 @@ const state = {
     landfill: baseData ? JSON.parse(baseData).landfill : platJson.basedata.data.landfill,
     //企业总数
     company: baseData ? JSON.parse(baseData).company : platJson.basedata.data.company,
+    //案件总数
+    case: baseData ? JSON.parse(baseData).case : platJson.basedata.data.case,
+    //推送最大数
+    alerm: baseData ? JSON.parse(baseData).alerm : platJson.basedata.data.alerm,
+
+
     //模拟地理位置种子
     gpsSeed: baseData ? JSON.parse(baseData).gpsSeed : platJson.basedata.data.gpsSeed,
     //提示
@@ -60,67 +62,91 @@ const getters = {
         let baseData = [{
             label: "车辆总数",
             value: state.vechile,
-            checked:true,
+            max: state.vechile,
+            checked: true,
+            change: false,
             unit: "辆"
         }, {
-            label: "车辆在线率",
+            label: "车辆在线",
             value: parseInt(state.oprateVechile * state.vechile / 100),
-            checked:true,
+            max: parseInt(state.oprateVechile * state.vechile / 100),
+            checked: true,
+            change: true,
             unit: "辆"
         }, {
-            label: "车辆离线率",
+            label: "车辆离线",
             value: parseInt(state.oprateVechileOffLine * state.vechile / 100),
-            checked:true,
+            max: parseInt(state.oprateVechileOffLine * state.vechile / 100),
+            checked: true,
+            change: true,
             unit: "辆"
         }, {
-            label: "车辆设备损坏",
+            label: "设备损坏",
             value: state.oprateVechileDamage,
-            checked:true,
+            max: state.oprateVechileDamage,
+            checked: true,
+            change: false,
             unit: "辆"
         }, {
-            label: "核准工地数",
+            label: "核准工地",
             value: parseInt(state.oprateSite * state.site / 100),
-            checked:true,
+            max: parseInt(state.oprateSite * state.site / 100),
+            checked: true,
+            change: false,
             unit: "个"
         }, {
-            label: "开工工地数",
+            label: "开工工地",
             value: parseInt(state.oprateSiteOnline * state.site / 100),
-            checked:true,
+            max: parseInt(state.oprateSiteOnline * state.site / 100),
+            checked: true,
+            change: true,
             unit: "个"
         }, {
-            label: "停工工地数",
+            label: "停工工地",
             value: parseInt(state.oprateSiteOffline * state.site / 100),
-            checked:true,
+            max: parseInt(state.oprateSiteOffline * state.site / 100),
+            checked: true,
+            change: true,
             unit: "个"
         }, {
-            label: "可疑工地数",
+            label: "可疑工地",
             value: parseInt(state.oprateSiteDubious * state.site / 100),
-            checked:true,
+            max: parseInt(state.oprateSiteDubious * state.site / 100),
+            checked: true,
+            change: true,
             unit: "个"
         }, {
             label: "核准消纳点",
             value: parseInt(state.oprateLandfill * state.landfill / 100),
-            checked:true,
+            max: parseInt(state.oprateLandfill * state.landfill / 100),
+            change: false,
+            checked: true,
             unit: "个"
 
         }, {
             label: "可疑消纳点",
             value: parseInt(state.oprateLandfillDubious * state.landfill / 100),
-            checked:true,
+            max: parseInt(state.oprateLandfillDubious * state.landfill / 100),
+            checked: true,
+            change: false,
             unit: "个"
         }, {
             label: "企业总数",
             value: state.company,
-            checked:true,
+            max: state.company,
+            checked: true,
+            change: false,
+            unit: "个"
+        }, {
+            label: "案件总数",
+            value: state.case,
+            max: state.case,
+            checked: true,
+            change: false,
             unit: "个"
         }]
         return baseData
     },
-
-
-
-
-
 }
 
 // actions

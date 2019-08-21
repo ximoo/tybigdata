@@ -10,6 +10,7 @@
         <el-breadcrumb-item :to="{ path: '/system/menu' }">系统设置</el-breadcrumb-item>
         <el-breadcrumb-item>基础数据设置</el-breadcrumb-item>
       </el-breadcrumb>
+
       <div class="ex-table-content">
         <el-row :gutter="20">
           <!-- bigBaseData -->
@@ -66,10 +67,13 @@
                   </span>
                   <span v-else>{{item.value}} {{item.unit}}</span>
                 </el-form-item>
+                <el-form-item style="width:100%;" label="刷新时间：">
+                  <el-input v-model="bigBaseData.timer" style="width:100px;" />秒
+                </el-form-item>
               </el-form>
             </el-card>
           </el-col>
-          <!-- opratData -->
+          <!-- oprateData -->
           <el-col :span="6">
             <el-card class="box-card" :class="{'box-card-edit':bigOprateData.edit}">
               <template slot="header" class="clearfix">
@@ -140,6 +144,9 @@
                   </span>
                   <span v-else>{{item.value}} {{item.unit}}</span>
                 </el-form-item>
+                <el-form-item style="width:100%;" label="刷新时间：">
+                  <el-input v-model="bigOprateData.timer" style="width:100px;" />秒
+                </el-form-item>
               </el-form>
             </el-card>
           </el-col>
@@ -152,6 +159,81 @@
               <Echarts :options="chartsOption" autoresize style="min-height:390px" />
             </el-card>
           </el-col>
+          <!-- produceData -->
+          <el-col :span="6">
+            <el-card class="box-card" :class="{'box-card-edit':bigProduceData.edit}">
+              <template slot="header" class="clearfix">
+                <el-input
+                  size="small"
+                  v-model="bigProduceData.name"
+                  v-if="bigProduceData.edit"
+                  style="width:180px;"
+                />
+                <span v-else>{{bigProduceData.name}}</span>
+                <el-button
+                  style="float: right; padding: 3px 0"
+                  type="text"
+                  @click="bigProduceData.edit = true"
+                  v-if="!bigProduceData.edit"
+                  icon="el-icon-edit"
+                >编辑</el-button>
+                <el-button
+                  style="float: right; padding: 3px 0;color:#11c711;font-weight:bold;"
+                  type="text"
+                  @click="saveProduceData"
+                  icon="el-icon-success"
+                  v-else
+                >保存</el-button>
+              </template>
+              <el-form inline size="mini">
+                <el-form-item
+                  v-for="item,index in bigProduceData.data"
+                  :key="index"
+                  style="width:calc(50% - 15px);"
+                >
+                  <i
+                    class="el-icon-circle-check"
+                    v-if="item.checked && !bigProduceData.edit"
+                    style="color:#00cb0e"
+                  />
+                  <i
+                    class="el-icon-circle-close"
+                    v-if="!item.checked && !bigProduceData.edit"
+                    style="color:#f30"
+                  />
+                  <el-checkbox
+                    v-model="item.checked"
+                    style="margin-right: 5px;"
+                    v-if="bigProduceData.edit"
+                  ></el-checkbox>
+                  <el-input v-model="item.label" v-if="bigProduceData.edit" style="width:77px;" />
+                  <el-input v-model="item.unit" v-if="bigProduceData.edit" style="width:45px;" />
+                  <span v-if="bigProduceData.edit">昨日:</span>
+                  <el-input-number
+                    v-model="item.last"
+                    placeholder="昨日"
+                    v-if="bigProduceData.edit"
+                    style="width:120px;"
+                  />
+                  <span v-if="bigProduceData.edit">今日:</span>
+                  <el-input-number
+                    v-model="item.now"
+                    placeholder="今日"
+                    v-if="bigProduceData.edit"
+                    style="width:120px;"
+                  />
+                  <span v-if="!bigProduceData.edit">
+                    <strong>{{item.label}}({{item.unit}}) ：</strong>
+                    昨: {{item.last}} / 今：{{item.now}}
+                  </span>
+                </el-form-item>
+                <el-form-item style="width:100%;" label="刷新时间：">
+                  <el-input v-model="bigProduceData.timer" style="width:100px;" />秒
+                </el-form-item>
+              </el-form>
+            </el-card>
+          </el-col>
+          <!-- oprateData -->
           <el-col :span="24">
             <el-card class="box-card">{{PM25}}</el-card>
           </el-col>
@@ -185,11 +267,19 @@ export default {
       bigBaseData: {
         name: "基础数据",
         edit: false,
+        timer: 30,
         data: []
       },
       bigOprateData: {
         name: "运营数据",
         edit: false,
+        timer: 30,
+        data: []
+      },
+      bigProduceData: {
+        name: "自定义对比数据",
+        edit: false,
+        timer: 30,
         data: []
       },
       PM25: []
@@ -199,43 +289,22 @@ export default {
     let self = this;
     self.$nextTick(() => {
       self.bigBaseData = self.initBaseData;
+
       self.bigOprateData = self.initOprateData;
+
+      self.bigProduceData = self.initProduceData;
+
       // self.requestPM();
     });
   },
   methods: {
-
-    /* removeBaseData(index) {
-      let self = this;
-      console.log(self.bigData.baseData.data.length);
-      if (self.bigData.baseData.data.length - 1 > 0)
-        self.bigData.baseData.data.splice(index, 1);
-      else self.bigData.baseData.data[0].value = 0;
-    },
-    addBaseData() {
-      let self = this;
-      let templateData = {
-        id: 1,
-        label: "车辆总数",
-        unit: "辆",
-        value: "0"
-      };
-      if (
-        self.bigData.baseData.data.length - 1 > 0 &&
-        self.bigData.baseData.data.length < 6
-      ) {
-        self.bigData.baseData.data.push(templateData);
-      }
-    },    */
-
     //保存基础监控数据
     saveBaseData() {
       let self = this,
         bigBaseData = self.bigBaseData,
-        platformBigData = self.platformBigData;
+        platformBigBaseData = self.platformBigBaseData;
       self.bigBaseData.edit = false;
-      platformBigData["baseData"] = bigBaseData;
-      localStorage.$platformBigData = JSON.stringify(platformBigData);
+      localStorage.$platformBigBaseData = JSON.stringify(bigBaseData);
     },
 
     //计算运营数据
@@ -252,23 +321,31 @@ export default {
           self.bigOprateData.data = OprateData.slice(4, 8);
           break;
         case "landfill":
-          self.bigOprateData.data = OprateData.slice(9, 11);
+          self.bigOprateData.data = OprateData.slice(8, 10);
           break;
         case "case":
-          self.bigOprateData.data = OprateData.slice(12, 13);
+          self.bigOprateData.data = OprateData.slice(11, 12);
           break;
       }
       console.log(self.bigOprateData.data);
     },
 
-    //保存运营shuju
+    //保存运营数据
     saveOprateData() {
       let self = this,
         bigOprateData = self.bigOprateData,
-        platformBigData = self.platformBigData;
+        platformBigOprateData = self.platformBigOprateData;
       self.bigOprateData.edit = false;
-      platformBigData["oprateData"] = bigOprateData;
-      localStorage.$platformBigData = JSON.stringify(platformBigData);
+      localStorage.$platformBigOprateData = JSON.stringify(bigOprateData);
+    },
+
+    //保存自定义数据
+    saveProduceData() {
+      let self = this,
+        bigProduceData = self.bigProduceData,
+        platformBigProduceData = self.platformBigProduceData;
+      self.bigProduceData.edit = false;
+      localStorage.$platformBigProduceData = JSON.stringify(bigProduceData);
     },
 
     handleMenu(e) {
@@ -349,7 +426,6 @@ export default {
   },
 
   computed: {
-    
     chartsOption() {
       let self = this;
       let chartsData = self.bigOprateData.data;
@@ -371,14 +447,17 @@ export default {
       let self = this;
       let baseData = new Object();
       let adminBaseData;
-      console.log(self.platformBigData.baseData);
-      if (self.platformBigData.baseData.data.length > 0) {
-        adminBaseData = self.platformBigData.baseData.data;
-        baseData["name"] = self.platformBigData.baseData.name;
+      if (
+        self.platformBigBaseData &&
+        self.platformBigBaseData.data.length > 0
+      ) {
+        adminBaseData = self.platformBigBaseData.data;
+        baseData["name"] = self.platformBigBaseData.name;
       } else {
         adminBaseData = self.adminBaseData;
         baseData["name"] = "基础数据";
       }
+      baseData["timer"] = 30;
       baseData["edit"] = false;
       baseData["data"] = adminBaseData;
       return baseData;
@@ -388,26 +467,59 @@ export default {
       let self = this;
       let oprateData = new Object();
       let adminBaseData;
-      console.log(self.platformBigData.oprateData);
-      if (self.platformBigData.oprateData.data.length > 0) {
-        adminBaseData = self.platformBigData.oprateData.data;
-        oprateData["name"] = self.platformBigData.oprateData.name;
+      if (
+        self.platformBigOprateData &&
+        self.platformBigOprateData.data.length > 0
+      ) {
+        adminBaseData = self.platformBigOprateData.data;
+        oprateData["name"] = self.platformBigOprateData.name;
       } else {
         adminBaseData = self.adminBaseData;
         oprateData["name"] = "运营数据";
       }
+      oprateData["timer"] = 30;
       oprateData["edit"] = false;
       oprateData["module"] = "vechile";
       oprateData["data"] = adminBaseData.slice(0, 4);
       return oprateData;
     },
 
+    initProduceData() {
+      let self = this;
+      let produceData = new Object();
+      let adminProduceData;
+      if (
+        self.platformBigProduceData &&
+        self.platformBigProduceData.data.length > 0
+      ) {
+        adminProduceData = self.platformBigProduceData.data;
+        produceData["name"] = self.platformBigProduceData.name;
+      } else {
+        adminProduceData = new Array();
+        for (var i = 0; i < 6; i++) {
+          adminProduceData.push({
+            label: "选项" + (i + 1),
+            unit: "辆",
+            checked: true,
+            last: 0,
+            now: 0
+          });
+        }
+        produceData["name"] = "自定义对比数据";
+      }
+      produceData["timer"] = 30;
+      produceData["edit"] = false;
+      produceData["data"] = adminProduceData;
+      return produceData;
+    },
+
     ...mapState("bigData", {
-      platformBigData: state => state.platformBigData
+      platformBigBaseData: state => state.platformBigBaseData,
+      platformBigOprateData: state => state.platformBigOprateData,
+      platformBigProduceData: state => state.platformBigProduceData
     }),
 
     ...mapGetters("baseData", ["adminBaseData"])
-
   }
 };
 </script>

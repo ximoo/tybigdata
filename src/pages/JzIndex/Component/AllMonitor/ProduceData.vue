@@ -1,6 +1,6 @@
 <template>
-  <div class="item">
-    <h3>案件投诉</h3>
+  <div class="item" style="height:320px;">
+    <h3>{{produceDataName}}</h3>
     <el-row type="flex" justify="space-around" class="ex-produce-data">
       <el-col :span="9">
         <ul class="produce-bar">
@@ -8,18 +8,15 @@
             昨日
             <div class="driver-box"></div>
           </li>
-          <li v-for="item,index in actBarData">
-            <div
-              class="driver-box"
-              :style="{'width': (item.yestoday / item.number)*100 +'%'}"
-            >{{item.yestoday}}</div>
+          <li v-for="item,index in ProduceData">
+            <div class="driver-box" :style="{'width': (item.last / Max)*100 +'%'}">{{item.last}}</div>
           </li>
         </ul>
       </el-col>
       <el-col :span="6">
         <ul class="produce-lable">
           <li></li>
-          <li v-for="item,index in actBarData">{{item.label}}({{item.unit}})</li>
+          <li v-for="item,index in ProduceData">{{item.label}}({{item.unit}})</li>
         </ul>
       </el-col>
       <el-col :span="9">
@@ -28,36 +25,34 @@
             今日
             <div class="driver-box"></div>
           </li>
-          <li v-for="item,index in actBarData">
-            <div
-              class="driver-box"
-              :style="{'width': (item.today / item.number)*100 +'%'}"
-            >{{item.today}}</div>
+          <li v-for="item,index in ProduceData">
+            <div class="driver-box" :style="{'width': (item.now / Max)*100 +'%'}">{{item.now}}</div>
           </li>
         </ul>
       </el-col>
     </el-row>
-  <Conner/>
+    <Conner />
   </div>
 </template>
 <script>
-import randomIze from "../../Configs/service.lib";
+import lib from "~/common/lib";
 let activeBarId;
+
+import { mapState, mapGetters } from "vuex";
+
 export default {
   name: "ProduceData",
   data() {
     return {
-      actBarData: []
+      actBarData: [],
+      produceDataName:"",
+
+      Max: 1000
     };
   },
   mounted() {
     let self = this;
     self.$nextTick(() => {
-      clearInterval(activeBarId);
-      self.BarData();
-      activeBarId = setInterval(() => {
-        self.activeBarData();
-      }, this.allmonitor.module.producedata.timer * 1000);
     });
   },
   methods: {
@@ -94,7 +89,24 @@ export default {
     },
     srcBarData() {
       return this.allmonitor.module.producedata.data;
-    }
+    },
+
+    ProduceData() {
+      let self = this;
+      let tempData = self.platformBigProduceData.data;
+      let produceData = [];
+      for (var i in tempData) {
+        if (tempData[i].checked) {
+          produceData.push(tempData[i]);
+        }
+      }
+      self.produceDataName = self.platformBigProduceData.name;
+      return produceData;
+    },
+
+    ...mapState("bigData", {
+      platformBigProduceData: state => state.platformBigProduceData
+    })
   }
 };
 </script>

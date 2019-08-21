@@ -7,6 +7,7 @@ import platNav from "~/pages/Admin/common/json/nav.json"
 const platData = localStorage.$platData
 const platAdminNav = localStorage.$platAdminNav
 const platTabMenu = localStorage.$platTabMenu
+const platAlermSetup = localStorage.$platAlermSetup
 
 let version = localStorage.$version
 localStorage.$version = platJson.version
@@ -31,7 +32,8 @@ const state = {
     //城市行政区选择
     platformDistrictsSelect: platData ? JSON.parse(platData).districtsSelect : platJson.state.districtsSelect,
 
-
+//
+platformAlermSetup:platAlermSetup?JSON.parse(platAlermSetup):platJson.state.alermSetup,
     
     //后台菜单
     platformAdminNav: platAdminNav ? JSON.parse(platAdminNav) : platNav,

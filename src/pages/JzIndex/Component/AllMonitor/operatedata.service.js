@@ -1,5 +1,5 @@
 export default function getData(data) {
-  console.log(data)
+  // console.log(data)
   return {
     color: ['rgba(25,144,255,1)', 'rgba(255,122,86,1)', 'rgba(34,203,255,1)', 'rgba(119,97,246,1)'],
     tooltip: {
@@ -14,7 +14,7 @@ export default function getData(data) {
     },
     series: [{
       type: 'pie',
-      radius: ['45%', '70%'],
+      radius: ['15%', '50%'],
       center: ['50%', '50%'],
       avoidLabelOverlap: true,
       data: data,
@@ -30,7 +30,7 @@ export default function getData(data) {
           textStyle: {
             color: '#abc4ff'
           },
-          formatter: "{b}：\n\r{c}"
+          formatter: "{b}：{c}"
         }
       },
       labelLine: {

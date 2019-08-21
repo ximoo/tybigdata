@@ -2,26 +2,42 @@
   <div class="ex-bigdata-content">
     <div class="ex-bigdata-side" style="flex:1">
       <!-- 基础监控数据 -->
-      <BaseData/>
+      <BaseData />
       <!-- 运营数据 -->
-      <OperateData/>
+      <OperateData />
       <!-- 生产数据 -->
-      <ProduceData/>
+      <ProduceData />
     </div>
 
     <div class="ex-bigdata-main" :class="{full:fullMain}">
-    <el-button @click="handleFull" icon="el-icon-d-arrow-left" type="info" size="mini" round class="full-main-btn right" v-if="fullMain"></el-button>
-    <el-button @click="handleFull" icon="el-icon-d-arrow-right" type="info" size="mini" round class="full-main-btn right" v-else></el-button>
+      <el-button
+        @click="handleFull"
+        icon="el-icon-d-arrow-left"
+        type="info"
+        size="mini"
+        round
+        class="full-main-btn right"
+        v-if="fullMain"
+      ></el-button>
+      <el-button
+        @click="handleFull"
+        icon="el-icon-d-arrow-right"
+        type="info"
+        size="mini"
+        round
+        class="full-main-btn right"
+        v-else
+      ></el-button>
       <!-- 全局实时监控 -->
-      <AllMonitor/>
-      <!-- <realTimeMonitor/> -->
+      <AllMonitor />
+      <realTimeMonitor />
       <!-- 运营趋势 -->
-      <!-- <TrendData/> -->
+      <TrendData />
     </div>
 
     <!-- 可设置模块 -->
     <transition name="el-zoom-in-top">
-      <!-- <router-view/> -->
+      <!-- <router-view /> -->
     </transition>
   </div>
 </template>
@@ -40,8 +56,6 @@ import OperateData from "../Component/AllMonitor/OperateData.vue";
 import ProduceData from "../Component/AllMonitor/ProduceData.vue";
 import AllMonitor from "../Component/AllMonitor/AllMonitor.vue";
 import realTimeMonitor from "../Component/AllMonitor/realTimeMonitor.vue";
-
-
 
 export default {
   name: "bigData",
@@ -63,8 +77,8 @@ export default {
     this.$nextTick(function() {});
   },
   methods: {
-    handleFull(){
-      this.fullMain = !this.fullMain
+    handleFull() {
+      this.fullMain = !this.fullMain;
     }
   }
 };

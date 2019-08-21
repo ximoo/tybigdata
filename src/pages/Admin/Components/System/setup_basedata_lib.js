@@ -74,10 +74,7 @@ export default {
         return true
     },
 
-    //获取随机数
-    randomNumber(min, max) {
-        return Math.round(Math.random() * (max - min) + min, 0);
-    },
+
 
     //获取JSON字段值
     getJsonValue(obj, name) {
@@ -137,6 +134,6 @@ export default {
         }
     },
 
-    
+
 
 }

@@ -153,20 +153,25 @@
                   </el-tooltip>
                   <span v-else>{{platformBaseData.company}}</span> 个
                 </el-form-item>
+                <el-form-item label=" 案件总数：">
+                  <el-input-number v-model="platformBaseData.case" v-if="platformBaseData.edit" />
+                  <el-tooltip effect="dark" content="随机数" v-if="platformBaseData.edit">
+                    <el-button type="info" icon="el-icon-magic-stick" @click="getRandom('case')"></el-button>
+                  </el-tooltip>
+                  <span v-else>{{platformBaseData.case}}</span> 个
+                </el-form-item>
+                <el-form-item label="报警推送数：">
+                  <el-input-number
+                    :max="20"
+                    v-model="platformBaseData.alerm"
+                    v-if="platformBaseData.edit"
+                  />
+                  <el-tooltip effect="dark" content="随机数" v-if="platformBaseData.edit">
+                    <el-button type="info" icon="el-icon-magic-stick" @click="getRandom('alerm')"></el-button>
+                  </el-tooltip>
+                  <span v-else>{{platformBaseData.alerm}}</span> 个
+                </el-form-item>
                 <el-form-item style="width:100%;font-size:12px;">{{platformBaseData.tip}}</el-form-item>
-                <!-- <el-form-item label="配置文件：" style="width:100%" v-if="!baseData.edit">
-                  <el-upload
-                    ref="upload"
-                    action="###"
-                    accept="application/json, text/json, .json"
-                    :on-change="beforeFileUpload"
-                    :auto-upload="false"
-                    :show-file-list="false"
-                    size="mini"
-                  >
-                    <el-button type="info" icon="el-icon-sold-out" size="mini">导入基础数据配置</el-button>
-                  </el-upload>
-                </el-form-item>-->
 
                 <el-form-item label="模拟数据：" style="width:100%;" v-if="baseData.edit">
                   <label>
@@ -196,7 +201,7 @@
                     @click="simVechileInfo"
                     v-show="simStep.vechile == 3"
                   >
-                    地理位置信息模拟完毕.......
+                    地理位置信息模拟完毕
                     <i class="el-icon-checked" />
                   </el-button>
 
@@ -310,7 +315,7 @@
               <template slot="header" class="clearfix">
                 <span>报警类型:</span>
               </template>
-              <el-table :data="alermSetup" border :span-method="alermSetupMethod">
+              <el-table :data="platformAlermSetup" border :span-method="alermSetupMethod">
                 <el-table-column prop="type" label="报警类别" width="180"></el-table-column>
                 <el-table-column prop="selected" width="80" label="选择模块" align="center">
                   <template slot-scope="scope">
@@ -392,7 +397,12 @@
                 </el-table-column>
                 <el-table-column align="right" width="100">
                   <template slot="header" slot-scope="scope">
-                    <el-button size="small" icon="el-icon-edit" type="success">保存</el-button>
+                    <el-button
+                      size="small"
+                      icon="el-icon-edit"
+                      type="success"
+                      @click="saveALermSetup"
+                    >保存</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -406,6 +416,8 @@
 <script>
 import SideMenu from "../Public/SideMenu.vue";
 import baseDatalib from "./setup_basedata_lib";
+import lib from "~/common/lib";
+
 import API from "../../../JzIndex/Configs/api";
 import Axios from "axios";
 
@@ -424,176 +436,11 @@ export default {
       platformBaseData: {},
       platformOprateData: {},
       operatData: {},
-      alermSetup: [
-        {
-          type: "车辆监控",
-          indeterminate: true,
-          checkAll: true,
-          list: [
-            {
-              id: 1,
-              checked: true,
-              alerm: "超速驾驶",
-              level: 1,
-              voice: false,
-              icon: "ex-icon-copy",
-              remarks: ""
-            },
-            {
-              id: 2,
-              checked: false,
-              alerm: "疲劳驾驶",
-              level: 1,
-              voice: false,
-              icon: "",
-              remarks: ""
-            }
-          ],
-          selected: false
-        },
-        {
-          type: "驾驶行为",
-          indeterminate: true,
-          checkAll: true,
-          list: [
-            {
-              id: 1,
-              checked: true,
-              alerm: "疲劳驾驶",
-              level: 1,
-              voice: false,
-              icon: "ex-new-icon-fatigue",
-              remarks: ""
-            },
-            {
-              id: 2,
-              checked: true,
-              alerm: "接打电话",
-              level: 1,
-              voice: false,
-              icon: "ex-new-icon-phone",
-              remarks: ""
-            },
-            {
-              id: 3,
-              checked: true,
-              alerm: "分神驾驶",
-              level: 1,
-              voice: false,
-              icon: "ex-new-icon-eyes",
-              remarks: ""
-            },
-            {
-              id: 4,
-              checked: true,
-              alerm: "驾驶员变更",
-              level: 1,
-              voice: false,
-              icon: "ex-new-icon-driver",
-              remarks: ""
-            },
-            {
-              id: 5,
-              checked: true,
-              alerm: "抽烟驾驶",
-              level: 1,
-              voice: false,
-              icon: "ex-new-icon-smoke",
-              remarks: ""
-            },
-            {
-              id: 6,
-              checked: true,
-              alerm: "驾驶员异常",
-              level: 1,
-              voice: false,
-              icon: "ex-new-icon-wheel",
-              remarks: ""
-            },
-            {
-              id: 7,
-              checked: true,
-              alerm: "车距过近",
-              level: 1,
-              voice: false,
-              icon: "ex-new-icon-equipment",
-              remarks: ""
-            },
-            {
-              id: 8,
-              checked: true,
-              alerm: "前向碰撞",
-              level: 1,
-              voice: false,
-              icon: "ex-new-icon-collision",
-              remarks: ""
-            },
-            {
-              id: 9,
-              checked: true,
-              alerm: "车道偏离",
-              level: 1,
-              voice: false,
-              icon: "ex-new-icon-deviate",
-              remarks: ""
-            },
-            {
-              id: 10,
-              checked: true,
-              alerm: "行人碰撞报警",
-              level: 1,
-              voice: false,
-              icon: "ex-new-icon-deviate",
-              remarks: ""
-            }
-          ],
-          selected: true
-        },
-        {
-          type: "渣土运输违规",
-          indeterminate: true,
-          checkAll: true,
-          list: [
-            {
-              id: 1,
-              checked: true,
-              alerm: "疲劳驾驶",
-              level: 1,
-              voice: false,
-              icon: "",
-              remarks: ""
-            }
-          ],
-          selected: false
-        },
-        {
-          type: "场站违规",
-          indeterminate: true,
-          checkAll: true,
-          list: [
-            {
-              id: 1,
-              checked: true,
-              alerm: "疲劳驾驶",
-              level: 1,
-              voice: false,
-              icon: "",
-              remarks: ""
-            }
-          ],
-          selected: false
-        }
-      ],
       gpsSeeds: ["车站", "加油站", "ATM", "酒店", "医院", "银行"],
       simStep: {
         vechile: 0
       }
     };
-  },
-  mounted() {
-    // this.platformState = baseDatalib.getPlatformState();
-    // this.baseData = baseDatalib.getPlatformBaseData();
-    // this.operatData = baseDatalib.getPlatformOperatData();
   },
   methods: {
     //菜单跳转
@@ -622,7 +469,7 @@ export default {
 
     countVecData(v) {
       this.platformOprateData.vecOffline = 100 - v;
-      this.platformOprateData.vecDamage = baseDatalib.randomNumber(
+      this.platformOprateData.vecDamage = lib.randomNumber(
         0,
         this.platformOprateData.vecOffline
       );
@@ -631,12 +478,14 @@ export default {
     countSiteData(v) {
       console.log(v);
       this.platformOprateData.siteDubious = 100 - v;
-      this.platformOprateData.siteOnline = baseDatalib.randomNumber(0, 100);
-      this.platformOprateData.siteOffline = 100 - this.platformOprateData.siteOnline;
+      this.platformOprateData.siteOnline = lib.randomNumber(0, 100);
+      this.platformOprateData.siteOffline =
+        100 - this.platformOprateData.siteOnline;
     },
 
     countSiteStateData(v) {
-      this.platformOprateData.siteOffline = 100 - this.platformOprateData.siteOnline;
+      this.platformOprateData.siteOffline =
+        100 - this.platformOprateData.siteOnline;
     },
 
     countLandFillData(v) {
@@ -668,6 +517,7 @@ export default {
 
       if (simVechile.status) {
         vechileNumber = simVechile.vechileNumber;
+        localStorage.$vechileNumber = JSON.stringify(vechileNumber);
         let poiArr = [];
 
         var p = new Promise(function(resolve, reject) {
@@ -857,8 +707,15 @@ export default {
     //随机数
     getRandom(key) {
       let self = this;
-      let RandomNumber = baseDatalib.randomNumber(0, 10000);
+      let RandomNumber = lib.randomNumber(0, 10000);
       self.platformBaseData[key] = RandomNumber;
+    },
+
+    //保存报警类型
+    saveALermSetup() {
+      let self = this;
+      let alermSetup = self.platformAlermSetup;
+      localStorage.$platAlermSetup = JSON.stringify(alermSetup);
     },
 
     beforeFileUpload() {},
@@ -867,6 +724,7 @@ export default {
       console.log(this.platData);
     }
   },
+
   computed: {
     platData() {
       let self = this;
@@ -882,6 +740,7 @@ export default {
       self.platformState = platData;
       return platData;
     },
+
     baseData() {
       let self = this;
       let baseData = new Object();
@@ -891,11 +750,14 @@ export default {
       baseData["site"] = self.baseSite;
       baseData["landfill"] = self.baseLandfill;
       baseData["company"] = self.baseCompany;
+      baseData["case"] = self.baseCase;
+      baseData["alerm"] = self.baseAlerm;
       baseData["gpsSeed"] = self.baseGpsSeed;
       baseData["tip"] = self.baseTip;
       self.platformBaseData = baseData;
       return baseData;
     },
+
     oprateData() {
       let self = this;
       let oprateData = new Object();
@@ -913,6 +775,7 @@ export default {
       self.platformOprateData = oprateData;
       return oprateData;
     },
+
     ...mapState("platData", {
       platformName: state => state.platformName,
       platformCity: state => state.platformCity,
@@ -920,14 +783,18 @@ export default {
       showCity: state => state.showCity,
       showWeather: state => state.showWeather,
       platformDistricts: state => state.platformDistricts,
-      platformDistrictsSelect: state => state.platformDistrictsSelect
+      platformDistrictsSelect: state => state.platformDistrictsSelect,
+      platformAlermSetup: state => state.platformAlermSetup
     }),
+
     ...mapState("baseData", {
       baseDataName: state => state.baseDataName,
       baseVechile: state => state.vechile,
       baseSite: state => state.site,
       baseLandfill: state => state.landfill,
       baseCompany: state => state.company,
+      baseCase: state => state.case,
+      baseAlerm: state => state.alerm,
       baseGpsSeed: state => state.gpsSeed,
       baseTip: state => state.tip,
       oprateDataName: state => state.oprateDataName,
