@@ -623,6 +623,7 @@ export default {
             self.simStep.vechile = 3;
           });
       }
+      
     },
 
     //模拟地理位置信息
@@ -808,6 +809,7 @@ export default {
       oprateLandfill: state => state.oprateLandfill,
       oprateLandfillDubious: state => state.oprateLandfillDubious
     })
+
   }
 };
 </script>

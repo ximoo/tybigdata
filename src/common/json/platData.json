@@ -103,7 +103,7 @@
         }]
     },
 
-    "alermSetup":[{
+    "alermSetup": [{
         "type": "车辆监控",
         "indeterminate": true,
         "checkAll": true,
@@ -173,7 +173,7 @@
         }, {
             "id": 6,
             "checked": true,
-            "alerm": "驾驶员异常",
+            "alerm": "放开方向盘",
             "level": 1,
             "voice": false,
             "icon": "ex-new-icon-wheel",
@@ -208,7 +208,7 @@
             "alerm": "行人碰撞",
             "level": 1,
             "voice": false,
-            "icon": "ex-new-icon-deviate",
+            "icon": "ex-new-icon-man",
             "remarks": ""
         }]
     }, {
@@ -277,225 +277,71 @@
         "data": [{
             "label": "选项1",
             "checked": true,
-            "unit":"辆",
+            "unit": "辆",
             "last": 0,
             "now": 0
         }, {
             "label": "选项2",
             "checked": true,
-            "unit":"辆",
+            "unit": "辆",
             "last": 0,
             "now": 0
         }, {
             "label": "选项3",
             "checked": true,
-            "unit":"辆",
+            "unit": "辆",
             "last": 0,
             "now": 0
         }, {
             "label": "选项4",
             "checked": true,
-            "unit":"辆",
+            "unit": "辆",
             "last": 0,
             "now": 0
         }, {
             "label": "选项5",
             "checked": true,
-            "unit":"辆",
+            "unit": "辆",
             "last": 0,
             "now": 0
         }, {
             "label": "选项6",
             "checked": true,
-            "unit":"辆",
+            "unit": "辆",
             "last": 0,
             "now": 0
         }]
     },
-
-    "module": {
-        "allmonitor": {
-            "name": "全局监管",
-            "enable": true,
-            "module": {
-                "basedata": {
-                    "name": "基础监控数据：",
-                    "tip": "由上一步基础数据得到左上角基本监控数据展示，您可以在这里修改展示字段名称，数量可通过返回上一步进行修改。也可以对展示项进行删减，建议最少留3项。",
-                    "timer": 1800,
-                    "data": [{
-                        "id": 11,
-                        "label": "车辆总数",
-                        "unit": "辆",
-                        "number": 600,
-                        "required": true
-                    }, {
-                        "id": 12,
-                        "label": "在线车辆",
-                        "unit": "辆",
-                        "number": 300,
-                        "required": true
-                    }, {
-                        "id": 21,
-                        "label": "工地总数",
-                        "unit": "个",
-                        "number": 300,
-                        "required": true
-                    }, {
-                        "id": 22,
-                        "label": "开工工地",
-                        "unit": "个",
-                        "number": 30,
-                        "required": true
-                    }, {
-                        "id": 31,
-                        "label": "消纳点总数",
-                        "unit": "个",
-                        "number": 10,
-                        "required": true
-                    }, {
-                        "id": 32,
-                        "label": "运营消纳点",
-                        "unit": "个",
-                        "number": 30,
-                        "required": true
-                    }]
-                },
-                "operatedata": {
-                    "name": "运营数据:",
-                    "data": [{
-                        "name": "-饼状图:",
-                        "tip": "由上一步基础数据得到饼图运营数据，默认为车辆数据。也可以对展示项进行添加删减，不限项数，但要注意不要重复,数量为随机最大数",
-                        "timer": 1800,
-                        "list": [{
-                            "id": 12,
-                            "label": "在线车辆",
-                            "unit": "辆",
-                            "number": 300,
-                            "required": true
-                        }, {
-                            "id": 13,
-                            "label": "停车车辆",
-                            "unit": "辆",
-                            "number": 710,
-                            "required": false
-                        }, {
-                            "id": 14,
-                            "label": "离线车辆",
-                            "unit": "辆",
-                            "number": 710,
-                            "required": false
-                        }, {
-                            "id": 15,
-                            "label": "设备损坏",
-                            "unit": "辆",
-                            "number": 710,
-                            "required": false
-                        }]
-                    }, {
-                        "name": "-柱状图:",
-                        "tip": "由上一步基础数据得到饼图运营数据，默认为出土/消纳运营数据。也可以对展示项进行添加删减，最多4个统计字段,数量为随机最大数",
-                        "timer": 1800,
-                        "list": [{
-                            "id": 23,
-                            "label": "出土量",
-                            "unit": "立方",
-                            "number": 710,
-                            "required": false
-                        }, {
-                            "id": 24,
-                            "label": "出土次数",
-                            "unit": "次",
-                            "number": 710,
-                            "required": false
-                        }, {
-                            "id": 33,
-                            "label": "消纳量",
-                            "unit": "立方",
-                            "number": 710,
-                            "required": false
-                        }, {
-                            "id": 34,
-                            "label": "消纳次数",
-                            "unit": "次",
-                            "number": 710,
-                            "required": false
-                        }]
-                    }]
-                },
-                "producedata": {
-                    "name": "生产数据:",
-                    "tip": "最多4个统计字段,默认为固废利用产出物统计。也可以酌情修改成其他统计数据。",
-                    "timer": 1800,
-                    "data": [{
-                        "id": 1,
-                        "label": "拆迁渣土",
-                        "unit": "吨",
-                        "number": 100
-                    }, {
-                        "id": 2,
-                        "label": "粗骨料",
-                        "unit": "吨",
-                        "number": 710
-                    }, {
-                        "id": 3,
-                        "label": "细骨料",
-                        "unit": "吨",
-                        "number": 710
-                    }, {
-                        "id": 4,
-                        "label": "钢筋",
-                        "unit": "吨",
-                        "number": 710
-                    }]
-                }
-            }
+    "bigModule": [
+        {
+            "id": 1,
+            "label": "车辆监控",
+            "checked": true,
+            "moduleId": "vechile"
         },
-        "airmonitor": {
-            "name": "环境监测",
-            "enable": true,
-            "module": {}
+        {
+            "id": 2,
+            "label": "场站管理",
+            "checked": true,
+            "moduleId": "site"
         },
-        "sitemonitor": {
-            "name": "场站实时状况",
-            "enable": true,
-            "module": {
-                "fences": {
-                    "site": [{
-                        "name": "",
-                        "type": "site",
-                        "icon": "el-icon-office-building",
-                        "center": [],
-                        "path": "",
-                        "door": {
-                            "enable": true,
-                            "path": ""
-                        },
-                        "wash": {
-                            "enable": true,
-                            "path": ""
-                        }
-                    }],
-                    "landfill": [{
-                        "name": "",
-                        "type": "landfill",
-                        "icon": "el-icon-office-building",
-                        "center": [],
-                        "path": "",
-                        "door": {
-                            "enable": true,
-                            "path": ""
-                        },
-                        "wash": {
-                            "enable": true,
-                            "path": ""
-                        }
-                    }]
-                },
-                "airmonitor": {
-                    "enable": true,
-                    "type": []
-                }
-            }
+        {
+            "id": 3,
+            "label": "案件管理",
+            "checked": true,
+            "moduleId": "case"
+        },
+        {
+            "id": 4,
+            "label": "环境监测",
+            "checked": true,
+            "moduleId": "air"
+        },
+        {
+            "id": 5,
+            "label": "弃土流向",
+            "checked": true,
+            "moduleId": "flow"
         }
-    }
+    ]
 }

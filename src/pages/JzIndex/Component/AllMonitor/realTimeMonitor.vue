@@ -63,16 +63,12 @@ export default {
         }, self.alerms.timer * 1000);
       }, 5000);
     },
-   
     ...mapMutations("bigData", ["changeAlerm"])
   },
 
   computed: {
     allComponent() {
       return this.$store.state.mapComponent.allComponent;
-    },
-    simData() {
-      return this.$store.state.simData;
     },
     alerms() {
       return this.$store.state.platformData.alerms;

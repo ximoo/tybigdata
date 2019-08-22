@@ -37,10 +37,10 @@ Vue.component('v-chart', ECharts)
 
 
 VueAMap.initAMapApiLoader({
-  key: '6f713c69faa95286904fa173059eae94',
-  plugin: ['AMap.PathSimplifier', 'AMap.SimpleMarker', 'Map3D', 'AMap.DistrictSearch', 'AMap.SimpleMarker', 'AMap.DistrictLayer', 'AMap.ControlBar', 'AMap.MouseTool', "AMap.PolyEditor", "AMap.MarkerClusterer", "AMap.InfoWindow", "AMap.Driving", "AMap.TruckDriving","AMap.MassMarks"],
+  key: '6273b99a523dee0fcb8ab69b5b9282a4',
+  plugin: ['AMap.PathSimplifier', 'AMap.SimpleMarker', 'Map3D', 'AMap.DistrictSearch', 'AMap.SimpleMarker', 'AMap.DistrictLayer', 'AMap.ControlBar', 'AMap.MouseTool', "AMap.PolyEditor", "AMap.MarkerClusterer", "AMap.InfoWindow", "AMap.Driving", "AMap.TruckDriving", "AMap.MassMarks","AMap.Size"],
   v: '1.4.15',
-  uiVersion: '1.0.11' // 版本号
+  uiVersion: '1.0.11', // 版本号
 });
 
 

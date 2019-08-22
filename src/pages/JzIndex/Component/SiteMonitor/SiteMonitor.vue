@@ -96,7 +96,7 @@ export default {
   mounted() {
     let self = this;
     this.$nextTick(() => {
-      self.$store.state.mapComponent.siteComponent = self;
+      // self.$store.state.mapComponent.siteComponent = self;
     });
   },
   methods: {

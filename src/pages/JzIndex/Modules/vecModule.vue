@@ -30,7 +30,7 @@ export default {
   name: "VecModule",
   data() {
     return {
-      fullMain: true
+      fullMain: false
     };
   },
   components: { VecMonitor },

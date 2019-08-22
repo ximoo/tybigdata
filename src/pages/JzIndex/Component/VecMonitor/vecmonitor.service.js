@@ -1,10 +1,3 @@
-import store from "../../Configs/store"
-
-
-
-
-let object3Dlayer, radar
-
 export default {
 
   initMap(obj, city, e) {
@@ -36,7 +29,6 @@ export default {
       monitorMap.add(polygon);
       monitorMap.panTo(result.districtList[0].center)
     });
-  },
-
+  }
   
 }

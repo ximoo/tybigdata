@@ -1,36 +1,35 @@
 <template>
   <div class="ex-pages-bigdata">
     <fullScreen />
-    <div>
-      <Tile />
-      <div class="ex-screen" style="left:40px">
-        <div class="ex-message">
-          <el-popover placement="bottom" trigger="click" v-model="wordPass">
-            <el-input placeholder="请输入管理员密码:admin" size="mini" v-model="adminPass">
-              <el-button slot="append" icon="el-icon-success" @click="handleSetup">确定</el-button>
-            </el-input>
-            <i class="el-icon-s-tools" slot="reference" />
-          </el-popover>
-
-          <el-popover placement="bottom" trigger="click" style="margin-left: 12px;">
-            <el-button icon="ex-icon-truck" @click="handleModule('/vechile')">车辆监控</el-button>
-            <!-- <el-tooltip content="环境监测" placement="bottom">
-              <el-button icon="el-icon-cloudy-and-sunny" @click="handleModule('/air')"> 环境监测</el-button>
-            </el-tooltip>-->
-            <el-button icon="el-icon-office-building" @click="handleModule('/site')">场站管理</el-button>
-            <el-button icon="ex-icon-police" @click="handleModule('/cases')">案件管理</el-button>
-            <el-button icon="ex-icon-document_fill" @click="toDemo('/admin')">后台管理</el-button>
-            <el-tooltip content="选择模块" placement="bottom" slot="reference">
-              <i class="ex-icon-manage_fill" />
-            </el-tooltip>
-          </el-popover>
-        </div>
-        <!-- <div>
-          <i class="el-icon-loading" />
-        </div> -->
+    <Tile />
+    <div class="ex-screen" style="left:40px">
+      <div class="ex-message">
+        <el-popover placement="bottom" trigger="click" v-model="wordPass">
+          <el-input placeholder="请输入管理员密码:admin" size="mini" v-model="adminPass">
+            <el-button slot="append" icon="el-icon-success" @click="handleSetup">确定</el-button>
+          </el-input>
+          <i class="el-icon-s-tools" slot="reference" />
+        </el-popover>
+        <el-popover placement="bottom" trigger="click" style="margin-left: 12px;">
+          <el-button
+            :data-module="item.moduleId"
+            @click="handleModule"
+            v-for="item,index in bigModuleData"
+            :key="index"
+          >{{item.label}}</el-button>
+          <el-button @click="toAdmin">后台管理</el-button>
+          <el-tooltip content="选择模块" placement="bottom" slot="reference">
+            <i class="ex-icon-manage_fill" />
+          </el-tooltip>
+        </el-popover>
       </div>
-      <router-view />
     </div>
+    <!-- 这里是需要keepalive的 -->
+    <keep-alive v-if="$route.meta.keepAlive">
+      <router-view></router-view>
+    </keep-alive>
+    <!-- 这里不会被keepalive -->
+    <router-view v-else></router-view>
     <!-- <initDataModule v-else />-->
     <!-- <adminPass /> -->
   </div>
@@ -55,11 +54,15 @@ export default {
       noIpt: false,
       setupBtn: false,
       adminPass: null,
-      wordPass: false
+      wordPass: false,
+      bigModuleData: []
     };
   },
   mounted() {
-    // store.commit("init_data");
+    let self = this;
+    self.$nextTick(() => {
+      self.bigModuleData = self.platformBigModuleData;
+    });
   },
   methods: {
     //管理员设置
@@ -70,11 +73,15 @@ export default {
         window.open("admin.html", "_blank");
       }
     },
+
     //模块切换
-    handleModule(url) {
+    handleModule(e) {
+      //
+      let url = "/" + e.target.parentElement.dataset.module;
       this.$router.push(url);
     },
-    toDemo() {
+
+    toAdmin() {
       window.open("http://jz.comlbs.com/Login/Index", "_blank");
     }
   },
@@ -83,7 +90,8 @@ export default {
       this.setupBtn = !store.state.isFirst;
       return store.state.isFirst;
     },
-    ...mapState({
+    ...mapState("bigData", {
+      platformBigModuleData: state => state.platformBigModuleData
     })
   }
 };

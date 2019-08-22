@@ -49,7 +49,7 @@ const routes = [{
         },
         component: siteModule
       }, {
-        path: '/cases',
+        path: '/case',
         meta: {
           title: '案件管理'
         },
@@ -58,6 +58,12 @@ const routes = [{
         path: '/vechile',
         meta: {
           title: '车辆监控'
+        },
+        component: vecModule
+      }, {
+        path: '/flow',
+        meta: {
+          title: '弃土流向'
         },
         component: vecModule
       }]

@@ -64,7 +64,7 @@
 
         <!-- 报表表格 -->
         <el-table
-          :data="vechileInfo"
+          :data="vecInfo"
           ref="tableDom"
           row-key="id"
           stripe
@@ -77,35 +77,26 @@
           :tree-props="{children: 'children'}"
         >
           <el-table-column type="selection" width="40" align="center"></el-table-column>
-          <el-table-column prop="label" label="车牌号" width="160" sortable>
+          <el-table-column prop="vechileNumber" label="车牌号" width="160" sortable>
             <template slot-scope="scope">
-              <el-input v-model="scope.row.label" size="mini" v-if="scope.row.label"></el-input>
-              <span v-else>{{scope.row.label}}</span>
+              <el-input v-model="scope.row.vechileNumber" size="mini" v-if="scope.row.edit"></el-input>
+              <span v-else>{{scope.row.vechileNumber}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="adname" label="所属区域" width="120" sortable>
-            <template slot-scope="scope">{{scope.row.adname?scope.row.adname:"---"}}</template>
+          <el-table-column prop="adname" label="所属区域" align="center" width="120" sortable>
+            <template slot-scope="scope">{{scope.row.gpsinfo.adname?scope.row.gpsinfo.adname:"---"}}</template>
           </el-table-column>
           <el-table-column prop="address" label="当前地址" sortable>
             <template slot-scope="scope">
-              <el-input v-model="scope.row.address" size="mini" v-if="scope.row.edit"></el-input>
-              <span v-else>{{scope.row.address}}</span>
+              <el-input v-model="scope.row.gpsinfo.address" size="mini" v-if="scope.row.edit"></el-input>
+              <span v-else>{{scope.row.gpsinfo.address}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="state" label="当前状态" width="120" sortable>
-            <template slot-scope="scope">{{scope.row.state?scope.row.state:"---"}}</template>
+          <el-table-column prop="state" label="当前状态" align="center" width="120" sortable>
+            <template slot-scope="scope">{{scope.row.status?scope.row.status:"---"}}</template>
           </el-table-column>
-          <el-table-column prop="mileage" label="总里程" width="120" sortable>
+          <el-table-column prop="mileage" label="总里程(公里)" width="140" sortable>
             <template slot-scope="scope">{{scope.row.mileage?scope.row.mileage:"---"}}</template>
-          </el-table-column>
-          <el-table-column prop="blank" width="80" align="center" label="是否跳转">
-            <template slot-scope="scope">
-              <el-switch
-                v-model="scope.row.blank"
-                @change="handleBlank(scope.row.blank)"
-                :disabled="!scope.row.edit"
-              ></el-switch>
-            </template>
           </el-table-column>
           <el-table-column prop="action" label="操作" align="center" width="160">
             <template slot-scope="scope">
@@ -152,12 +143,14 @@
 <script>
 import SideMenu from "../Public/SideMenu";
 
+import { mapState, mapGetters } from "vuex";
+
 export default {
   name: "assetsVechile",
   components: { SideMenu },
   data() {
     return {
-      hideMenu: true,
+      hideMenu: false,
       activeIndex: "/assets/vechile",
       currentTable: [],
       queryData: {
@@ -175,13 +168,18 @@ export default {
     },
     hanldePage() {},
     handleAdd(index, row) {},
-    handleEdit() {},
-    handleSave() {},
+    handleEdit(row) {
+      row.edit = true;
+    },
+    handleSave(row) {
+      row.edit = false;
+    },
     handleDelete() {},
     handleSelect(key, keyPath) {
       console.log(key);
       this.$router.push({ path: key });
     },
+
     QueryTitle() {
       let self = this;
       let queryData = self.queryData;
@@ -207,13 +205,17 @@ export default {
   },
   computed: {
     tableTotal() {
-      return this.$store.state.simData.vechileInfo.length;
+      return this.vechileInfo.length;
     },
-    vechileInfo() {
-      let simData = this.$store.state.simData;
-      console.log(simData.vechileInfo.slice(0, 20));
-      return simData.vechileInfo.slice(0, 20);
-    }
+    vecInfo() {
+      let self = this;
+      let vechileInfo = self.vechileInfo;
+      for (var i in vechileInfo) {
+        vechileInfo[i]["edit"] = false;
+      }
+      return vechileInfo.slice(0, 20);
+    },
+    ...mapGetters("bigData", ["vechileInfo"])
   }
 };
 </script>

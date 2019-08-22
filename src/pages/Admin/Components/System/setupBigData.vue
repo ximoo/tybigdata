@@ -39,6 +39,7 @@
                   v-else
                 >保存</el-button>
               </template>
+
               <el-form inline size="mini">
                 <el-form-item
                   v-for="item,index in bigBaseData.data"
@@ -67,12 +68,14 @@
                   </span>
                   <span v-else>{{item.value}} {{item.unit}}</span>
                 </el-form-item>
+
                 <el-form-item style="width:100%;" label="刷新时间：">
                   <el-input v-model="bigBaseData.timer" style="width:100px;" />秒
                 </el-form-item>
               </el-form>
             </el-card>
           </el-col>
+
           <!-- oprateData -->
           <el-col :span="6">
             <el-card class="box-card" :class="{'box-card-edit':bigOprateData.edit}">
@@ -99,6 +102,7 @@
                   v-else
                 >保存</el-button>
               </template>
+
               <el-form inline size="mini" style="display:inline-block;">
                 <el-form-item style="width:100%">
                   <el-radio-group
@@ -144,12 +148,14 @@
                   </span>
                   <span v-else>{{item.value}} {{item.unit}}</span>
                 </el-form-item>
+
                 <el-form-item style="width:100%;" label="刷新时间：">
                   <el-input v-model="bigOprateData.timer" style="width:100px;" />秒
                 </el-form-item>
               </el-form>
             </el-card>
           </el-col>
+
           <el-col :span="6">
             <el-card class="box-card">
               <strong v-show="bigOprateData.module == 'vechile'">车辆在线情况 ：</strong>
@@ -159,6 +165,7 @@
               <Echarts :options="chartsOption" autoresize style="min-height:390px" />
             </el-card>
           </el-col>
+
           <!-- produceData -->
           <el-col :span="6">
             <el-card class="box-card" :class="{'box-card-edit':bigProduceData.edit}">
@@ -233,9 +240,20 @@
               </el-form>
             </el-card>
           </el-col>
+
           <!-- oprateData -->
-          <el-col :span="24">
-            <el-card class="box-card">{{PM25}}</el-card>
+          <el-col :span="6">
+            <el-card class="box-card">
+              <template slot="header" class="clearfix">
+                <span>大数据看板模块控制</span>
+              </template>
+
+              <el-form inline size="mini">
+                <el-form-item :label="item.label" v-for="item,index in bigModuleData" :key="index">
+                  <el-switch v-model="item.checked" @change="saveBigModule" />
+                </el-form-item>
+              </el-form>
+            </el-card>
           </el-col>
         </el-row>
       </div>
@@ -245,6 +263,7 @@
 <script>
 import SideMenu from "../Public/SideMenu";
 import { mapState, mapGetters } from "vuex";
+
 require("echarts-gl");
 require("echarts/lib/chart/bar");
 require("echarts/lib/chart/line");
@@ -257,9 +276,11 @@ import getOption from "../../../JzIndex/Component/AllMonitor/operatedata.service
 
 export default {
   name: "setupBigData",
+
   components: {
     SideMenu
   },
+
   data() {
     let self = this;
     return {
@@ -282,21 +303,23 @@ export default {
         timer: 30,
         data: []
       },
+      bigModuleData: [],
       PM25: []
     };
   },
+
   mounted() {
     let self = this;
     self.$nextTick(() => {
       self.bigBaseData = self.initBaseData;
-
       self.bigOprateData = self.initOprateData;
-
       self.bigProduceData = self.initProduceData;
+      self.bigModuleData = self.platformBigModuleData;
 
       // self.requestPM();
     });
   },
+
   methods: {
     //保存基础监控数据
     saveBaseData() {
@@ -350,6 +373,10 @@ export default {
 
     handleMenu(e) {
       this.hideMenu = e;
+    },
+
+    saveBigModule() {
+      localStorage.$platformBigModuleData = JSON.stringify(this.bigModuleData);
     },
 
     //临时做个东西
@@ -516,7 +543,8 @@ export default {
     ...mapState("bigData", {
       platformBigBaseData: state => state.platformBigBaseData,
       platformBigOprateData: state => state.platformBigOprateData,
-      platformBigProduceData: state => state.platformBigProduceData
+      platformBigProduceData: state => state.platformBigProduceData,
+      platformBigModuleData: state => state.platformBigModuleData
     }),
 
     ...mapGetters("baseData", ["adminBaseData"])

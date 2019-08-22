@@ -1,6 +1,3 @@
-import Store from "../../Configs/store"
-import API from "../../../JzIndex/Configs/api";
-import Axios from "axios"
 const cardJson = require("../../common/json/cardCallerloc.json")
 
 

@@ -32,9 +32,9 @@ const state = {
     //城市行政区选择
     platformDistrictsSelect: platData ? JSON.parse(platData).districtsSelect : platJson.state.districtsSelect,
 
-//
-platformAlermSetup:platAlermSetup?JSON.parse(platAlermSetup):platJson.state.alermSetup,
-    
+    //
+    platformAlermSetup: platAlermSetup ? JSON.parse(platAlermSetup) : platJson.state.alermSetup,
+
     //后台菜单
     platformAdminNav: platAdminNav ? JSON.parse(platAdminNav) : platNav,
     //菜单选项卡

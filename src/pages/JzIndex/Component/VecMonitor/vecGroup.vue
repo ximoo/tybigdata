@@ -22,43 +22,52 @@
     </el-tree>
   </reDialog>
 </template>
+
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "SiteGroup",
+
   props: ["groupShow", "vechileInfo"],
+
   data() {
     return {};
   },
-  mounted() {
-    console.log(this.vechileInfo);
-  },
+
   methods: {
     closeDialog() {
       this.$emit("closeGroupDialog");
     },
+
     handleNodeClick(e) {
-      console.log(e);
       this.$emit("pantoVechile", e);
     }
   },
+
   computed: {
     districts() {
-      return this.$store.state.platformData.state.districts;
+      let self = this;
+      let platformDistricts = self.platformDistricts;
+      return platformDistricts;
     },
+
     disTree() {
+
       let self = this;
       let districts = self.districts;
       let vechileInfo = self.vechileInfo;
+
       let disTree = [
         {
-          label: self.$store.state.platformData.state.city,
-          adcode: self.$store.state.platformData.state.adcode,
+          label: self.platformCity,
+          adcode: self.adcode,
           children: []
         }
       ];
 
       for (var i in vechileInfo) {
-        vechileInfo[i]["lnglat"] = vechileInfo[i].location.split(",");
+        vechileInfo[i]["lnglat"] = vechileInfo[i].gpsinfo.location.split(",");
         vechileInfo[i]["id"] = parseInt(i) + 1;
       }
 
@@ -91,8 +100,20 @@ export default {
           }
         }
       }
+
       return disTree;
-    }
+
+    },
+
+    ...mapState("platData", {
+      platformDistricts: state => state.platformDistricts,
+      platformDistrictsSelect: state => state.platformDistrictsSelect,
+      platformCity: state => state.platformCity,
+      adcode: state => state.adcode,
+      platformCenter: state => state.platformCenter
+
+
+    })
   }
 };
 </script>

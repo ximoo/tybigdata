@@ -37,7 +37,7 @@
 
     <!-- 可设置模块 -->
     <transition name="el-zoom-in-top">
-      <!-- <router-view /> -->
+      <router-view />
     </transition>
   </div>
 </template>
