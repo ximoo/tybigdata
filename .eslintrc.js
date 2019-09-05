@@ -5,6 +5,9 @@ module.exports = {
   //   "es6": true,
   //   "node": true
   // },
+  globals: {
+    "AMap": true,
+  },
 
   extends: [
     'plugin:vue/essential',
@@ -44,9 +47,7 @@ module.exports = {
 
     // 未使用的（函数）形参
     "no-shadow": "warn",
-
     "prefer-template": "off",
-
     "object-curly-newline": "warn",
   }
 };

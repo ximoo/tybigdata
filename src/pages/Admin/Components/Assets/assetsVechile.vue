@@ -98,7 +98,7 @@
           <el-table-column prop="mileage" label="总里程(公里)" width="140" sortable>
             <template slot-scope="scope">{{scope.row.mileage?scope.row.mileage:"---"}}</template>
           </el-table-column>
-          <el-table-column prop="action" label="操作" align="center" width="160">
+          <el-table-column prop="action" label="操作" align="center" width="190">
             <template slot-scope="scope">
               <el-button
                 size="mini"

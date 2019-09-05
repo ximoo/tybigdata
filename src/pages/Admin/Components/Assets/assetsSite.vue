@@ -98,7 +98,7 @@
 
         <!-- 报表表格 -->
         <el-table
-          :data="siteInfo"
+          :data="platformSiteInfo"
           ref="tableDom"
           row-key="id"
           stripe
@@ -118,12 +118,12 @@
             </template>
           </el-table-column>
           <el-table-column prop="district" label="所属区域" width="120" sortable>
-            <template slot-scope="scope">{{scope.row.district?scope.row.district:"---"}}</template>
+            <template slot-scope="scope">{{scope.row.gpsinfo.adname?scope.row.gpsinfo.adname:"---"}}</template>
           </el-table-column>
           <el-table-column prop="address" label="工地地址" sortable>
             <template slot-scope="scope">
-              <el-input v-model="scope.row.address" size="mini" v-if="scope.row.edit"></el-input>
-              <span v-else>{{scope.row.address}}</span>
+              <el-input v-model="scope.row.gpsinfo.address" size="mini" v-if="scope.row.edit"></el-input>
+              <span v-else>{{scope.row.gpsinfo.address}}</span>
             </template>
           </el-table-column>
           <el-table-column prop="state" label="当前状态" width="120" align="center" sortable>
@@ -224,6 +224,8 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
+import lib from "~/common/lib";
 export default {
   name: "assetsVechile",
   data() {
@@ -241,7 +243,9 @@ export default {
     };
   },
 
-  mounted() {},
+  mounted() {
+    console.log(this.siteInfo);
+  },
 
   methods: {
     handleMenu() {
@@ -281,17 +285,25 @@ export default {
   },
   computed: {
     tableTotal() {
-      console.log(this.$store.state.simData.site.length);
-      return this.$store.state.simData.site.length;
+      return this.platformSiteInfo.length;
     },
     siteInfo() {
-      let simData = this.$store.state.simData;
-      let siteData = this.$store.state.platformData.module.sitemonitor.module
-        .fences.site;
-      simData.site = siteData;
-      localStorage.$simdata = JSON.stringify(simData);
-      return simData.site.slice(0, 20);
-    }
+      let self = this;
+      let platformSiteInfo = self.platformSiteInfo;
+      let platformGPSData = self.platformGPSData;
+      for (var i in platformSiteInfo) {
+        platformSiteInfo[i]["gpsinfo"] = platformGPSData[lib.randomNumber(
+          0,
+          platformGPSData.length
+        )];
+      }
+
+      return platformSiteInfo;
+    },
+    ...mapState("bigData", {
+      platformSiteInfo: state => state.platformSiteInfo,
+      platformGPSData: state => state.platformGPSData
+    })
   }
 };
 </script>

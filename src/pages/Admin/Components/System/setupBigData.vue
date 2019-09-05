@@ -255,6 +255,11 @@
               </el-form>
             </el-card>
           </el-col>
+
+          <!-- oprateData -->
+          <el-col :span="18">
+            <el-card class="box-card">{{PM25}}</el-card>
+          </el-col>
         </el-row>
       </div>
     </div>
@@ -276,7 +281,11 @@ import getOption from "../../../JzIndex/Component/AllMonitor/operatedata.service
 
 export default {
   name: "setupBigData",
-
+  data() {
+    return {
+      PM25: []
+    };
+  },
   components: {
     SideMenu
   },
@@ -316,7 +325,7 @@ export default {
       self.bigProduceData = self.initProduceData;
       self.bigModuleData = self.platformBigModuleData;
 
-      // self.requestPM();
+      self.requestPM();
     });
   },
 
@@ -399,7 +408,8 @@ export default {
         for (var i = 0; i <= urlType.length - 1; i++) {
           let url =
             "/pm/city/mon/" + urlType[i] + "/太原/" + regions[x] + ".html";
-          let dataString = "";
+          let dataString = "",
+            dateString = "xAxis:[{type:'category',boundaryGap:false,data:";
           console.log(urlType[i]);
           let region = regions[x];
           let type = urlType[i];
@@ -438,9 +448,15 @@ export default {
                 .replace(/;/g, "") + "";
 
             let data = pmOption.indexOf(dataString);
+            let dateStart = pmOption.indexOf(dateString);
+            let dateEnd = pmOption.indexOf("],axisLine:{lineStyle:")
+
             self.PM25.push({
               region: region,
               name: type,
+              date: pmOption
+                .slice(dateStart + dateString.length,dateEnd)
+                .replace(/]}]}/g, ""),
               data: pmOption
                 .slice(data + dataString.length)
                 .replace(/]}]}/g, "")

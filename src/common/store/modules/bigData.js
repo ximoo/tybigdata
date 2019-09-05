@@ -11,6 +11,7 @@ const platformBigModuleData = localStorage.$platformBigModuleData
 
 const vechileNumber = localStorage.$vechileNumber
 const GPSData = localStorage.$GPSData
+const SiteInfo = localStorage.$SiteInfo
 const platAlermSetup = localStorage.$platAlermSetup
 
 
@@ -27,6 +28,14 @@ const state = {
     platformBigProduceData: platformBigProduceData ? JSON.parse(platformBigProduceData) : platJson.produceData,
     platformVechileNumber: vechileNumber ? JSON.parse(vechileNumber) : [],
     platformGPSData: GPSData ? JSON.parse(GPSData) : [],
+    platformSiteInfo: SiteInfo ? JSON.parse(SiteInfo) : [{
+        name: "爱的发顺丰",
+        
+    }],
+
+
+
+
 
     //
     platformAlermSetup: platAlermSetup ? JSON.parse(platAlermSetup) : platJson.state.alermSetup,
@@ -68,7 +77,7 @@ const getters = {
             vechileInfo.push({
                 vechileNumber: vecNumber[i],
                 driver: randomName.generate(),
-                gpsinfo: gData[i],
+                gpsinfo: gData[lib.randomNumber(0, gData.length - 1)],
                 alerm: alermData[lib.randomNumber(0, alermData.length - 1)],
                 status: lib.randomNumber(0, 4),
                 mileage: lib.randomNumber(10000, 50000),
@@ -77,6 +86,25 @@ const getters = {
         localStorage.$vechileInfo = JSON.stringify(vechileInfo)
         return vechileInfo
     },
+
+    siteInfo(state, getters) {
+        let platformSiteInfo = state.platformSiteInfo
+        let gData = state.platformGPSData
+        let siteSize = platformSiteInfo.length = 0 ? 1 : platformSiteInfo.length
+        let siteInfo = new Array()
+
+        for (var i = 0; i < siteSize; i++) {
+            siteInfo.push({
+                name: i + "号工地",
+                gpsinfo: gData[lib.randomNumber(0, gData.length - 1)],
+            })
+        }
+        return siteInfo
+    }
+
+
+
+
 }
 
 // actions
@@ -86,7 +114,12 @@ const actions = {}
 const mutations = {
     "changeAlerm": (state, data) => {
         state.platformAlermVechile = data
-    }
+    },
+
+
+
+
+
 }
 
 export default {

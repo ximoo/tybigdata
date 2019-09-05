@@ -14,7 +14,7 @@
           <el-button
             :data-module="item.moduleId"
             @click="handleModule"
-            v-for="item,index in bigModuleData"
+            v-for="item,index in BigModuleData"
             :key="index"
           >{{item.label}}</el-button>
           <el-button @click="toAdmin">后台管理</el-button>
@@ -89,6 +89,17 @@ export default {
     isFirst() {
       this.setupBtn = !store.state.isFirst;
       return store.state.isFirst;
+    },
+    BigModuleData() {
+      let self = this;
+      let platformBigModuleData = self.platformBigModuleData;
+      let BigModuleData = [];
+      for (var i in platformBigModuleData) {
+        if (platformBigModuleData[i].checked) {
+          BigModuleData.push(platformBigModuleData[i]);
+        }
+      }
+      return BigModuleData
     },
     ...mapState("bigData", {
       platformBigModuleData: state => state.platformBigModuleData

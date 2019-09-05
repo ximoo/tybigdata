@@ -20,6 +20,12 @@
       style="height:calc(100% - 36px)"
     >
       <i class="el-icon-loading map-loading" v-if="showLoading" />
+      <el-amap-marker
+        v-for="(marker, index) in alermMarker"
+        :position="marker.position"
+        :icon="marker.icon"
+        :vid="index"
+      ></el-amap-marker>
     </el-amap>
     <Conner />
   </div>
@@ -106,8 +112,6 @@ export default {
               }
             );
           });
-
-          self.addVecMarker(self.platformAlermVechile);
         }
       }
     };
@@ -158,6 +162,7 @@ export default {
           });
           polygon.setPath(pathArray);
           self.mapObj.add(polygon);
+          // self.addVecMarker(self.platformAlermVechile);
         });
 
       function searchPolyline(adcode) {
@@ -200,7 +205,6 @@ export default {
       }
 
       self.mapObj.setFitView();
-
     },
 
     addPointer(data) {
@@ -338,7 +342,8 @@ export default {
   watch: {
     platformAlermVechile(n) {
       let self = this;
-      self.addVecMarker(self.platformAlermVechile);
+      // if(n)self.mapObj.setFitView()
+      // self.addVecMarker(self.platformAlermVechile);
     }
   },
   computed: {
@@ -369,6 +374,51 @@ export default {
       return Districts;
     },
 
+    alermMarker() {
+      let self = this;
+      let platformAlermVechile = self.platformAlermVechile;
+      let alermMarker = [];
+      var style = [
+        { icon: require("~/stastic/img/icon/ex-new-icon-fatigue.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-phone.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-eyes.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-driver.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-equipment.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-collision.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-deviate.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-man.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-phone.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-eyes.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-driver.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-equipment.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-collision.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-deviate.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-man.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-phone.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-eyes.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-driver.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-equipment.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-collision.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-deviate.png") },
+        { icon: require("~/stastic/img/icon/ex-new-icon-man.png") }
+      ];
+
+      for (var i in platformAlermVechile) {
+        let lnglat = platformAlermVechile[i].gpsinfo.location.split(",");
+        let iconId = platformAlermVechile[i].alerm.id;
+        // console.log(iconId);
+        alermMarker.push({
+          id: i + 1,
+          icon: style[iconId].icon,
+          position: [parseFloat(lnglat[0]), parseFloat(lnglat[1])],
+          clickable: true,
+          label: platformAlermVechile[i].gpsinfo.address,
+          map: self.mapObj
+        });
+      }
+      // if (platformAlermVechile.length > 0) self.mapObj.setFitView();
+      return alermMarker;
+    },
     ...mapState("platData", {
       platformCity: state => state.platformCity
     }),
@@ -391,7 +441,6 @@ export default {
     })
   }
 };
-
 </script>
 <style lang="less" scoped>
 .map-loading {
