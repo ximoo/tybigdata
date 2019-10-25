@@ -1,9 +1,8 @@
 export default {
+    getNow: function (time) {
+      
 
-    getNow: function () {
-
-        var myDate = new Date();
-
+        var myDate = time ? time : new Date();
         //获取当前年
         var year = myDate.getFullYear();
 
@@ -18,7 +17,7 @@ export default {
 
         //获取当前时间
         var now = year + '-' + this.conver(month) + "-" + this.conver(date) + " " + this.conver(h) + ':' + this.conver(m) + ":" + this.conver(s);
-
+        console.log(now);
         return now
 
     },
@@ -38,13 +37,11 @@ export default {
 
         //获取当前时间
         var nowDate = this.conver(h) + ':' + this.conver(m);
-
         return nowDate
 
     },
 
     conver: function (s) {
-
         return s < 10 ? '0' + s : s;
 
     },

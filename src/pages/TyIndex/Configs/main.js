@@ -25,7 +25,7 @@ Vue.config.productionTip = false
 
 VueAMap.initAMapApiLoader({
   key: '6f713c69faa95286904fa173059eae94',
-  plugin: ['Map3D', 'AMap.DistrictSearch', 'AMap.SimpleMarker', 'AMap.DistrictLayer', 'AMap.ControlBar','AMap.MouseTool',"AMap.PolyEditor","AMap.MarkerClusterer","AMap.InfoWindow","AMap.Heatmap"],
+  plugin: ['Map3D', 'AMap.DistrictSearch', 'AMap.SimpleMarker', 'AMap.DistrictLayer', 'AMap.ControlBar','AMap.MouseTool',"AMap.PolyEditor","AMap.MarkerClusterer","AMap.InfoWindow","AMap.Heatmap","AMap.PlaceSearchLayer"],
   v: '1.4.15'
 });
 

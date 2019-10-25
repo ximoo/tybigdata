@@ -12,13 +12,13 @@ module.exports = merge(webpackBaseConfig, {
     port: 8080,
     // 跨域代理，所以axios的baseurl不要使用带http的绝对路径，直接使用'/api/‘即可
     proxy: {
-      '/api/': {
-        target: 'http://localhost:9200',
+      '/api2/': {
+        target: 'http://yc.comlbs.com/',
         changeOrigin: true,
         pathRewrite: {
-          '^/api': '',
+          '^/api2': '',
         },
-      },
+      }
     },
   },
   plugins: [

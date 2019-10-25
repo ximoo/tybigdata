@@ -4,8 +4,8 @@
 @import "common/transition";
 
 @mixin menu-item {
-  height: 40px;
-  line-height: 40px;
+  height: 56px;
+  line-height: 56px;
   font-size: $--menu-item-font-size;
   color: $--menu-item-font-color;
   padding: 0 20px;
@@ -53,10 +53,10 @@
     border-right: none;
     & > .el-menu-item {
       float: left;
-      height: 40px;
-      line-height: 40px;
+      height: 60px;
+      line-height: 60px;
       margin: 0;
-      border-bottom: 4px solid transparent;
+      border-bottom: 2px solid transparent;
       color: $--color-text-secondary;
 
       a,
@@ -82,15 +82,15 @@
 
       &.is-active {
         .el-submenu__title {
-          border-bottom: 4px solid $--color-primary;
+          border-bottom: 2px solid $--color-primary;
           color: $--color-text-primary;
         }
       }
 
       & .el-submenu__title {
-        height: 40px;
-        line-height: 40px;
-        border-bottom: 4px solid transparent;
+        height: 60px;
+        line-height: 60px;
+        border-bottom: 2px solid transparent;
         color: $--color-text-secondary;
 
         &:hover {
